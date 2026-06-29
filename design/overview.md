@@ -38,6 +38,13 @@
 | ORM | SQLAlchemy |
 | バリデーション | Pydantic |
 
+### API連携
+
+| 項目 | 技術 | 説明 |
+|------|------|------|
+| API仕様書 | OpenAPI（YAML） | FastAPIが自動生成 |
+| コード自動生成 | openapi-generator | Next.js用の型・APIクライアントを生成 |
+
 ### インフラ（AWS）
 
 | 役割 | サービス |
