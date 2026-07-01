@@ -102,6 +102,18 @@
     .save-btn:hover { background: var(--amber-dk); }
     .skip-btn { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; padding: 11px 16px; transition: color 0.15s; }
     .skip-btn:hover { color: var(--text); }
+
+    /* 次回設定セクション（正解時に展開） */
+    .next-section { border: 1px solid var(--green); border-radius: 8px; overflow: hidden; display: none; }
+    .next-section.visible { display: block; }
+    .next-section-header { background: var(--green); padding: 12px 20px; display: flex; align-items: center; gap: 8px; }
+    .next-section-title { font-size: 13px; font-weight: 700; color: #fff; letter-spacing: 0.03em; }
+    .next-section-body { background: var(--green-lt); padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .next-actions { display: flex; align-items: center; gap: 10px; padding-top: 4px; }
+    .save-btn-green { background: var(--green); color: #fff; border: none; border-radius: 6px; padding: 11px 28px; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+    .save-btn-green:hover { opacity: 0.88; }
+    .master-btn { margin-left: auto; display: flex; align-items: center; gap: 6px; background: var(--surface); color: var(--green); border: 1px solid var(--green); border-radius: 6px; padding: 10px 18px; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .master-btn:hover { background: var(--green-lt); }
   </style>
 </head>
 <body>
@@ -176,7 +188,7 @@
 
       <!-- 正解 / 不正解 ボタン -->
       <div class="judge-row" id="judgeRow" style="display:none">
-        <button class="btn-correct" onclick="window.location.reload()">
+        <button class="btn-correct" onclick="showNext()">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
           正解
         </button>
@@ -184,6 +196,27 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
           不正解
         </button>
+      </div>
+
+      <!-- 次回設定（正解時に展開） -->
+      <div class="next-section" id="nextSection">
+        <div class="next-section-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          <span class="next-section-title">正解！次回の復習を設定</span>
+        </div>
+        <div class="next-section-body">
+          <div class="field" style="max-width: 200px;">
+            <label>次の復習日</label>
+            <input type="date" value="2026-07-14" />
+          </div>
+          <div class="next-actions">
+            <button class="save-btn-green">保存してホームへ</button>
+            <button class="master-btn">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              克服済みにする
+            </button>
+          </div>
+        </div>
       </div>
 
       <!-- メモ編集（不正解時に展開） -->
@@ -223,7 +256,13 @@
     }
     function showMemo() {
       document.getElementById('judgeRow').style.display = 'none';
+      document.getElementById('nextSection').classList.remove('visible');
       document.getElementById('memoSection').classList.add('visible');
+    }
+    function showNext() {
+      document.getElementById('judgeRow').style.display = 'none';
+      document.getElementById('memoSection').classList.remove('visible');
+      document.getElementById('nextSection').classList.add('visible');
     }
   </script>
 </body>

@@ -136,6 +136,16 @@
     .save-btn:hover { background: var(--amber-dk); }
     .skip-btn { background: none; border: none; color: var(--muted); font-size: 13px; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; padding: 11px 16px; transition: color 0.15s; }
     .skip-btn:hover { color: var(--text); }
+    .next-sec { border: 1px solid var(--green); border-radius: 8px; overflow: hidden; display: none; }
+    .next-sec.show { display: block; }
+    .next-sec-hd { background: var(--green); padding: 12px 20px; display: flex; align-items: center; gap: 8px; }
+    .next-sec-title { font-size: 13px; font-weight: 700; color: #fff; }
+    .next-sec-body { background: var(--green-lt); padding: 20px 24px; display: flex; flex-direction: column; gap: 16px; }
+    .next-actions { display: flex; align-items: center; gap: 10px; padding-top: 4px; }
+    .save-btn-green { background: var(--green); color: #fff; border: none; border-radius: 6px; padding: 11px 28px; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: opacity 0.15s; }
+    .save-btn-green:hover { opacity: 0.88; }
+    .master-btn { margin-left: auto; display: flex; align-items: center; gap: 6px; background: var(--surface); color: var(--green); border: 1px solid var(--green); border-radius: 6px; padding: 10px 18px; font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700; cursor: pointer; transition: background 0.15s; }
+    .master-btn:hover { background: var(--green-lt); }
 
     /* MISTAKE LIST */
     .tabs { display: flex; padding: 0 36px; }
@@ -209,8 +219,8 @@
   </nav>
   <div class="sidebar-bottom">
     <div class="progress-label">克服率</div>
-    <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
-    <div class="progress-stat"><strong>8</strong> 問克服 / 全 20 問</div>
+    <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:44%"></div></div>
+    <div class="progress-stat"><strong>12</strong> 問克服 / 全 27 問</div>
   </div>
 </aside>
 
@@ -233,11 +243,11 @@
     <div class="content">
       <div class="home-body">
         <div class="summary-row">
-          <div class="stat-cell"><div class="lbl">Today</div><div class="val">3</div><div class="sub">問</div></div>
-          <div class="stat-cell amber"><div class="lbl">苦手問題</div><div class="val">12</div><div class="sub">問（active）</div></div>
-          <div class="stat-cell green"><div class="lbl">克服済み</div><div class="val">8</div><div class="sub">問</div></div>
+          <div class="stat-cell"><div class="lbl">Today</div><div class="val">5</div><div class="sub">問</div></div>
+          <div class="stat-cell amber"><div class="lbl">苦手問題</div><div class="val">15</div><div class="sub">問（active）</div></div>
+          <div class="stat-cell green"><div class="lbl">克服済み</div><div class="val">12</div><div class="sub">問</div></div>
         </div>
-        <div class="sec-hd"><h2>復習リスト</h2><span class="cnt">3問</span></div>
+        <div class="sec-hd"><h2>復習リスト</h2><span class="cnt">5問</span></div>
         <div class="row-list">
           <div class="row-item overdue" onclick="go('review')">
             <div>
@@ -261,6 +271,22 @@
               <div class="row-q">現在完了形と過去形の違いを説明せよ</div>
             </div>
             <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>1回間違い</div>
+            <div class="date-pill">今日</div>
+          </div>
+          <div class="row-item" onclick="go('review')">
+            <div>
+              <div class="row-subj">社会<span class="sep">›</span>歴史</div>
+              <div class="row-q">鎌倉幕府が成立した年と、その背景を説明せよ</div>
+            </div>
+            <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>1回間違い</div>
+            <div class="date-pill">今日</div>
+          </div>
+          <div class="row-item" onclick="go('review')">
+            <div>
+              <div class="row-subj">数学<span class="sep">›</span>因数分解</div>
+              <div class="row-q">x² + 7x + 12 を因数分解せよ</div>
+            </div>
+            <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>2回間違い</div>
             <div class="date-pill">今日</div>
           </div>
         </div>
@@ -333,8 +359,18 @@
           <div class="ans-block"><div class="card-lbl">今回学んだこと</div><div class="memo-text">ax²+bx+c=0 の形に整理してから因数分解すると符号ミスを防げる。</div></div>
         </div>
         <div class="judge-row" id="judgeRow" style="display:none">
-          <button class="btn-ok" onclick="go('home')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>正解</button>
+          <button class="btn-ok" onclick="showNext()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>正解</button>
           <button class="btn-ng" onclick="showMemo()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>不正解</button>
+        </div>
+        <div class="next-sec" id="nextSec">
+          <div class="next-sec-hd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg><span class="next-sec-title">正解！次回の復習を設定</span></div>
+          <div class="next-sec-body">
+            <div class="field" style="max-width:200px"><label>次の復習日</label><input type="date" value="2026-07-14" /></div>
+            <div class="next-actions">
+              <button class="save-btn-green" onclick="go('home')">保存してホームへ</button>
+              <button class="master-btn" onclick="go('home')"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>克服済みにする</button>
+            </div>
+          </div>
         </div>
         <div class="memo-sec" id="memoSec">
           <div class="memo-sec-hd"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg><span class="memo-sec-title">メモを更新する</span></div>
@@ -357,8 +393,8 @@
     <div class="header">
       <div class="hrow" style="padding-bottom:0"><h1>苦手問題</h1></div>
       <div class="tabs">
-        <div class="tab active" id="tab-active" onclick="switchTab('active')">苦手中<span class="tab-cnt">3</span></div>
-        <div class="tab" id="tab-mastered" onclick="switchTab('mastered')">克服済み<span class="tab-cnt">8</span></div>
+        <div class="tab active" id="tab-active" onclick="switchTab('active')">苦手中<span class="tab-cnt">5</span></div>
+        <div class="tab" id="tab-mastered" onclick="switchTab('mastered')">克服済み<span class="tab-cnt">12</span></div>
       </div>
     </div>
     <div class="content">
@@ -398,6 +434,28 @@
             <div class="date-pill">7月5日</div>
             <div class="row-acts"><button class="btn-master">克服済みにする</button><button class="btn-rev" onclick="go('review')">復習する</button></div>
           </div>
+          <div class="list-row">
+            <div>
+              <div class="lr-subj">社会<span class="sep">›</span>歴史</div>
+              <div class="lr-q">鎌倉幕府が成立した年と、その背景を説明せよ</div>
+              <div class="lr-memo">「いいくに（1192）」と「いいはこ（1185）」の説を混同しやすい。</div>
+            </div>
+            <div class="cell-sub">社会 / 歴史</div>
+            <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>1回</div>
+            <div class="date-pill">7月6日</div>
+            <div class="row-acts"><button class="btn-master">克服済みにする</button><button class="btn-rev" onclick="go('review')">復習する</button></div>
+          </div>
+          <div class="list-row">
+            <div>
+              <div class="lr-subj">理科<span class="sep">›</span>化学変化</div>
+              <div class="lr-q">酸化銅を炭素で還元する化学反応式を書け</div>
+              <div class="lr-memo">係数の合わせ方を忘れがち。両辺の原子数を必ず確認する。</div>
+            </div>
+            <div class="cell-sub">理科 / 化学変化</div>
+            <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>2回</div>
+            <div class="date-pill">7月8日</div>
+            <div class="row-acts"><button class="btn-master">克服済みにする</button><button class="btn-rev" onclick="go('review')">復習する</button></div>
+          </div>
         </div>
 
         <div id="tc-mastered" style="display:none">
@@ -410,6 +468,16 @@
           <div class="list-row" style="grid-template-columns:1fr 160px 100px">
             <div><div class="lr-subj">英語<span class="sep">›</span>文法</div><div class="lr-q">受動態の基本形を書け</div></div>
             <div class="cell-sub">英語 / 文法</div>
+            <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>1回</div>
+          </div>
+          <div class="list-row" style="grid-template-columns:1fr 160px 100px">
+            <div><div class="lr-subj">理科<span class="sep">›</span>光</div><div class="lr-q">凸レンズによる実像のでき方を説明せよ</div></div>
+            <div class="cell-sub">理科 / 光</div>
+            <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>3回</div>
+          </div>
+          <div class="list-row" style="grid-template-columns:1fr 160px 100px">
+            <div><div class="lr-subj">社会<span class="sep">›</span>地理</div><div class="lr-q">日本の三大工業地帯を挙げよ</div></div>
+            <div class="cell-sub">社会 / 地理</div>
             <div class="wrong-pill"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>1回</div>
           </div>
         </div>
@@ -455,9 +523,25 @@
         </div>
         <div class="subj-card">
           <div class="subj-hd">
-            <span class="subj-name">理科</span><span class="subj-cnt">0単元</span>
+            <span class="subj-name">理科</span><span class="subj-cnt">2単元</span>
             <button class="icon-btn" aria-label="編集"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
             <button class="icon-btn del" aria-label="削除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+          </div>
+          <div class="unit-list">
+            <div class="unit-row"><span class="unit-dash">—</span><span class="unit-nm">光</span><div class="unit-acts"><button class="unit-ibtn" aria-label="編集"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="unit-ibtn" aria-label="削除"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></div>
+            <div class="unit-row"><span class="unit-dash">—</span><span class="unit-nm">化学変化</span><div class="unit-acts"><button class="unit-ibtn" aria-label="編集"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="unit-ibtn" aria-label="削除"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></div>
+          </div>
+          <div class="add-unit"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>単元を追加</div>
+        </div>
+        <div class="subj-card">
+          <div class="subj-hd">
+            <span class="subj-name">社会</span><span class="subj-cnt">2単元</span>
+            <button class="icon-btn" aria-label="編集"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button>
+            <button class="icon-btn del" aria-label="削除"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button>
+          </div>
+          <div class="unit-list">
+            <div class="unit-row"><span class="unit-dash">—</span><span class="unit-nm">歴史</span><div class="unit-acts"><button class="unit-ibtn" aria-label="編集"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="unit-ibtn" aria-label="削除"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></div>
+            <div class="unit-row"><span class="unit-dash">—</span><span class="unit-nm">地理</span><div class="unit-acts"><button class="unit-ibtn" aria-label="編集"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg></button><button class="unit-ibtn" aria-label="削除"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></button></div></div>
           </div>
           <div class="add-unit"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>単元を追加</div>
         </div>
@@ -485,6 +569,7 @@
     document.getElementById('ansCard').classList.remove('show');
     document.getElementById('judgeRow').style.display = 'none';
     document.getElementById('memoSec').classList.remove('show');
+    document.getElementById('nextSec').classList.remove('show');
   }
 
   function revealAns() {
@@ -495,7 +580,14 @@
 
   function showMemo() {
     document.getElementById('judgeRow').style.display = 'none';
+    document.getElementById('nextSec').classList.remove('show');
     document.getElementById('memoSec').classList.add('show');
+  }
+
+  function showNext() {
+    document.getElementById('judgeRow').style.display = 'none';
+    document.getElementById('memoSec').classList.remove('show');
+    document.getElementById('nextSec').classList.add('show');
   }
 
   function switchTab(t) {
