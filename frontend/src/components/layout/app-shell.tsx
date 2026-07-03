@@ -8,7 +8,7 @@ export default function AppShell({ children }: { children: React.ReactNode }) {
       <Sidebar />
 
       {/* Main content: offset by sidebar on large screens, padded for bottom nav on mobile */}
-      <main className="lg:pl-[280px] pb-14 lg:pb-0 min-h-screen">
+      <main className="lg:pl-[260px] pb-14 lg:pb-0 min-h-screen">
         {children}
       </main>
 

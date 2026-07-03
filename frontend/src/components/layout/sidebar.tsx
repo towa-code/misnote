@@ -8,7 +8,7 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex flex-col fixed top-0 left-0 bottom-0 w-[280px] bg-navy">
+    <aside className="hidden lg:flex flex-col fixed top-0 left-0 bottom-0 w-[260px] bg-navy">
       {/* Logo */}
       <div className="px-7 py-[28px] border-b border-white/10 font-serif text-[23px] font-bold text-white tracking-[0.05em]">
         mis<span className="text-amber-br">note</span>
