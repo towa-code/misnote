@@ -42,10 +42,7 @@ export default function HomePage() {
           activeCount={12}
           masteredCount={8}
         />
-        <ReviewList
-          items={MOCK_ITEMS}
-          onItemClick={(id) => console.log("review", id)}
-        />
+        <ReviewList items={MOCK_ITEMS} />
       </div>
     </>
   );

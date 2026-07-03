@@ -1,4 +1,4 @@
-"use client";
+import Link from "next/link";
 
 export type ReviewItemData = {
   id: string;
@@ -6,8 +6,8 @@ export type ReviewItemData = {
   unitName?: string;
   questionBody: string;
   wrongCount: number;
-  nextReviewAt: string; // ISO date string
-  overdueDays: number;  // 0 = not overdue
+  nextReviewAt: string;
+  overdueDays: number;
 };
 
 function XIcon() {
@@ -40,25 +40,19 @@ function formatReviewDate(isoDate: string): string {
 
 type Props = {
   item: ReviewItemData;
-  onClick: (id: string) => void;
 };
 
-export default function ReviewItem({ item, onClick }: Props) {
+export default function ReviewItem({ item }: Props) {
   const isOverdue = item.overdueDays > 0;
 
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={() => onClick(item.id)}
-      onKeyDown={(e) => e.key === "Enter" && onClick(item.id)}
+    <Link
+      href={`/review/${item.id}`}
       className={[
         "grid items-center gap-6 px-2 py-[18px] border-b border-border last:border-b-0",
-        "rounded-md cursor-pointer transition-colors duration-150",
+        "rounded-md transition-colors duration-150",
         "grid-cols-[1fr_auto_auto]",
-        isOverdue
-          ? "bg-amber-lt hover:bg-[#FFF3CC]"
-          : "hover:bg-navy-lt",
+        isOverdue ? "bg-amber-lt hover:bg-[#FFF3CC]" : "hover:bg-navy-lt",
       ].join(" ")}
     >
       {/* Left: subject + question */}
@@ -96,6 +90,6 @@ export default function ReviewItem({ item, onClick }: Props) {
       <div className="text-[12px] text-muted whitespace-nowrap text-right">
         {formatReviewDate(item.nextReviewAt)}
       </div>
-    </div>
+    </Link>
   );
 }
