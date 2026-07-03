@@ -1,26 +1,46 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  /* --- Color tokens (from mockup :root) --- */
+  --color-navy:       #1E293B;
+  --color-navy-md:    #334155;
+  --color-navy-lt:    #F1F5F9;
+  --color-amber:      #B45309;
+  --color-amber-dk:   #92400E;
+  --color-amber-br:   #D97706;
+  --color-amber-lt:   #FFFBEB;
+  --color-amber-md:   #FDE68A;
+  --color-red:        #B91C1C;
+  --color-green:      #065F46;
+  --color-green-lt:   #ECFDF5;
+  --color-border:     #E2E8F0;
+  --color-bg:         #FAFAFA;
+  --color-surface:    #FFFFFF;
+  --color-text:       #0F172A;
+  --color-muted:      #64748B;
+
+  /* --- Fonts --- */
+  --font-sans:  var(--font-noto-sans);
+  --font-serif: var(--font-noto-serif);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Focus ring (WCAG AA) */
+*:focus-visible {
+  outline: 2px solid #B45309;
+  outline-offset: 2px;
+  border-radius: 4px;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
   }
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: #FAFAFA;
+  color: #0F172A;
+  font-size: 16px;
 }
