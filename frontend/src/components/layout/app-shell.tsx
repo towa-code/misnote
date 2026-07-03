@@ -1,5 +1,5 @@
-import Sidebar from "@/components/sidebar";
-import BottomNav from "@/components/bottom-nav";
+import Sidebar from "@/components/layout/sidebar";
+import BottomNav from "@/components/layout/bottom-nav";
 
 export default function AppShell({ children }: { children: React.ReactNode }) {
   return (

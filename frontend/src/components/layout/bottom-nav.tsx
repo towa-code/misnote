@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NAV_ITEMS } from "@/components/nav-items";
+import { NAV_ITEMS } from "@/components/layout/nav-items";
 
 export default function BottomNav() {
   const pathname = usePathname();
