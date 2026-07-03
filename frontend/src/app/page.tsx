@@ -5,40 +5,16 @@ import EmptyState from "@/components/home/empty-state";
 import { type ReviewItemData } from "@/components/home/review-item";
 
 // Mock data — replace with API call later
-// Switch between [], [DONE], or full list to test each state
-const MOCK_ITEMS: ReviewItemData[] = [
-  {
-    id: "1",
-    subjectName: "理科",
-    questionBody: "光の屈折の法則（スネルの法則）を式で書け",
-    wrongCount: 2,
-    nextReviewAt: "2026-07-01",
-    overdueDays: 2,
-  },
-  {
-    id: "2",
-    subjectName: "数学",
-    unitName: "二次方程式",
-    questionBody: "次の方程式を解け：2x² − 5x + 3 = 0",
-    wrongCount: 3,
-    nextReviewAt: new Date().toISOString(),
-    overdueDays: 0,
-  },
-  {
-    id: "3",
-    subjectName: "英語",
-    unitName: "文法",
-    questionBody: "現在完了形と過去形の違いを説明せよ",
-    wrongCount: 1,
-    nextReviewAt: new Date().toISOString(),
-    overdueDays: 0,
-  },
-];
+// To test each state, change the two values below:
+//   通常表示:    MOCK_TODAY_ITEMS = [...items]  MOCK_ACTIVE_COUNT = 12
+//   done-today: MOCK_TODAY_ITEMS = []           MOCK_ACTIVE_COUNT = 12
+//   no-notes:   MOCK_TODAY_ITEMS = []           MOCK_ACTIVE_COUNT = 0
+const MOCK_TODAY_ITEMS: ReviewItemData[] = [];
 
-const MOCK_ACTIVE_COUNT = 12; // total active notes (including unscheduled)
+const MOCK_ACTIVE_COUNT = 12; // total active notes
 
 export default function HomePage() {
-  const todayItems = MOCK_ITEMS;
+  const todayItems = MOCK_TODAY_ITEMS;
   const hasAnyNotes = MOCK_ACTIVE_COUNT > 0;
 
   return (
