@@ -1,65 +1,103 @@
-import Image from "next/image";
+import HomePageHeader from "@/components/home/page-header";
+import SummaryCards from "@/components/home/summary-cards";
+import ReviewList from "@/components/home/review-list";
+import EmptyState from "@/components/home/empty-state";
+import { type ReviewItemData } from "@/components/home/review-item";
 
-export default function Home() {
+// Mock data — replace with API call later
+// Test each state by adjusting the mock arrays:
+//   通常表示:            all non-empty
+//   今日0件・予定あり:    MOCK_TODAY_ITEMS = []
+//   全部0件（ノートあり）: all []  MOCK_ACTIVE_COUNT > 0
+//   ノートなし:          all []  MOCK_ACTIVE_COUNT = 0
+const MOCK_TODAY_ITEMS: ReviewItemData[] = [
+  {
+    id: "1",
+    subjectName: "理科",
+    questionBody: "光の屈折の法則（スネルの法則）を式で書け",
+    wrongCount: 2,
+    nextReviewAt: "2026-07-01",
+    overdueDays: 2,
+  },
+  {
+    id: "2",
+    subjectName: "数学",
+    unitName: "二次方程式",
+    questionBody: "次の方程式を解け：2x² − 5x + 3 = 0",
+    wrongCount: 3,
+    nextReviewAt: new Date().toISOString(),
+    overdueDays: 0,
+  },
+];
+
+const MOCK_FUTURE_ITEMS: ReviewItemData[] = [
+  {
+    id: "3",
+    subjectName: "英語",
+    unitName: "文法",
+    questionBody: "現在完了形と過去形の違いを説明せよ",
+    wrongCount: 1,
+    nextReviewAt: "2026-07-04",
+    overdueDays: 0,
+  },
+  {
+    id: "4",
+    subjectName: "国語",
+    unitName: "古文",
+    questionBody: "係り結びの法則を例文とともに説明せよ",
+    wrongCount: 2,
+    nextReviewAt: "2026-07-10",
+    overdueDays: 0,
+  },
+];
+
+const MOCK_UNSCHEDULED_ITEMS: ReviewItemData[] = [
+  {
+    id: "5",
+    subjectName: "社会",
+    unitName: "歴史",
+    questionBody: "鎌倉幕府の成立年とその根拠を説明せよ",
+    wrongCount: 1,
+    nextReviewAt: null,
+    overdueDays: 0,
+  },
+];
+
+const MOCK_ACTIVE_COUNT = 12;
+
+export default function HomePage() {
+  const hasToday = MOCK_TODAY_ITEMS.length > 0;
+  const hasAnyNotes = MOCK_ACTIVE_COUNT > 0;
+  const showList =
+    hasToday ||
+    MOCK_FUTURE_ITEMS.length > 0 ||
+    MOCK_UNSCHEDULED_ITEMS.length > 0;
+
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+    <>
+      <HomePageHeader />
+      <div className="p-9 max-w-[1000px]">
+        <SummaryCards
+          todayCount={MOCK_TODAY_ITEMS.length}
+          activeCount={MOCK_ACTIVE_COUNT}
+          masteredCount={8}
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        {/* Today's reviews are all done (but notes exist) */}
+        {!hasToday && hasAnyNotes && <EmptyState variant="done-today" />}
+
+        {/* No notes at all */}
+        {!hasAnyNotes && <EmptyState variant="no-notes" />}
+
+        {/* Today + upcoming + unscheduled in one list */}
+        {showList && (
+          <ReviewList
+            todayItems={MOCK_TODAY_ITEMS}
+            futureItems={MOCK_FUTURE_ITEMS}
+            unscheduledItems={MOCK_UNSCHEDULED_ITEMS}
+          />
+        )}
+      </div>
+    </>
   );
 }
