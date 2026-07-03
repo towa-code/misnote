@@ -1,3 +1,5 @@
+"use client";
+
 export type ReviewItemData = {
   id: string;
   subjectName: string;

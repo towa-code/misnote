@@ -1,3 +1,5 @@
+"use client";
+
 import ReviewItem, { type ReviewItemData } from "@/components/home/review-item";
 
 type Props = {
