@@ -6,11 +6,11 @@ export type ReviewItemData = {
   unitName?: string;
   questionBody: string;
   wrongCount: number;
-  nextReviewAt: string;
+  nextReviewAt: string | null; // null = 復習日未設定
   overdueDays: number;
 };
 
-function XIcon() {
+export function XIcon() {
   return (
     <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" aria-hidden="true">
       <line x1="18" y1="6" x2="6" y2="18" />
@@ -86,9 +86,9 @@ export default function ReviewItem({ item }: Props) {
         {item.wrongCount}回間違い
       </div>
 
-      {/* Right: review date */}
+      {/* Right: review date (today rows always have a date) */}
       <div className="text-[12px] text-muted whitespace-nowrap text-right">
-        {formatReviewDate(item.nextReviewAt)}
+        {item.nextReviewAt && formatReviewDate(item.nextReviewAt)}
       </div>
     </Link>
   );
