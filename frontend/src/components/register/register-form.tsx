@@ -198,16 +198,13 @@ export default function RegisterForm() {
 
               {/* 正解 */}
               <div>
-                <label className={labelBase}>
-                  正解<span className="text-amber ml-0.5">*</span>
-                </label>
+                <label className={labelBase}>正解（任意）</label>
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
                   rows={3}
-                  placeholder="例：x = 1, x = 3/2"
+                  placeholder="例：x = 1, x = 3/2　※記述式など答えが一意でない場合は省略可"
                   value={answer}
                   onChange={(e) => setAnswer(e.target.value)}
-                  required
                 />
               </div>
             </div>
@@ -224,13 +221,16 @@ export default function RegisterForm() {
             <div className="flex flex-col gap-[18px]">
               {/* 間違えた理由 */}
               <div>
-                <label className={labelBase}>間違えた理由（任意）</label>
+                <label className={labelBase}>
+                  間違えた理由<span className="text-amber ml-0.5">*</span>
+                </label>
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
                   rows={3}
                   placeholder="例：符号のミスに注意。移項するとき符号が変わる"
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
+                  required
                 />
               </div>
 
