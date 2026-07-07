@@ -1,41 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
-const MOCK_SUBJECTS = [
-  { id: "s1", name: "数学" },
-  { id: "s2", name: "英語" },
-  { id: "s3", name: "理科" },
-  { id: "s4", name: "社会" },
-  { id: "s5", name: "国語" },
-];
-
-const MOCK_UNITS: Record<string, { id: string; name: string }[]> = {
-  s1: [
-    { id: "u1", name: "二次方程式" },
-    { id: "u2", name: "因数分解" },
-    { id: "u3", name: "図形" },
-  ],
-  s2: [
-    { id: "u4", name: "文法" },
-    { id: "u5", name: "長文読解" },
-  ],
-  s3: [
-    { id: "u6", name: "物理" },
-    { id: "u7", name: "化学" },
-    { id: "u8", name: "生物" },
-  ],
-  s4: [
-    { id: "u9", name: "歴史" },
-    { id: "u10", name: "地理" },
-  ],
-  s5: [
-    { id: "u11", name: "古文" },
-    { id: "u12", name: "漢文" },
-  ],
-};
+import type { SubjectResponse, UnitResponse } from "@/generated";
+import { questionsApi, subjectsApi, unitsApi } from "@/lib/api";
 
 const inputBase =
   "w-full border border-border rounded-md px-3 py-2.5 text-[14px] bg-white text-text transition-[border-color,box-shadow] duration-150 focus:outline-none focus:border-amber focus:shadow-[0_0_0_3px_#FFFBEB]";
@@ -92,6 +61,8 @@ function SelectWrapper({ children }: { children: React.ReactNode }) {
 export default function RegisterForm() {
   const router = useRouter();
 
+  const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
+  const [units, setUnits] = useState<UnitResponse[]>([]);
   const [subjectId, setSubjectId] = useState("");
   const [unitId, setUnitId] = useState("");
   const [questionBody, setQuestionBody] = useState("");
@@ -99,18 +70,48 @@ export default function RegisterForm() {
   const [memo, setMemo] = useState("");
   const [learning, setLearning] = useState("");
   const [nextReviewAt, setNextReviewAt] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const units = subjectId ? (MOCK_UNITS[subjectId] ?? []) : [];
+  useEffect(() => {
+    subjectsApi.listSubjectsV1SubjectsGet().then(setSubjects);
+  }, []);
+
+  useEffect(() => {
+    if (!subjectId) return;
+    unitsApi
+      .listUnitsV1SubjectsSubjectIdUnitsGet({ subjectId })
+      .then(setUnits);
+  }, [subjectId]);
+
+  const visibleUnits = subjectId ? units : [];
 
   function handleSubjectChange(id: string) {
     setSubjectId(id);
     setUnitId("");
   }
 
-  function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    // TODO: POST /questions with { subject_id, unit_id, body, answer, memo, learning, next_review_at }
-    router.push("/");
+    setError("");
+    setSubmitting(true);
+    try {
+      await questionsApi.createQuestionV1QuestionsPost({
+        questionCreate: {
+          subjectId,
+          unitId: unitId || undefined,
+          questionText: questionBody,
+          correctAnswer: answer || undefined,
+          memo,
+          learning: learning || undefined,
+          nextReviewAt: nextReviewAt ? new Date(nextReviewAt) : undefined,
+        },
+      });
+      router.push("/");
+    } catch {
+      setError("登録に失敗しました。時間をおいて再度お試しください。");
+      setSubmitting(false);
+    }
   }
 
   return (
@@ -150,7 +151,7 @@ export default function RegisterForm() {
                       required
                     >
                       <option value="">— 選択 —</option>
-                      {MOCK_SUBJECTS.map((s) => (
+                      {subjects.map((s) => (
                         <option key={s.id} value={s.id}>
                           {s.name}
                         </option>
@@ -168,10 +169,10 @@ export default function RegisterForm() {
                       }
                       value={unitId}
                       onChange={(e) => setUnitId(e.target.value)}
-                      disabled={units.length === 0}
+                      disabled={visibleUnits.length === 0}
                     >
                       <option value="">— 選択 —</option>
-                      {units.map((u) => (
+                      {visibleUnits.map((u) => (
                         <option key={u.id} value={u.id}>
                           {u.name}
                         </option>
@@ -263,19 +264,23 @@ export default function RegisterForm() {
           </div>
 
           {/* Actions (full width) */}
-          <div className="lg:col-span-2 flex gap-2.5 mt-2">
-            <button
-              type="submit"
-              className="bg-amber text-white border-none rounded-md px-8 py-3 text-[13px] font-bold cursor-pointer transition-colors hover:bg-amber-dk"
-            >
-              登録する
-            </button>
-            <Link
-              href="/"
-              className="bg-white text-muted border border-border rounded-md px-5 py-3 text-[13px] transition-colors hover:bg-navy-lt hover:border-[#CBD5E1] hover:text-text"
-            >
-              キャンセル
-            </Link>
+          <div className="lg:col-span-2 flex flex-col gap-2.5 mt-2">
+            {error && <p className="text-[13px] text-red-600">{error}</p>}
+            <div className="flex gap-2.5">
+              <button
+                type="submit"
+                disabled={submitting}
+                className="bg-amber text-white border-none rounded-md px-8 py-3 text-[13px] font-bold cursor-pointer transition-colors hover:bg-amber-dk disabled:opacity-60 disabled:cursor-not-allowed"
+              >
+                登録する
+              </button>
+              <Link
+                href="/"
+                className="bg-white text-muted border border-border rounded-md px-5 py-3 text-[13px] transition-colors hover:bg-navy-lt hover:border-[#CBD5E1] hover:text-text"
+              >
+                キャンセル
+              </Link>
+            </div>
           </div>
         </div>
       </form>

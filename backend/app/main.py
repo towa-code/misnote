@@ -6,7 +6,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.database import SessionLocal
 from app.routers import attempts, mistake_notes, questions, subjects
 from app.routers.units import subjects_router as units_subjects_router, units_router
-from app.seed import ensure_seed_user
+from app.seed import ensure_seed_subjects, ensure_seed_user
 
 
 @asynccontextmanager
@@ -14,6 +14,7 @@ async def lifespan(app: FastAPI):
     db = SessionLocal()
     try:
         ensure_seed_user(db)
+        ensure_seed_subjects(db)
     finally:
         db.close()
     yield
