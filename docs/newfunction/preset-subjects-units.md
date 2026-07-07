@@ -43,8 +43,8 @@
 
 ### シードデータ
 
-- `backend/app/data/presets.json` にテンプレート定義を置き、起動時シード（既存の `app/seed.py` の仕組みに追加）で upsert する
-- 初期データ例: 中学（国語・数学・英語・理科・社会＋主要単元）、高校（数学ⅠA/ⅡB、物理基礎…）。まず自分が使う範囲だけ用意して育てればよい
+- マスタデータは [`docs/data/preset_subjects_units.csv`](../data/preset_subjects_units.csv) で管理する（中学+高校、2022年度施行の現行学習指導要領準拠。数学は検定科目の分割版と数学ⅠA/ⅡBC の受験セット版を両方収録）
+- 起動時シード（既存の `app/seed.py` の仕組みに追加）で CSV から変換して upsert する
 
 ---
 
