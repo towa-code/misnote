@@ -85,18 +85,6 @@ export default function HomeContent() {
     loadAll();
   }, [loadAll]);
 
-  async function handleSetReviewDate(noteId: string, date: string) {
-    try {
-      await mistakeNotesApi.updateNoteV1MistakeNotesNoteIdPut({
-        noteId,
-        mistakeNoteUpdate: { nextReviewAt: new Date(date) },
-      });
-      await loadAll();
-    } catch {
-      setError("復習日の設定に失敗しました。");
-    }
-  }
-
   if (loading) {
     return (
       <div className="p-9 max-w-[1000px] text-[14px] text-muted">
@@ -136,7 +124,6 @@ export default function HomeContent() {
           todayItems={todayItems}
           futureItems={futureItems}
           unscheduledItems={unscheduledItems}
-          onSetReviewDate={handleSetReviewDate}
         />
       )}
     </div>

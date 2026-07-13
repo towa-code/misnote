@@ -6,14 +6,12 @@ type Props = {
   todayItems: ReviewItemData[];
   futureItems: ReviewItemData[];
   unscheduledItems: ReviewItemData[];
-  onSetReviewDate?: (id: string, date: string) => void;
 };
 
 export default function ReviewList({
   todayItems,
   futureItems,
   unscheduledItems,
-  onSetReviewDate,
 }: Props) {
   return (
     <section className="mt-8">
@@ -50,11 +48,7 @@ export default function ReviewList({
           <SubHeader label="復習日未設定" count={unscheduledItems.length} />
           <div>
             {unscheduledItems.map((item) => (
-              <UpcomingItem
-                key={item.id}
-                item={item}
-                onSetReviewDate={onSetReviewDate}
-              />
+              <UpcomingItem key={item.id} item={item} />
             ))}
           </div>
         </>
