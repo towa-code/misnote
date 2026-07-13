@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import SummaryCards from "@/components/home/summary-cards";
 import ReviewList from "@/components/home/review-list";
 import EmptyState from "@/components/home/empty-state";
@@ -47,42 +47,43 @@ export default function HomeContent() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-  async function loadAll() {
-    try {
-      setError("");
-      const [todayNotes, activeNotes, masteredNotes] = await Promise.all([
-        mistakeNotesApi.listTodayV1MistakeNotesTodayGet(),
-        mistakeNotesApi.listActiveV1MistakeNotesGet(),
-        mistakeNotesApi.listMasteredV1MistakeNotesMasteredGet(),
-      ]);
-
-      const todayIds = new Set(todayNotes.map((n) => n.id));
-      const future: MistakeNoteResponse[] = [];
-      const unscheduled: MistakeNoteResponse[] = [];
-      for (const note of activeNotes) {
-        if (todayIds.has(note.id)) continue;
-        if (note.nextReviewAt === null) {
-          unscheduled.push(note);
-        } else {
-          future.push(note);
+  const loadAll = useCallback(() => {
+    return Promise.all([
+      mistakeNotesApi.listTodayV1MistakeNotesTodayGet(),
+      mistakeNotesApi.listActiveV1MistakeNotesGet(),
+      mistakeNotesApi.listMasteredV1MistakeNotesMasteredGet(),
+    ])
+      .then(([todayNotes, activeNotes, masteredNotes]) => {
+        const todayIds = new Set(todayNotes.map((n) => n.id));
+        const future: MistakeNoteResponse[] = [];
+        const unscheduled: MistakeNoteResponse[] = [];
+        for (const note of activeNotes) {
+          if (todayIds.has(note.id)) continue;
+          if (note.nextReviewAt === null) {
+            unscheduled.push(note);
+          } else {
+            future.push(note);
+          }
         }
-      }
 
-      setTodayItems(todayNotes.map(toReviewItem));
-      setFutureItems(future.map(toReviewItem));
-      setUnscheduledItems(unscheduled.map(toReviewItem));
-      setActiveCount(activeNotes.length);
-      setMasteredCount(masteredNotes.length);
-    } catch {
-      setError("データの取得に失敗しました。再読み込みしてください。");
-    } finally {
-      setLoading(false);
-    }
-  }
+        setError("");
+        setTodayItems(todayNotes.map(toReviewItem));
+        setFutureItems(future.map(toReviewItem));
+        setUnscheduledItems(unscheduled.map(toReviewItem));
+        setActiveCount(activeNotes.length);
+        setMasteredCount(masteredNotes.length);
+      })
+      .catch(() => {
+        setError("データの取得に失敗しました。再読み込みしてください。");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
 
   useEffect(() => {
     loadAll();
-  }, []);
+  }, [loadAll]);
 
   async function handleSetReviewDate(noteId: string, date: string) {
     try {
