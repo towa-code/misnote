@@ -22,6 +22,6 @@ class QuestionRef(BaseModel):
     subject: SubjectRef
     unit: UnitRef | None
     question_text: str
-    correct_answer: str
+    correct_answer: str | None
 
     model_config = {"from_attributes": True}
