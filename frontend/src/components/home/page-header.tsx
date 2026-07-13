@@ -31,7 +31,7 @@ export default function HomePageHeader() {
   const today = formatDate(new Date());
 
   return (
-    <header className="bg-surface border-b border-border px-9 py-5 flex justify-between items-center">
+    <header className="bg-surface border-b border-border px-5 sm:px-9 py-5 flex justify-between items-center gap-3">
       <div>
         <h1 className="font-serif text-[26px] font-bold tracking-[0.02em] text-text">
           今日の復習

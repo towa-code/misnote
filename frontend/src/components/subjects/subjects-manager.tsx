@@ -220,7 +220,7 @@ export default function SubjectsManager() {
 
   return (
     <div>
-      <div className="bg-white border-b border-border px-9 py-[18px] flex items-center justify-between">
+      <div className="bg-white border-b border-border px-5 sm:px-9 py-[18px] flex items-center justify-between gap-3">
         <h1 className="font-serif text-[20px] font-bold tracking-[0.02em]">
           科目・単元管理
         </h1>
@@ -237,9 +237,10 @@ export default function SubjectsManager() {
         </button>
       </div>
 
-      <div className="p-9">
+      <div className="p-5 sm:p-9">
         {message && (
           <div
+            role="alert"
             className={
               "mb-5 rounded-md border px-4 py-3 text-[13px] " +
               (message.type === "error"
@@ -255,7 +256,7 @@ export default function SubjectsManager() {
           <div className="mb-5 flex items-center gap-2">
             <input
               autoFocus
-              className={inputBase}
+              className={inputBase + " flex-1 sm:flex-none sm:w-72"}
               placeholder="例：数学"
               value={newSubjectName}
               onChange={(e) => setNewSubjectName(e.target.value)}
@@ -296,7 +297,7 @@ export default function SubjectsManager() {
           </div>
         )}
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-start">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 items-start max-w-[1100px]">
           {subjects.map((subject) => {
             const units = unitsBySubject[subject.id] ?? [];
             return (
@@ -348,7 +349,7 @@ export default function SubjectsManager() {
                           setEditingSubjectId(subject.id);
                           setEditingSubjectName(subject.name);
                         }}
-                        className="text-muted hover:text-navy hover:bg-navy-lt rounded p-1.5 transition-colors"
+                        className="text-muted hover:text-navy hover:bg-navy-lt rounded-md p-2 transition-colors"
                       >
                         <EditIcon />
                       </button>
@@ -356,7 +357,7 @@ export default function SubjectsManager() {
                         type="button"
                         aria-label={`${subject.name}を削除`}
                         onClick={() => handleDeleteSubject(subject)}
-                        className="text-muted hover:text-red-700 hover:bg-red-50 rounded p-1.5 transition-colors"
+                        className="text-muted hover:text-red-700 hover:bg-red-50 rounded-md p-2 transition-colors"
                       >
                         <TrashIcon />
                       </button>
@@ -365,6 +366,11 @@ export default function SubjectsManager() {
                 </div>
 
                 <div className="py-1.5">
+                  {units.length === 0 && addingUnitFor !== subject.id && (
+                    <p className="px-4 pl-7 py-2 text-[12px] text-muted">
+                      単元はまだありません
+                    </p>
+                  )}
                   {units.map((unit) => (
                     <div
                       key={unit.id}
@@ -408,7 +414,7 @@ export default function SubjectsManager() {
                           <span className="flex-1 text-[13px] text-navy">
                             {unit.name}
                           </span>
-                          <div className="flex gap-0.5 opacity-0 group-hover:opacity-100 transition-opacity">
+                          <div className="flex gap-0.5 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-within:opacity-100 transition-opacity">
                             <button
                               type="button"
                               aria-label={`${unit.name}を編集`}
@@ -419,7 +425,7 @@ export default function SubjectsManager() {
                                 });
                                 setEditingUnitName(unit.name);
                               }}
-                              className="text-[#CBD5E1] hover:text-navy hover:bg-navy-lt rounded p-1 transition-colors"
+                              className="text-muted hover:text-navy hover:bg-navy-lt rounded-md p-1.5 transition-colors"
                             >
                               <EditIcon />
                             </button>
@@ -427,7 +433,7 @@ export default function SubjectsManager() {
                               type="button"
                               aria-label={`${unit.name}を削除`}
                               onClick={() => handleDeleteUnit(subject.id, unit)}
-                              className="text-[#CBD5E1] hover:text-red-700 hover:bg-red-50 rounded p-1 transition-colors"
+                              className="text-muted hover:text-red-700 hover:bg-red-50 rounded-md p-1.5 transition-colors"
                             >
                               <TrashIcon />
                             </button>

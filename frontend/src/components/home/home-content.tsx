@@ -86,9 +86,30 @@ export default function HomeContent() {
   }, [loadAll]);
 
   if (loading) {
+    // Skeleton mirrors the real layout so content doesn't jump when it loads
     return (
-      <div className="p-9 max-w-[1000px] text-[14px] text-muted">
-        読み込み中…
+      <div className="p-5 sm:p-9 max-w-[1000px]" aria-busy="true">
+        <span className="sr-only">読み込み中</span>
+        <div
+          className="flex gap-px bg-border border border-border rounded-lg overflow-hidden shadow-sm"
+          aria-hidden="true"
+        >
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="flex-1 bg-surface px-6 py-[18px]">
+              <div className="animate-pulse space-y-2.5">
+                <div className="h-3 w-14 rounded bg-navy-lt" />
+                <div className="h-8 w-10 rounded bg-navy-lt" />
+                <div className="h-3 w-20 rounded bg-navy-lt" />
+              </div>
+            </div>
+          ))}
+        </div>
+        <div className="mt-9 space-y-4" aria-hidden="true">
+          <div className="animate-pulse h-5 w-32 rounded bg-navy-lt" />
+          {[0, 1, 2].map((i) => (
+            <div key={i} className="animate-pulse h-16 rounded-md bg-navy-lt/70" />
+          ))}
+        </div>
       </div>
     );
   }
@@ -99,9 +120,12 @@ export default function HomeContent() {
     hasToday || futureItems.length > 0 || unscheduledItems.length > 0;
 
   return (
-    <div className="p-9 max-w-[1000px]">
+    <div className="p-5 sm:p-9 max-w-[1000px]">
       {error && (
-        <div className="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700">
+        <div
+          role="alert"
+          className="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+        >
           {error}
         </div>
       )}
