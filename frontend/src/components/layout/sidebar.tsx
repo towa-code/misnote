@@ -28,7 +28,7 @@ export default function Sidebar() {
                 "py-3",
                 isActive
                   ? "bg-amber-br/20 text-white border-l-[3px] border-amber-br pl-[13px] pr-[16px]"
-                  : "text-white/50 pl-[16px] pr-[16px] hover:bg-white/7 hover:text-white/85",
+                  : "text-white/70 pl-[16px] pr-[16px] hover:bg-white/7 hover:text-white",
               ].join(" ")}
             >
               <Icon />

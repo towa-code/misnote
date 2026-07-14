@@ -18,7 +18,7 @@ export default function BottomNav() {
             aria-current={isActive ? "page" : undefined}
             className={[
               "flex flex-1 flex-col items-center justify-center gap-1 min-h-[56px] text-[11px] font-medium tracking-[0.03em] transition-colors duration-150",
-              isActive ? "text-amber-br" : "text-white/50 hover:text-white/85",
+              isActive ? "text-amber-br" : "text-white/70 hover:text-white",
             ].join(" ")}
           >
             <Icon />

@@ -10,7 +10,16 @@ const inputBase =
   "w-full border border-border rounded-md px-3 py-2.5 text-[14px] bg-white text-text transition-[border-color,box-shadow] duration-150 focus:outline-none focus:border-amber focus:shadow-[0_0_0_3px_#FFFBEB]";
 
 const labelBase =
-  "block text-[11px] font-bold text-muted tracking-[0.07em] uppercase mb-1.5";
+  "flex items-center text-[12px] font-bold text-navy-md tracking-[0.05em] mb-1.5";
+
+// Explicit "必須" badge: clearer for students than a bare asterisk
+function RequiredBadge() {
+  return (
+    <span className="ml-1.5 rounded bg-amber px-1.5 py-px text-[10px] font-bold tracking-normal text-white">
+      必須
+    </span>
+  );
+}
 
 const sectionHeading =
   "font-serif text-[13px] font-bold tracking-[0.06em] uppercase pb-2.5 border-b-2 border-navy mb-5";
@@ -117,10 +126,10 @@ export default function RegisterForm() {
   return (
     <div>
       {/* Header */}
-      <div className="bg-white border-b border-border px-9 py-[18px] flex items-center gap-3">
+      <div className="bg-white border-b border-border px-5 sm:px-9 py-[18px] flex items-center gap-2">
         <Link
           href="/"
-          className="flex items-center justify-center text-amber rounded-md p-1 transition-colors hover:bg-amber-lt"
+          className="flex items-center justify-center text-amber rounded-md p-2.5 -ml-2.5 transition-colors hover:bg-amber-lt"
           aria-label="戻る"
         >
           <ChevronLeftIcon />
@@ -132,7 +141,7 @@ export default function RegisterForm() {
 
       {/* Form */}
       <form onSubmit={handleSubmit}>
-        <div className="p-9 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-[1000px]">
+        <div className="p-5 sm:p-9 grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-[1000px]">
           {/* Left: 問題・正解 */}
           <div>
             <div className={sectionHeading}>問題・正解</div>
@@ -141,7 +150,8 @@ export default function RegisterForm() {
               <div className="grid grid-cols-2 gap-3.5">
                 <div>
                   <label className={labelBase}>
-                    科目<span className="text-amber ml-0.5">*</span>
+                    科目
+                    <RequiredBadge />
                   </label>
                   <SelectWrapper>
                     <select
@@ -185,7 +195,8 @@ export default function RegisterForm() {
               {/* 問題文 */}
               <div>
                 <label className={labelBase}>
-                  問題文<span className="text-amber ml-0.5">*</span>
+                  問題文
+                  <RequiredBadge />
                 </label>
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
@@ -223,7 +234,8 @@ export default function RegisterForm() {
               {/* 間違えた理由 */}
               <div>
                 <label className={labelBase}>
-                  間違えた理由<span className="text-amber ml-0.5">*</span>
+                  間違えた理由
+                  <RequiredBadge />
                 </label>
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
@@ -265,14 +277,21 @@ export default function RegisterForm() {
 
           {/* Actions (full width) */}
           <div className="lg:col-span-2 flex flex-col gap-2.5 mt-2">
-            {error && <p className="text-[13px] text-red-600">{error}</p>}
+            {error && (
+              <p
+                role="alert"
+                className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+              >
+                {error}
+              </p>
+            )}
             <div className="flex gap-2.5">
               <button
                 type="submit"
                 disabled={submitting}
                 className="bg-amber text-white border-none rounded-md px-8 py-3 text-[13px] font-bold cursor-pointer transition-colors hover:bg-amber-dk disabled:opacity-60 disabled:cursor-not-allowed"
               >
-                登録する
+                {submitting ? "登録中…" : "登録する"}
               </button>
               <Link
                 href="/"
