@@ -27,14 +27,6 @@ export interface SubjectUpdate {
     name: string;
 }
 
-/**
- * Check if a given object implements the SubjectUpdate interface.
- */
-export function instanceOfSubjectUpdate(value: object): value is SubjectUpdate {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function SubjectUpdateFromJSON(json: any): SubjectUpdate {
     return SubjectUpdateFromJSONTyped(json, false);
 }

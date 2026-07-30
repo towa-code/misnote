@@ -39,16 +39,6 @@ export interface UnitResponse {
     name: string;
 }
 
-/**
- * Check if a given object implements the UnitResponse interface.
- */
-export function instanceOfUnitResponse(value: object): value is UnitResponse {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if ((!('subjectId' in value) && !('subject_id' in value)) || (value['subjectId'] === undefined && value['subject_id'] === undefined)) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function UnitResponseFromJSON(json: any): UnitResponse {
     return UnitResponseFromJSONTyped(json, false);
 }

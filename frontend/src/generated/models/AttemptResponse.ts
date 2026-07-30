@@ -69,21 +69,6 @@ export interface AttemptResponse {
     masterySuggested: boolean | null;
 }
 
-/**
- * Check if a given object implements the AttemptResponse interface.
- */
-export function instanceOfAttemptResponse(value: object): value is AttemptResponse {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if ((!('questionId' in value) && !('question_id' in value)) || (value['questionId'] === undefined && value['question_id'] === undefined)) return false;
-    if ((!('userAnswer' in value) && !('user_answer' in value)) || (value['userAnswer'] === undefined && value['user_answer'] === undefined)) return false;
-    if ((!('isCorrect' in value) && !('is_correct' in value)) || (value['isCorrect'] === undefined && value['is_correct'] === undefined)) return false;
-    if ((!('answeredAt' in value) && !('answered_at' in value)) || (value['answeredAt'] === undefined && value['answered_at'] === undefined)) return false;
-    if ((!('mistakeNoteId' in value) && !('mistake_note_id' in value)) || (value['mistakeNoteId'] === undefined && value['mistake_note_id'] === undefined)) return false;
-    if ((!('correctStreak' in value) && !('correct_streak' in value)) || (value['correctStreak'] === undefined && value['correct_streak'] === undefined)) return false;
-    if ((!('masterySuggested' in value) && !('mastery_suggested' in value)) || (value['masterySuggested'] === undefined && value['mastery_suggested'] === undefined)) return false;
-    return true;
-}
-
 export function AttemptResponseFromJSON(json: any): AttemptResponse {
     return AttemptResponseFromJSONTyped(json, false);
 }

@@ -88,21 +88,6 @@ export const MistakeNoteResponseStatusEnum = {
 export type MistakeNoteResponseStatusEnum = typeof MistakeNoteResponseStatusEnum[keyof typeof MistakeNoteResponseStatusEnum];
 
 
-/**
- * Check if a given object implements the MistakeNoteResponse interface.
- */
-export function instanceOfMistakeNoteResponse(value: object): value is MistakeNoteResponse {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('question' in value) || value['question'] === undefined) return false;
-    if (!('memo' in value) || value['memo'] === undefined) return false;
-    if (!('learning' in value) || value['learning'] === undefined) return false;
-    if (!('status' in value) || value['status'] === undefined) return false;
-    if ((!('wrongCount' in value) && !('wrong_count' in value)) || (value['wrongCount'] === undefined && value['wrong_count'] === undefined)) return false;
-    if ((!('correctStreak' in value) && !('correct_streak' in value)) || (value['correctStreak'] === undefined && value['correct_streak'] === undefined)) return false;
-    if ((!('nextReviewAt' in value) && !('next_review_at' in value)) || (value['nextReviewAt'] === undefined && value['next_review_at'] === undefined)) return false;
-    return true;
-}
-
 export function MistakeNoteResponseFromJSON(json: any): MistakeNoteResponse {
     return MistakeNoteResponseFromJSONTyped(json, false);
 }

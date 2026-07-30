@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "generate": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/generated --additional-properties=supportsES6=true,typescriptThreePlus=true"
+    "generate": "openapi-generator-cli generate -i ../backend/openapi.json -g typescript-fetch -o src/generated --additional-properties=supportsES6=true,typescriptThreePlus=true && node scripts/strip-instanceof.mjs"
   },
   "dependencies": {
     "next": "16.2.9",

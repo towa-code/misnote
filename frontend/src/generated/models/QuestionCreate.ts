@@ -63,16 +63,6 @@ export interface QuestionCreate {
     nextReviewAt?: Date | null;
 }
 
-/**
- * Check if a given object implements the QuestionCreate interface.
- */
-export function instanceOfQuestionCreate(value: object): value is QuestionCreate {
-    if ((!('subjectId' in value) && !('subject_id' in value)) || (value['subjectId'] === undefined && value['subject_id'] === undefined)) return false;
-    if ((!('questionText' in value) && !('question_text' in value)) || (value['questionText'] === undefined && value['question_text'] === undefined)) return false;
-    if (!('memo' in value) || value['memo'] === undefined) return false;
-    return true;
-}
-
 export function QuestionCreateFromJSON(json: any): QuestionCreate {
     return QuestionCreateFromJSONTyped(json, false);
 }

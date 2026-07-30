@@ -27,14 +27,6 @@ export interface UnitUpdate {
     name: string;
 }
 
-/**
- * Check if a given object implements the UnitUpdate interface.
- */
-export function instanceOfUnitUpdate(value: object): value is UnitUpdate {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function UnitUpdateFromJSON(json: any): UnitUpdate {
     return UnitUpdateFromJSONTyped(json, false);
 }

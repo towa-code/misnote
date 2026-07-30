@@ -27,14 +27,6 @@ export interface UnitCreate {
     name: string;
 }
 
-/**
- * Check if a given object implements the UnitCreate interface.
- */
-export function instanceOfUnitCreate(value: object): value is UnitCreate {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function UnitCreateFromJSON(json: any): UnitCreate {
     return UnitCreateFromJSONTyped(json, false);
 }
