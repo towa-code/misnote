@@ -22,5 +22,5 @@ class Question(Base):
     user = relationship("User", back_populates="questions")
     subject = relationship("Subject", back_populates="questions")
     unit = relationship("Unit", back_populates="questions")
-    mistake_note = relationship("MistakeNote", back_populates="question", uselist=False)
+    mistake_note = relationship("MistakeNote", back_populates="question", uselist=False, cascade="all, delete-orphan")
     attempts = relationship("Attempt", back_populates="question", cascade="all, delete-orphan")
