@@ -5,12 +5,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { SubjectResponse, UnitResponse } from "@/generated";
 import { questionsApi, subjectsApi, unitsApi } from "@/lib/api";
-
-const inputBase =
-  "w-full border border-border rounded-md px-3 py-2.5 text-[14px] bg-white text-text transition-[border-color,box-shadow] duration-150 focus:outline-none focus:border-amber focus:shadow-[0_0_0_3px_#FFFBEB]";
-
-const labelBase =
-  "flex items-center text-[12px] font-bold text-navy-md tracking-[0.05em] mb-1.5";
+import { inputBase, labelBase } from "@/lib/form-styles";
 
 // Explicit "必須" badge: clearer for students than a bare asterisk
 function RequiredBadge() {

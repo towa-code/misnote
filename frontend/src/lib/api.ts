@@ -4,6 +4,7 @@ import {
   UnitsApi,
   QuestionsApi,
   MistakeNotesApi,
+  AttemptsApi,
 } from "@/generated";
 
 const config = new Configuration({
@@ -14,3 +15,4 @@ export const subjectsApi = new SubjectsApi(config);
 export const unitsApi = new UnitsApi(config);
 export const questionsApi = new QuestionsApi(config);
 export const mistakeNotesApi = new MistakeNotesApi(config);
+export const attemptsApi = new AttemptsApi(config);
