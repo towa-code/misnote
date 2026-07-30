@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formatReviewDate } from "@/lib/review-date";
 
 export type ReviewItemData = {
   id: string;
@@ -36,15 +37,6 @@ function AlertIcon() {
       <line x1="12" y1="16" x2="12.01" y2="16" />
     </svg>
   );
-}
-
-function formatReviewDate(isoDate: string): string {
-  const date = new Date(isoDate);
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-  date.setHours(0, 0, 0, 0);
-  if (date.getTime() === today.getTime()) return "今日";
-  return date.toLocaleDateString("ja-JP", { month: "long", day: "numeric" });
 }
 
 type Props = {
