@@ -8,7 +8,7 @@ misnote (間違いノートアプリ) is a spaced-repetition "mistake notebook" 
 
 The repo has three parts:
 - `backend/` — FastAPI + PostgreSQL API. Functionally implemented for all core resources (subjects, units, questions, attempts, mistake notes).
-- `frontend/` — Next.js app. Currently an **unmodified `create-next-app` skeleton** (default `page.tsx`); no product UI has been built yet. It has its own nested `.git` (separate repo from root — be aware of this when running git commands).
+- `frontend/` — Next.js app, tracked in this repo (no nested `.git`). 3 of the 5 planned screens are built and wired to the real API through the generated client: home (`/`), question registration (`/register`), subject/unit management (`/subjects`). `/mistakes` is still a "準備中" placeholder and the review screen has no route yet — those two are the remaining Phase 2 work.
 - `docs/` — design docs (schema, API contracts, screen specs) written before implementation. Treat these as the source of truth for intended behavior, but verify against actual code since implementation can drift (see below).
 
 There is currently no authentication: `backend/app/deps.py::get_current_user_id()` hardcodes a seed user UUID (`00000000-0000-0000-0000-000000000001`), auto-created on startup by `app/seed.py`. Real auth (local JWT, then AWS Cognito) is a later phase — see `docs/ROADMAP.md`.
@@ -62,6 +62,12 @@ Each resource follows the same triad:
 
 All queries are scoped by `user_id` (from `get_current_user_id()`) for data isolation; `units` are scoped indirectly through their `subject_id`.
 
+### Frontend structure
+
+- `src/app/<route>/page.tsx` files are thin; the actual UI lives in `src/components/<feature>/` (e.g. `/` renders `components/home/home-content.tsx`).
+- API calls go through the singletons exported by `src/lib/api.ts` (`subjectsApi`, `unitsApi`, `questionsApi`, `mistakeNotesApi`), which wrap the generated clients in `src/generated/`. No hand-written `fetch`.
+- `src/components/layout/nav-items.tsx::NAV_ITEMS` is the single source of navigation entries, consumed by both `sidebar.tsx` (desktop) and `bottom-nav.tsx` (mobile); `app-shell.tsx` combines them.
+
 ### Mistake-note / mastery rules
 
 This is the core domain logic, spread across `routers/attempts.py` and `routers/mistake_notes.py` — worth reading both before changing either:
@@ -72,6 +78,7 @@ This is the core domain logic, spread across `routers/attempts.py` and `routers/
 - `MASTERY_THRESHOLD = 3`: once `correct_streak >= 3`, the attempt response includes `mastery_suggested: true`. This is advisory only — the note only moves to `status="mastered"` via an explicit `PUT /mistake-notes/{id}/status` call, never automatically.
 - Manually reverting `mastered → active` via the status endpoint resets `correct_streak` to 0; setting `mastered` clears `next_review_at`.
 - `GET /mistake-notes/today` returns notes where `status == "active" AND next_review_at <= today` (nulls excluded — unscheduled notes are a separate concern on the home screen).
+- The list endpoints are status-partitioned: bare `GET /mistake-notes` returns only `status == "active"` notes, `GET /mistake-notes/mastered` only `status == "mastered"` ones. There is no endpoint returning both.
 - `unit_id` on `questions` is nullable; if set, it must belong to the question's `subject_id` (`routers/questions.py::_validate_unit`, 400 on mismatch).
 - Deleting a `Subject` or `Unit` returns 409 if it still has related units/questions attached.
 

@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Repository Purpose
 
-This is a **design documentation repository** for "misnote" (間違いノートアプリ) — a digital mistake-notebook app targeting elementary/middle/high school students. It allows users to record wrong/difficult questions and schedule spaced-repetition reviews. There is no implementation code here; all files are Markdown design documents.
+This directory is the **design documentation subtree** of the misnote (間違いノートアプリ) implementation repo — a digital mistake-notebook app targeting elementary/middle/high school students. It allows users to record wrong/difficult questions and schedule spaced-repetition reviews. Everything under `docs/` is Markdown design documents (plus static HTML mockups); the implementation lives in `backend/` and `frontend/` at the repo root.
 
 ## Document Map
 
