@@ -35,13 +35,6 @@ export interface HTTPValidationError {
     detail?: Array<ValidationError>;
 }
 
-/**
- * Check if a given object implements the HTTPValidationError interface.
- */
-export function instanceOfHTTPValidationError(value: object): value is HTTPValidationError {
-    return true;
-}
-
 export function HTTPValidationErrorFromJSON(json: any): HTTPValidationError {
     return HTTPValidationErrorFromJSONTyped(json, false);
 }

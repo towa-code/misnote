@@ -59,16 +59,6 @@ export interface ValidationError {
     ctx?: object;
 }
 
-/**
- * Check if a given object implements the ValidationError interface.
- */
-export function instanceOfValidationError(value: object): value is ValidationError {
-    if (!('loc' in value) || value['loc'] === undefined) return false;
-    if (!('msg' in value) || value['msg'] === undefined) return false;
-    if (!('type' in value) || value['type'] === undefined) return false;
-    return true;
-}
-
 export function ValidationErrorFromJSON(json: any): ValidationError {
     return ValidationErrorFromJSONTyped(json, false);
 }

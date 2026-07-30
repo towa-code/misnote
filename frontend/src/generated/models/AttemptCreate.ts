@@ -33,14 +33,6 @@ export interface AttemptCreate {
     isCorrect: boolean;
 }
 
-/**
- * Check if a given object implements the AttemptCreate interface.
- */
-export function instanceOfAttemptCreate(value: object): value is AttemptCreate {
-    if ((!('isCorrect' in value) && !('is_correct' in value)) || (value['isCorrect'] === undefined && value['is_correct'] === undefined)) return false;
-    return true;
-}
-
 export function AttemptCreateFromJSON(json: any): AttemptCreate {
     return AttemptCreateFromJSONTyped(json, false);
 }

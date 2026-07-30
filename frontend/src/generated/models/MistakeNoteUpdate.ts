@@ -39,13 +39,6 @@ export interface MistakeNoteUpdate {
     nextReviewAt?: Date | null;
 }
 
-/**
- * Check if a given object implements the MistakeNoteUpdate interface.
- */
-export function instanceOfMistakeNoteUpdate(value: object): value is MistakeNoteUpdate {
-    return true;
-}
-
 export function MistakeNoteUpdateFromJSON(json: any): MistakeNoteUpdate {
     return MistakeNoteUpdateFromJSONTyped(json, false);
 }

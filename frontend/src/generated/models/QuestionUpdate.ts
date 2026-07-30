@@ -45,15 +45,6 @@ export interface QuestionUpdate {
     correctAnswer?: string | null;
 }
 
-/**
- * Check if a given object implements the QuestionUpdate interface.
- */
-export function instanceOfQuestionUpdate(value: object): value is QuestionUpdate {
-    if ((!('subjectId' in value) && !('subject_id' in value)) || (value['subjectId'] === undefined && value['subject_id'] === undefined)) return false;
-    if ((!('questionText' in value) && !('question_text' in value)) || (value['questionText'] === undefined && value['question_text'] === undefined)) return false;
-    return true;
-}
-
 export function QuestionUpdateFromJSON(json: any): QuestionUpdate {
     return QuestionUpdateFromJSONTyped(json, false);
 }

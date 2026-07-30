@@ -51,18 +51,6 @@ export interface AttemptHistoryItem {
     answeredAt: Date;
 }
 
-/**
- * Check if a given object implements the AttemptHistoryItem interface.
- */
-export function instanceOfAttemptHistoryItem(value: object): value is AttemptHistoryItem {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if ((!('questionId' in value) && !('question_id' in value)) || (value['questionId'] === undefined && value['question_id'] === undefined)) return false;
-    if ((!('userAnswer' in value) && !('user_answer' in value)) || (value['userAnswer'] === undefined && value['user_answer'] === undefined)) return false;
-    if ((!('isCorrect' in value) && !('is_correct' in value)) || (value['isCorrect'] === undefined && value['is_correct'] === undefined)) return false;
-    if ((!('answeredAt' in value) && !('answered_at' in value)) || (value['answeredAt'] === undefined && value['answered_at'] === undefined)) return false;
-    return true;
-}
-
 export function AttemptHistoryItemFromJSON(json: any): AttemptHistoryItem {
     return AttemptHistoryItemFromJSONTyped(json, false);
 }

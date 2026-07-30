@@ -78,20 +78,6 @@ export interface QuestionResponse {
     mistakeNoteId: string | null;
 }
 
-/**
- * Check if a given object implements the QuestionResponse interface.
- */
-export function instanceOfQuestionResponse(value: object): value is QuestionResponse {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('subject' in value) || value['subject'] === undefined) return false;
-    if (!('unit' in value) || value['unit'] === undefined) return false;
-    if ((!('questionText' in value) && !('question_text' in value)) || (value['questionText'] === undefined && value['question_text'] === undefined)) return false;
-    if ((!('correctAnswer' in value) && !('correct_answer' in value)) || (value['correctAnswer'] === undefined && value['correct_answer'] === undefined)) return false;
-    if ((!('createdAt' in value) && !('created_at' in value)) || (value['createdAt'] === undefined && value['created_at'] === undefined)) return false;
-    if ((!('mistakeNoteId' in value) && !('mistake_note_id' in value)) || (value['mistakeNoteId'] === undefined && value['mistake_note_id'] === undefined)) return false;
-    return true;
-}
-
 export function QuestionResponseFromJSON(json: any): QuestionResponse {
     return QuestionResponseFromJSONTyped(json, false);
 }

@@ -33,15 +33,6 @@ export interface UnitRef {
     name: string;
 }
 
-/**
- * Check if a given object implements the UnitRef interface.
- */
-export function instanceOfUnitRef(value: object): value is UnitRef {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function UnitRefFromJSON(json: any): UnitRef {
     return UnitRefFromJSONTyped(json, false);
 }

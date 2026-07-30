@@ -33,15 +33,6 @@ export interface SubjectRef {
     name: string;
 }
 
-/**
- * Check if a given object implements the SubjectRef interface.
- */
-export function instanceOfSubjectRef(value: object): value is SubjectRef {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function SubjectRefFromJSON(json: any): SubjectRef {
     return SubjectRefFromJSONTyped(json, false);
 }

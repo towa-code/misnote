@@ -33,15 +33,6 @@ export interface SubjectResponse {
     name: string;
 }
 
-/**
- * Check if a given object implements the SubjectResponse interface.
- */
-export function instanceOfSubjectResponse(value: object): value is SubjectResponse {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function SubjectResponseFromJSON(json: any): SubjectResponse {
     return SubjectResponseFromJSONTyped(json, false);
 }

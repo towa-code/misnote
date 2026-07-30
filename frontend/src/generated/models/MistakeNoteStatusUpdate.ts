@@ -38,14 +38,6 @@ export const MistakeNoteStatusUpdateStatusEnum = {
 export type MistakeNoteStatusUpdateStatusEnum = typeof MistakeNoteStatusUpdateStatusEnum[keyof typeof MistakeNoteStatusUpdateStatusEnum];
 
 
-/**
- * Check if a given object implements the MistakeNoteStatusUpdate interface.
- */
-export function instanceOfMistakeNoteStatusUpdate(value: object): value is MistakeNoteStatusUpdate {
-    if (!('status' in value) || value['status'] === undefined) return false;
-    return true;
-}
-
 export function MistakeNoteStatusUpdateFromJSON(json: any): MistakeNoteStatusUpdate {
     return MistakeNoteStatusUpdateFromJSONTyped(json, false);
 }

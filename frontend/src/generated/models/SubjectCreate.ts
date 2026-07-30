@@ -27,14 +27,6 @@ export interface SubjectCreate {
     name: string;
 }
 
-/**
- * Check if a given object implements the SubjectCreate interface.
- */
-export function instanceOfSubjectCreate(value: object): value is SubjectCreate {
-    if (!('name' in value) || value['name'] === undefined) return false;
-    return true;
-}
-
 export function SubjectCreateFromJSON(json: any): SubjectCreate {
     return SubjectCreateFromJSONTyped(json, false);
 }

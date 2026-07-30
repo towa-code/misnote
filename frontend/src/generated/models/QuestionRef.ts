@@ -66,18 +66,6 @@ export interface QuestionRef {
     correctAnswer: string;
 }
 
-/**
- * Check if a given object implements the QuestionRef interface.
- */
-export function instanceOfQuestionRef(value: object): value is QuestionRef {
-    if (!('id' in value) || value['id'] === undefined) return false;
-    if (!('subject' in value) || value['subject'] === undefined) return false;
-    if (!('unit' in value) || value['unit'] === undefined) return false;
-    if ((!('questionText' in value) && !('question_text' in value)) || (value['questionText'] === undefined && value['question_text'] === undefined)) return false;
-    if ((!('correctAnswer' in value) && !('correct_answer' in value)) || (value['correctAnswer'] === undefined && value['correct_answer'] === undefined)) return false;
-    return true;
-}
-
 export function QuestionRefFromJSON(json: any): QuestionRef {
     return QuestionRefFromJSONTyped(json, false);
 }
