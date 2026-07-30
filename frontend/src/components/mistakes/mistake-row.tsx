@@ -52,12 +52,29 @@ export default function MistakeRow({
     <div
       className={[
         // Mobile: stacked. Desktop: one grid row aligned with the column header.
-        "flex flex-col gap-3 px-3 py-4 border-b border-border last:border-b-0",
+        "relative flex flex-col gap-3 px-3 py-4 border-b border-border last:border-b-0",
         ROW_GRID,
-        "sm:items-center rounded-md",
+        "sm:items-center rounded-md transition-colors duration-150",
         isOverdue ? "bg-amber-lt" : "",
+        variant === "active"
+          ? isOverdue
+            ? "hover:bg-[#FFF3CC]"
+            : "hover:bg-navy-lt"
+          : "",
       ].join(" ")}
     >
+      {/* Whole-row tap target, matching how the home rows behave. Hidden from
+          keyboard and assistive tech because the 復習する link below already
+          exposes the same destination. */}
+      {variant === "active" && (
+        <Link
+          href={`/review/${note.id}`}
+          className="absolute inset-0 rounded-md"
+          tabIndex={-1}
+          aria-hidden="true"
+        />
+      )}
+
       {/* Question, with subject/unit above and the memo underneath */}
       <div className="min-w-0">
         <div className="flex flex-wrap items-center text-[11px] font-bold text-muted tracking-[0.07em] uppercase mb-1.5">
@@ -123,8 +140,8 @@ export default function MistakeRow({
         )}
       </div>
 
-      {/* Actions */}
-      <div className="flex gap-2 sm:justify-end">
+      {/* Actions: above the row-wide link so they stay clickable */}
+      <div className="relative z-10 flex gap-2 sm:justify-end">
         {variant === "active" ? (
           <>
             <button
