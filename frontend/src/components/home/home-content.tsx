@@ -7,23 +7,14 @@ import EmptyState from "@/components/home/empty-state";
 import { type ReviewItemData } from "@/components/home/review-item";
 import type { MistakeNoteResponse } from "@/generated";
 import { mistakeNotesApi } from "@/lib/api";
+import { overdueDaysFrom } from "@/lib/review-date";
 
 function toReviewItem(note: MistakeNoteResponse): ReviewItemData {
   const nextReviewAt = note.nextReviewAt
     ? note.nextReviewAt.toISOString().slice(0, 10)
     : null;
 
-  let overdueDays = 0;
-  if (nextReviewAt) {
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const reviewDate = new Date(nextReviewAt);
-    reviewDate.setHours(0, 0, 0, 0);
-    overdueDays = Math.max(
-      0,
-      Math.round((today.getTime() - reviewDate.getTime()) / 86_400_000)
-    );
-  }
+  const overdueDays = nextReviewAt ? overdueDaysFrom(nextReviewAt) : 0;
 
   return {
     id: note.id,
