@@ -99,3 +99,40 @@ def test_me_returns_the_current_user(client, user):
     assert response.status_code == 200
     assert response.json()["id"] == str(user.id)
     assert response.json()["email"] == user.email
+
+
+@pytest.mark.parametrize(
+    "password",
+    [
+        "1234567",  # 8文字未満
+        "あ" * 30,  # 90バイト = bcrypt の 72 バイト上限超え
+    ],
+)
+def test_register_422_does_not_leak_the_password(anon_client, password):
+    response = _register(anon_client, password=password)
+    assert response.status_code == 422
+    assert password not in response.text
+
+
+def test_register_422_still_includes_input_for_non_password_fields(anon_client):
+    response = _register(anon_client, email="not-an-email")
+    assert response.status_code == 422
+
+    body = response.json()
+    assert any(error.get("input") == "not-an-email" for error in body["detail"])
+
+
+def test_login_calls_verify_password_even_for_an_unknown_email(anon_client):
+    """未登録メールでも bcrypt の比較を1回走らせること（応答時間からの推測を防ぐ）。"""
+    from unittest.mock import patch
+
+    from app.auth import verify_password
+
+    with patch("app.routers.auth.verify_password", wraps=verify_password) as mock_verify:
+        response = anon_client.post(
+            "/v1/auth/login",
+            json={"email": "nobody@example.com", "password": "whatever123"},
+        )
+
+    assert response.status_code == 401
+    mock_verify.assert_called_once()
