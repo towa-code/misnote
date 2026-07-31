@@ -17,7 +17,7 @@ Phase 4 で AWS Cognito に差し替える前提のため、ここではロー�
 | `python-jose` 3.5.0 | `backend/requirements.txt` に記載済み。JWT の発行・検証が動作することを確認済み |
 | `users.email`(unique), `users.password_hash` カラム | 初期マイグレーション `aaf1f33b3324` に含まれる（**追加マイグレーション不要**） |
 | `SECRET_KEY` の設定読み込み | `app/config.py`（値は `change-me-in-production` のまま） |
-| `get_current_user_id()` という差し込み口 | `app/deps.py`（全ルーターが `Depends` 経由で使用、計21箇所） |
+| `get_current_user_id()` という差し込み口 | `app/deps.py`（subjects / questions / mistake-notes / attempts の計17箇所が `Depends` 経由で使用。`units.py` は import しているだけで未使用 — 後述の穴） |
 
 元になった仕様: `docs/ROADMAP.md` Phase 3、`docs/design/api/conventions.md`。
 
