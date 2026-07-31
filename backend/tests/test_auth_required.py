@@ -11,6 +11,27 @@ PROTECTED_PATHS = [
 
 CREDENTIALS = {"email": "student@example.com", "password": "password123"}
 
+# 存在しない UUID。認証がパス解決/DB 参照より先に効くはずなので、
+# リソースが実在しなくても 401 になる（404 になったらそれ自体がバグ）。
+DUMMY_ID = "00000000-0000-0000-0000-000000000000"
+
+# (method, path, json body) のリスト。書き込み系メソッドと詳細ルート
+# （/{id} 付き）を網羅する。units.py の 4 エンドポイントは Task 5 の
+# スコープ外でまだ未保護のため、意図的に含めない（Task 6 で対応）。
+PROTECTED_METHOD_PATHS = [
+    ("PUT", f"/v1/subjects/{DUMMY_ID}", {"name": "数学"}),
+    ("DELETE", f"/v1/subjects/{DUMMY_ID}", None),
+    ("POST", "/v1/questions", {"subject_id": DUMMY_ID, "question_text": "1+1は?", "memo": "計算ミス"}),
+    ("GET", f"/v1/questions/{DUMMY_ID}", None),
+    ("PUT", f"/v1/questions/{DUMMY_ID}", {"subject_id": DUMMY_ID, "question_text": "1+1は?"}),
+    ("DELETE", f"/v1/questions/{DUMMY_ID}", None),
+    ("POST", f"/v1/questions/{DUMMY_ID}/attempts", {"is_correct": True}),
+    ("GET", f"/v1/questions/{DUMMY_ID}/attempts", None),
+    ("GET", f"/v1/mistake-notes/{DUMMY_ID}", None),
+    ("PUT", f"/v1/mistake-notes/{DUMMY_ID}", {"memo": "更新"}),
+    ("PUT", f"/v1/mistake-notes/{DUMMY_ID}/status", {"status": "active"}),
+]
+
 
 @pytest.fixture()
 def token(anon_client) -> str:
@@ -42,6 +63,12 @@ def test_missing_header_returns_401_not_403(anon_client):
 
 def test_writes_are_protected_too(anon_client):
     assert anon_client.post("/v1/subjects", json={"name": "数学"}).status_code == 401
+
+
+@pytest.mark.parametrize("method, path, body", PROTECTED_METHOD_PATHS)
+def test_non_get_methods_and_detail_routes_are_protected_too(anon_client, method, path, body):
+    response = anon_client.request(method, path, json=body)
+    assert response.status_code == 401
 
 
 def test_health_stays_public(anon_client):
