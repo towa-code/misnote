@@ -10,9 +10,13 @@
 Phase 0  環境構築          ─ Docker + 骨格作成
 Phase 1  バックエンドAPI   ─ FastAPI + PostgreSQL（ローカル）
 Phase 2  フロントエンド    ─ Next.js + 生成クライアント
-Phase 3  認証              ─ シンプルJWT（ローカル）
-Phase 4  クラウド移行      ─ AWS（RDS / ECS / Cognito）
+Phase 3  認証              ─ シンプルJWT（ローカル）              ✅ 完了
+Phase 4  クラウド移行      ─ AWS（RDS / ECS / Cognito）           ← 次はここ
 ```
+
+**現在地：** Phase 0〜3 が完了。ローカルJWTによるユーザー登録・ログイン・全API認証必須化・
+フロントエンドのログイン導線とアカウント画面まで実装済み。次は Phase 4 のクラウド移行
+（RDS / ECS / Cognito への切り替え）。
 
 ---
 
@@ -166,7 +170,13 @@ npx @openapitools/openapi-generator-cli generate \
 - `POST /auth/register`（メール + パスワード → ユーザー作成）
 - `POST /auth/login`（メール + パスワード → JWT 返却）
 - 全エンドポイントに `Depends(get_current_user)` を追加
-- ライブラリ: `python-jose`, `passlib[bcrypt]`
+- ライブラリ: `python-jose`, `bcrypt`
+
+> `passlib` は当初の想定だったが、bcrypt 5.0 と組み合わせるとバックエンド初期化時に
+> `ValueError` で落ちるため採用しなかった。`bcrypt` を直接使っている。
+
+- pytest によるバックエンドのテスト基盤を整備（`misnote_test` DB・依存オーバーライドでの
+  認証迂回・回帰テスト）してから認証の実装に着手した
 
 ### フロントエンド
 
@@ -174,12 +184,13 @@ npx @openapitools/openapi-generator-cli generate \
 - JWT を `localStorage` または `httpOnly Cookie` に保存
 - 生成クライアントのリクエストヘッダーに `Authorization: Bearer {token}` を設定
 - 未認証時はログイン画面にリダイレクト
+- ログアウトは `/account` 画面
 
 ### チェックリスト
 
-- [ ] 新規ユーザーが登録・ログインできること
-- [ ] 認証なしのAPIアクセスが 401 を返すこと
-- [ ] ログアウト後に再アクセスするとログイン画面に戻ること
+- [x] 新規ユーザーが登録・ログインできること
+- [x] 認証なしのAPIアクセスが 401 を返すこと
+- [x] ログアウト後に再アクセスするとログイン画面に戻ること
 
 ---
 

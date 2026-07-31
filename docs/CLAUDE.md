@@ -28,6 +28,7 @@ This directory is the **design documentation subtree** of the misnote (間違い
 | `design/screens/common-ui.md` | Color tokens, interactions, responsive breakpoints (applies to all screens) |
 | `design/mockups/` | Static HTML mockups (one per screen + `00_prototype.html` combining all screens) |
 | `ROADMAP.md` | Implementation roadmap (Phase 0–4: local Docker → backend → frontend → local JWT → AWS) |
+| `superpowers/specs/2026-07-31-auth-design.md` | Design doc for local JWT auth (Phase 3): token scheme, password-hashing library choice, `deps.py`/`units.py` changes, frontend auth routes |
 
 ## Architecture Summary
 
@@ -42,7 +43,7 @@ This directory is the **design documentation subtree** of the misnote (間違い
 
 **Infrastructure (AWS):** Cognito (auth/JWT) → API Gateway → ECS+Fargate (FastAPI) → RDS PostgreSQL. CloudWatch for logging.
 
-**Auth:** All API requests require `Authorization: Bearer {Cognito JWT}`. Base URL: `https://api.misnote.com/v1`.
+**Auth:** All API requests require `Authorization: Bearer {token}`. Currently a local JWT that FastAPI itself issues and verifies (Phase 3, implemented) — see `docs/superpowers/specs/2026-07-31-auth-design.md`. Base URL: `http://localhost:8000/v1`. Phase 4 will swap the token source to AWS Cognito (base URL becomes `https://api.misnote.com/v1`); only the verification step in `deps.py` is expected to change.
 
 ## Key DB Design Decisions
 
