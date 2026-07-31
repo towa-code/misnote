@@ -113,3 +113,48 @@ def test_today_includes_notes_due_today(client, question_id):
 
     today = client.get("/v1/mistake-notes/today").json()
     assert [n["id"] for n in today] == [note_id]
+
+
+def test_correct_attempt_without_a_note_leaves_streak_and_mastery_null(
+    client, db_session, user
+):
+    import uuid
+
+    from app.models.question import Question
+
+    # QuestionCreate.memo は必須なので、ノートなしの問題は API 経由では作れない。
+    # DB に直接 insert する。
+    subject_id = client.post("/v1/subjects", json={"name": "数学"}).json()["id"]
+    question = Question(
+        user_id=user.id,
+        subject_id=uuid.UUID(subject_id),
+        question_text="ノートのない問題",
+    )
+    db_session.add(question)
+    db_session.flush()
+
+    response = client.post(
+        f"/v1/questions/{question.id}/attempts", json={"is_correct": True}
+    )
+    assert response.status_code == 201
+    assert response.json()["correct_streak"] is None
+    assert response.json()["mastery_suggested"] is None
+
+    assert client.get("/v1/mistake-notes").json() == []
+
+
+def test_reverting_to_active_via_status_endpoint_resets_the_streak(
+    client, question_id
+):
+    client.post(f"/v1/questions/{question_id}/attempts", json={"is_correct": True})
+    client.post(f"/v1/questions/{question_id}/attempts", json={"is_correct": True})
+    note_id = _only_note(client)["id"]
+    assert client.get("/v1/mistake-notes").json()[0]["correct_streak"] == 2
+
+    client.put(f"/v1/mistake-notes/{note_id}/status", json={"status": "mastered"})
+
+    response = client.put(
+        f"/v1/mistake-notes/{note_id}/status", json={"status": "active"}
+    )
+    assert response.status_code == 200
+    assert response.json()["correct_streak"] == 0
