@@ -86,7 +86,7 @@ JWT のペイロードは Base64 で誰でも読めるため、`sub` と `exp` �
 | `hash_password(plain: str) -> str` | `bcrypt.hashpw` でハッシュ化（bytes ↔ str の変換もここで吸収） |
 | `verify_password(plain: str, hashed: str) -> bool` | `bcrypt.checkpw` で照合 |
 | `create_access_token(user_id: UUID) -> str` | `sub`/`exp` を詰めて署名 |
-| `decode_access_token(token: str) -> UUID` | 検証して user_id を返す。失敗時は例外 |
+| `decode_access_token(token: str) -> UUID \| None` | 検証して user_id を返す。失敗時は `None`（jose の例外を外に漏らさない） |
 
 有効期限（`ACCESS_TOKEN_EXPIRE_DAYS = 7`）はこのモジュールの定数として持つ。
 
