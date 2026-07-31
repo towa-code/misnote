@@ -19,7 +19,7 @@ def verify_password(plain: str, hashed: str) -> bool:
     # ログインは検証失敗として扱えばよく、500 にする必要はない。
     try:
         return bcrypt.checkpw(plain.encode("utf-8"), hashed.encode("utf-8"))
-    except ValueError:
+    except (ValueError, AttributeError, TypeError):
         return False
 
 
@@ -34,5 +34,5 @@ def decode_access_token(token: str) -> UUID | None:
     try:
         payload = jwt.decode(token, settings.secret_key, algorithms=[ALGORITHM])
         return UUID(payload["sub"])
-    except (JWTError, KeyError, ValueError):
+    except (JWTError, KeyError, ValueError, TypeError, AttributeError):
         return None

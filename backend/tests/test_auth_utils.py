@@ -40,6 +40,11 @@ def test_verify_returns_false_on_a_malformed_hash():
     assert verify_password("mypassword123", "not-a-bcrypt-hash") is False
 
 
+def test_verify_returns_false_when_hash_is_none():
+    """password_hash は nullable。未設定ユーザーへのログイン試行でも 500 にしない。"""
+    assert verify_password("mypassword123", None) is False
+
+
 def test_token_round_trips_the_user_id():
     user_id = uuid4()
     assert decode_access_token(create_access_token(user_id)) == user_id
@@ -73,6 +78,33 @@ def test_expired_token_is_rejected():
 
 def test_garbage_token_is_rejected():
     assert decode_access_token("not.a.token") is None
+
+
+def test_token_with_no_sub_claim_is_rejected():
+    token = jwt.encode(
+        {"exp": datetime.now(timezone.utc) + timedelta(days=1)},
+        settings.secret_key,
+        algorithm=ALGORITHM,
+    )
+    assert decode_access_token(token) is None
+
+
+def test_token_with_null_sub_is_rejected():
+    token = jwt.encode(
+        {"sub": None, "exp": datetime.now(timezone.utc) + timedelta(days=1)},
+        settings.secret_key,
+        algorithm=ALGORITHM,
+    )
+    assert decode_access_token(token) is None
+
+
+def test_token_with_non_string_sub_is_rejected():
+    token = jwt.encode(
+        {"sub": 123, "exp": datetime.now(timezone.utc) + timedelta(days=1)},
+        settings.secret_key,
+        algorithm=ALGORITHM,
+    )
+    assert decode_access_token(token) is None
 
 
 def test_token_payload_carries_nothing_but_sub_and_exp():
