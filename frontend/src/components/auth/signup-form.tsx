@@ -21,17 +21,23 @@ export default function SignupForm() {
     e.preventDefault();
     setError("");
     setSubmitting(true);
+    let registered = false;
     try {
       await authApi.registerV1AuthRegisterPost({
         userRegister: { email, password, name },
       });
+      registered = true;
       const token = await authApi.loginV1AuthLoginPost({
         userLogin: { email, password },
       });
       setToken(token.accessToken);
       router.replace("/");
     } catch (e) {
-      if (e instanceof ResponseError && e.response.status === 409) {
+      if (registered) {
+        setError(
+          "アカウントを作成しましたが、ログインに失敗しました。ログイン画面からお試しください。"
+        );
+      } else if (e instanceof ResponseError && e.response.status === 409) {
         setError("このメールアドレスは既に登録されています。");
       } else {
         setError("登録に失敗しました。入力内容を確認してください。");
@@ -44,7 +50,10 @@ export default function SignupForm() {
     <AuthCard title="新規登録">
       <form onSubmit={handleSubmit} className="flex flex-col gap-[18px]">
         {error && (
-          <p className="bg-amber-lt border border-amber text-amber text-[13px] rounded-md px-3 py-2.5">
+          <p
+            role="alert"
+            className="bg-amber-lt border border-amber text-amber text-[13px] rounded-md px-3 py-2.5"
+          >
             {error}
           </p>
         )}
@@ -58,6 +67,7 @@ export default function SignupForm() {
             className={inputBase}
             value={name}
             onChange={(e) => setName(e.target.value)}
+            autoComplete="name"
             required
           />
         </div>

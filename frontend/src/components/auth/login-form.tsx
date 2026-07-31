@@ -7,6 +7,7 @@ import AuthCard from "@/components/auth/auth-card";
 import { authApi } from "@/lib/api";
 import { setToken } from "@/lib/auth-token";
 import { inputBase, labelBase } from "@/lib/form-styles";
+import { ResponseError } from "@/generated";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -25,8 +26,12 @@ export default function LoginForm() {
       });
       setToken(token.accessToken);
       router.replace("/");
-    } catch {
-      setError("メールアドレスまたはパスワードが正しくありません。");
+    } catch (e) {
+      if (e instanceof ResponseError && e.response.status === 401) {
+        setError("メールアドレスまたはパスワードが正しくありません。");
+      } else {
+        setError("通信に失敗しました。時間をおいて再度お試しください。");
+      }
       setSubmitting(false);
     }
   }
@@ -35,7 +40,10 @@ export default function LoginForm() {
     <AuthCard title="ログイン">
       <form onSubmit={handleSubmit} className="flex flex-col gap-[18px]">
         {error && (
-          <p className="bg-amber-lt border border-amber text-amber text-[13px] rounded-md px-3 py-2.5">
+          <p
+            role="alert"
+            className="bg-amber-lt border border-amber text-amber text-[13px] rounded-md px-3 py-2.5"
+          >
             {error}
           </p>
         )}
