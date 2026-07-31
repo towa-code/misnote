@@ -56,6 +56,22 @@ Phase 4 で AWS Cognito に差し替える前提のため、ここではロー�
 `python-multipart` は form-data 用に入っていたが、ログインを JSON にする本設計では使わない。
 既存の依存であり本タスクとは無関係なため、**削除はせず残す**（他用途の可能性があるため）。
 
+## テスト方針（ユーザー確認済み）
+
+**バックエンドに pytest のテスト基盤を作り、認証の実装より先に整える。** フロントエンドの
+テストフレームワークは導入しない（検証はブラウザ操作の手順で行う）。
+
+| 項目 | 方針 |
+|---|---|
+| 依存 | `backend/requirements-dev.txt` に `pytest` と `httpx`。`Dockerfile` は `requirements.txt` しか入れないので本番イメージは太らない |
+| DB | PostgreSQL 上の別 DB `misnote_test`。モデルが `postgresql.UUID` と ネイティブ ENUM を使うため SQLite は不可 |
+| 分離 | テストごとに外側のトランザクションを巻き戻す（`Session(bind=connection, join_transaction_mode="create_savepoint")`） |
+| 認証の迂回 | `client` fixture が `get_current_user_id` を**依存オーバーライド**で差し替える。これにより、この関数の中身が JWT 検証に変わっても既存機能のテストは無変更で通り続ける |
+| 認証自体のテスト | オーバーライドしない `anon_client` fixture を使い、実際にトークンを発行して検証する |
+
+先に `subjects` / `units` / mistake-note 規則の回帰テストを書き、認証導入で壊れたときに
+検知できる網を張ってから `deps.py` に手を入れる。
+
 ## トークン仕様
 
 | 項目 | 値 |
