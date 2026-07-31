@@ -16,11 +16,14 @@ CREDENTIALS = {"email": "student@example.com", "password": "password123"}
 DUMMY_ID = "00000000-0000-0000-0000-000000000000"
 
 # (method, path, json body) のリスト。書き込み系メソッドと詳細ルート
-# （/{id} 付き）を網羅する。units.py の 4 エンドポイントは Task 5 の
-# スコープ外でまだ未保護のため、意図的に含めない（Task 6 で対応）。
+# （/{id} 付き）を網羅する。
 PROTECTED_METHOD_PATHS = [
     ("PUT", f"/v1/subjects/{DUMMY_ID}", {"name": "数学"}),
     ("DELETE", f"/v1/subjects/{DUMMY_ID}", None),
+    ("GET", f"/v1/subjects/{DUMMY_ID}/units", None),
+    ("POST", f"/v1/subjects/{DUMMY_ID}/units", {"name": "二次関数"}),
+    ("PUT", f"/v1/units/{DUMMY_ID}", {"name": "二次関数"}),
+    ("DELETE", f"/v1/units/{DUMMY_ID}", None),
     ("POST", "/v1/questions", {"subject_id": DUMMY_ID, "question_text": "1+1は?", "memo": "計算ミス"}),
     ("GET", f"/v1/questions/{DUMMY_ID}", None),
     ("PUT", f"/v1/questions/{DUMMY_ID}", {"subject_id": DUMMY_ID, "question_text": "1+1は?"}),
