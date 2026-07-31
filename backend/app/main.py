@@ -4,7 +4,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.database import SessionLocal
-from app.routers import attempts, mistake_notes, questions, subjects
+from app.routers import attempts, auth, mistake_notes, questions, subjects
 from app.routers.units import subjects_router as units_subjects_router, units_router
 from app.seed import ensure_seed_subjects, ensure_seed_user
 
@@ -30,6 +30,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+app.include_router(auth.router,            prefix="/v1/auth",          tags=["auth"])
 app.include_router(subjects.router,        prefix="/v1/subjects",      tags=["subjects"])
 app.include_router(units_subjects_router,  prefix="/v1/subjects",      tags=["units"])
 app.include_router(units_router,           prefix="/v1/units",         tags=["units"])
