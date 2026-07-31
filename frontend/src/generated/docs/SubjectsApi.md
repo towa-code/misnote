@@ -28,7 +28,11 @@ import type { CreateSubjectV1SubjectsPostRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new SubjectsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SubjectsApi(config);
 
   const body = {
     // SubjectCreate
@@ -60,7 +64,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -94,7 +98,11 @@ import type { DeleteSubjectV1SubjectsSubjectIdDeleteRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new SubjectsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SubjectsApi(config);
 
   const body = {
     // string
@@ -126,7 +134,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -160,7 +168,11 @@ import type { ListSubjectsV1SubjectsGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new SubjectsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SubjectsApi(config);
 
   try {
     const data = await api.listSubjectsV1SubjectsGet();
@@ -184,7 +196,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -217,7 +229,11 @@ import type { UpdateSubjectV1SubjectsSubjectIdPutRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new SubjectsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new SubjectsApi(config);
 
   const body = {
     // string
@@ -252,7 +268,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 

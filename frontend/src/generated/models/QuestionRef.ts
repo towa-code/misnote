@@ -63,7 +63,7 @@ export interface QuestionRef {
      * @type {string}
      * @memberof QuestionRef
      */
-    correctAnswer: string;
+    correctAnswer: string | null;
 }
 
 export function QuestionRefFromJSON(json: any): QuestionRef {

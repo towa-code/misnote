@@ -1,5 +1,5 @@
-.openapi-generator-ignore
 apis/AttemptsApi.ts
+apis/AuthApi.ts
 apis/HealthApi.ts
 apis/MistakeNotesApi.ts
 apis/QuestionsApi.ts
@@ -10,6 +10,7 @@ docs/AttemptCreate.md
 docs/AttemptHistoryItem.md
 docs/AttemptResponse.md
 docs/AttemptsApi.md
+docs/AuthApi.md
 docs/HTTPValidationError.md
 docs/HealthApi.md
 docs/LocationInner.md
@@ -27,11 +28,15 @@ docs/SubjectRef.md
 docs/SubjectResponse.md
 docs/SubjectUpdate.md
 docs/SubjectsApi.md
+docs/TokenResponse.md
 docs/UnitCreate.md
 docs/UnitRef.md
 docs/UnitResponse.md
 docs/UnitUpdate.md
 docs/UnitsApi.md
+docs/UserLogin.md
+docs/UserRegister.md
+docs/UserResponse.md
 docs/ValidationError.md
 index.ts
 models/AttemptCreate.ts
@@ -50,10 +55,14 @@ models/SubjectCreate.ts
 models/SubjectRef.ts
 models/SubjectResponse.ts
 models/SubjectUpdate.ts
+models/TokenResponse.ts
 models/UnitCreate.ts
 models/UnitRef.ts
 models/UnitResponse.ts
 models/UnitUpdate.ts
+models/UserLogin.ts
+models/UserRegister.ts
+models/UserResponse.ts
 models/ValidationError.ts
 models/index.ts
 runtime.ts
