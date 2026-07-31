@@ -19,16 +19,14 @@ export default function AuthGate({ children }: { children: React.ReactNode }) {
   const isPublic = PUBLIC_PATHS.includes(pathname);
 
   useEffect(() => {
-    // setState はここでは直接呼ばない（react-hooks/set-state-in-effect 対策）。
-    // 既存コード（register-form.tsx など）に倣い、Promise 経由の非同期コールバックにする。
-    Promise.resolve().then(() => {
-      const hasToken = getToken() !== null;
-      setAuthed(hasToken);
-      setChecked(true);
-      if (!hasToken && !isPublic) {
-        router.replace("/login");
-      }
-    });
+    const hasToken = getToken() !== null;
+    // マウント時に localStorage を一度だけ読むので再レンダリングのループにはならない。
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setAuthed(hasToken);
+    setChecked(true);
+    if (!hasToken && !isPublic) {
+      router.replace("/login");
+    }
   }, [isPublic, pathname, router]);
 
   if (isPublic) return <>{children}</>;
