@@ -30,6 +30,10 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
     for error in errors:
         if "password" in error.get("loc", ()):
             error["input"] = "***"
+        elif isinstance(error.get("input"), dict) and "password" in error["input"]:
+            # password 以外のフィールドが原因のエラーでは input にボディ全体が入る
+            # （例: name の入れ忘れ）。その中の password だけを伏せる。
+            error["input"] = {**error["input"], "password": "***"}
     return JSONResponse(status_code=422, content={"detail": errors})
 
 

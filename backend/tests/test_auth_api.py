@@ -114,6 +114,16 @@ def test_register_422_does_not_leak_the_password(anon_client, password):
     assert password not in response.text
 
 
+def test_register_422_does_not_leak_the_password_via_another_field(anon_client):
+    """name の入れ忘れなど、password 以外が原因の 422 でも平文を返さないこと。"""
+    response = anon_client.post(
+        "/v1/auth/register",
+        json={"email": VALID["email"], "password": VALID["password"]},
+    )
+    assert response.status_code == 422
+    assert VALID["password"] not in response.text
+
+
 def test_register_422_still_includes_input_for_non_password_fields(anon_client):
     response = _register(anon_client, email="not-an-email")
     assert response.status_code == 422
