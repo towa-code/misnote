@@ -81,12 +81,13 @@ def create_question(
     db.add(question)
     db.flush()
 
-    if body.memo or body.learning or body.next_review_at:
+    if body.memo or body.learning or body.reason_tag or body.next_review_at:
         note = MistakeNote(
             user_id=user_id,
             question_id=question.id,
             memo=body.memo,
             learning=body.learning,
+            reason_tag=body.reason_tag,
             next_review_at=body.next_review_at,
         )
         db.add(note)

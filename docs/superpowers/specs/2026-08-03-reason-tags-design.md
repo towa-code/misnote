@@ -71,12 +71,16 @@ ReasonTag = Literal["misread", "approach", "knowledge", "calculation", "time", "
 | `PUT /v1/mistake-notes/{id}` | `reason_tag` を更新する。`null` を明示的に送ると解除 |
 | ノートを返す全エンドポイント | レスポンスに `reason_tag` を含める |
 
-**`routers/questions.py::create_question` のノート自動生成条件を変える必要がある。**
-現在は次のとおりで、タグだけを付けて登録するとノートが作られない。
+**`routers/questions.py::create_question` のノート自動生成条件にも `reason_tag` を加える。**
 
 ```python
-if body.memo or body.learning or body.next_review_at:   # ← or body.reason_tag を追加
+if body.memo or body.learning or body.reason_tag or body.next_review_at:
 ```
+
+ただし `QuestionCreate.memo` は現在 `Field(..., min_length=1)` で必須なので、
+`body.memo` は常に真になり、**この分岐は今のところ到達しない**。
+memo を任意に戻す機能案（`docs/newfunction/quick-save.md`）が入ったときに
+初めて効く。条件として正しい形にしておくために足すだけで、今回の動作は変わらない。
 
 **`routers/mistake_notes.py::update_note` の更新判定。**
 既存の3フィールドは `if body.X is not None` で判定しており、`null` を送っても
@@ -124,7 +128,7 @@ if "reason_tag" in body.model_fields_set:
 `backend/tests/` に追加する。
 
 - タグ付きで問題を登録すると、ノートに `reason_tag` が保存される
-- **タグだけを指定して登録してもノートが作られる**（`create_question` の分岐の回帰テスト）
+- タグを付けても `memo` の必須は外れない（タグだけの登録は 422）
 - 不正なタグ文字列は 422
 - `PUT /v1/mistake-notes/{id}` でタグを変更できる
 - 同エンドポイントに `null` を送るとタグが外れる
