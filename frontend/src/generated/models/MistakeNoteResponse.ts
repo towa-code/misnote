@@ -53,6 +53,12 @@ export interface MistakeNoteResponse {
     learning: string | null;
     /**
      * 
+     * @type {MistakeNoteResponseReasonTagEnum}
+     * @memberof MistakeNoteResponse
+     */
+    reasonTag: MistakeNoteResponseReasonTagEnum | null;
+    /**
+     * 
      * @type {MistakeNoteResponseStatusEnum}
      * @memberof MistakeNoteResponse
      */
@@ -81,6 +87,19 @@ export interface MistakeNoteResponse {
 /**
  * @export
  */
+export const MistakeNoteResponseReasonTagEnum = {
+    Misread: 'misread',
+    Approach: 'approach',
+    Knowledge: 'knowledge',
+    Calculation: 'calculation',
+    Time: 'time',
+    Other: 'other'
+} as const;
+export type MistakeNoteResponseReasonTagEnum = typeof MistakeNoteResponseReasonTagEnum[keyof typeof MistakeNoteResponseReasonTagEnum];
+
+/**
+ * @export
+ */
 export const MistakeNoteResponseStatusEnum = {
     Active: 'active',
     Mastered: 'mastered'
@@ -102,6 +121,7 @@ export function MistakeNoteResponseFromJSONTyped(json: any, ignoreDiscriminator:
         'question': QuestionRefFromJSON(json['question']),
         'memo': json['memo'],
         'learning': json['learning'],
+        'reasonTag': json['reason_tag'],
         'status': json['status'],
         'wrongCount': json['wrong_count'],
         'correctStreak': json['correct_streak'],
@@ -124,6 +144,7 @@ export function MistakeNoteResponseToJSONTyped(value?: MistakeNoteResponse | nul
         'question': QuestionRefToJSON(value['question']),
         'memo': value['memo'],
         'learning': value['learning'],
+        'reason_tag': value['reasonTag'],
         'status': value['status'],
         'wrong_count': value['wrongCount'],
         'correct_streak': value['correctStreak'],

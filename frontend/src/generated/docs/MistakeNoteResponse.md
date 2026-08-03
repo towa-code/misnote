@@ -10,6 +10,7 @@ Name | Type
 `question` | [QuestionRef](QuestionRef.md)
 `memo` | string
 `learning` | string
+`reasonTag` | string
 `status` | string
 `wrongCount` | number
 `correctStreak` | number
@@ -26,6 +27,7 @@ const example = {
   "question": null,
   "memo": null,
   "learning": null,
+  "reasonTag": null,
   "status": null,
   "wrongCount": null,
   "correctStreak": null,

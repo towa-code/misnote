@@ -4,6 +4,10 @@ import { useCallback, useEffect, useState } from "react";
 import MistakeTabs, { type MistakeTab } from "@/components/mistakes/mistake-tabs";
 import MistakeRow, { ROW_GRID } from "@/components/mistakes/mistake-row";
 import MistakesEmptyState from "@/components/mistakes/empty-state";
+import TagFilterChips, {
+  matchesTagFilter,
+  type TagFilter,
+} from "@/components/mistakes/tag-filter";
 import {
   type MistakeNoteResponse,
   MistakeNoteStatusUpdateStatusEnum,
@@ -19,6 +23,7 @@ export default function MistakesContent() {
   const [activeNotes, setActiveNotes] = useState<MistakeNoteResponse[]>([]);
   const [masteredNotes, setMasteredNotes] = useState<MistakeNoteResponse[]>([]);
   const [tab, setTab] = useState<MistakeTab>("active");
+  const [tagFilter, setTagFilter] = useState<TagFilter>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState<string | null>(null);
@@ -60,7 +65,14 @@ export default function MistakesContent() {
     }
   }
 
-  const notes = tab === "active" ? activeNotes : masteredNotes;
+  // タブごとに付いているタグが違うので、切り替えたら絞り込みは解除する
+  function handleChangeTab(next: MistakeTab) {
+    setTab(next);
+    setTagFilter(null);
+  }
+
+  const tabNotes = tab === "active" ? activeNotes : masteredNotes;
+  const notes = tabNotes.filter((note) => matchesTagFilter(note, tagFilter));
 
   return (
     <>
@@ -71,7 +83,7 @@ export default function MistakesContent() {
         <div className="mt-3.5">
           <MistakeTabs
             tab={tab}
-            onChange={setTab}
+            onChange={handleChangeTab}
             activeCount={activeNotes.length}
             masteredCount={masteredNotes.length}
           />
@@ -100,12 +112,20 @@ export default function MistakesContent() {
               />
             ))}
           </div>
-        ) : notes.length === 0 ? (
+        ) : tabNotes.length === 0 ? (
           <MistakesEmptyState
             variant={tab === "active" ? "no-active" : "no-mastered"}
           />
         ) : (
           <div id="mistake-list" role="tabpanel">
+            <div className="mb-4">
+              <TagFilterChips
+                notes={tabNotes}
+                filter={tagFilter}
+                onChange={setTagFilter}
+              />
+            </div>
+
             {/* Column header: desktop only, aligned with the rows */}
             <div
               className={[
@@ -119,6 +139,12 @@ export default function MistakesContent() {
               <div>{tab === "active" ? "次の復習日" : "状態"}</div>
               <div />
             </div>
+
+            {notes.length === 0 && (
+              <p className="px-3 py-8 text-center text-[13px] text-muted">
+                この種類の問題はありません。
+              </p>
+            )}
 
             {notes.map((note) => (
               <MistakeRow

@@ -57,11 +57,32 @@ export interface QuestionCreate {
     learning?: string | null;
     /**
      * 
+     * @type {QuestionCreateReasonTagEnum}
+     * @memberof QuestionCreate
+     */
+    reasonTag?: QuestionCreateReasonTagEnum | null;
+    /**
+     * 
      * @type {Date}
      * @memberof QuestionCreate
      */
     nextReviewAt?: Date | null;
 }
+
+
+/**
+ * @export
+ */
+export const QuestionCreateReasonTagEnum = {
+    Misread: 'misread',
+    Approach: 'approach',
+    Knowledge: 'knowledge',
+    Calculation: 'calculation',
+    Time: 'time',
+    Other: 'other'
+} as const;
+export type QuestionCreateReasonTagEnum = typeof QuestionCreateReasonTagEnum[keyof typeof QuestionCreateReasonTagEnum];
+
 
 export function QuestionCreateFromJSON(json: any): QuestionCreate {
     return QuestionCreateFromJSONTyped(json, false);
@@ -79,6 +100,7 @@ export function QuestionCreateFromJSONTyped(json: any, ignoreDiscriminator: bool
         'correctAnswer': json['correct_answer'] == null ? undefined : json['correct_answer'],
         'memo': json['memo'],
         'learning': json['learning'] == null ? undefined : json['learning'],
+        'reasonTag': json['reason_tag'] == null ? undefined : json['reason_tag'],
         'nextReviewAt': json['next_review_at'] == null ? undefined : (new Date(json['next_review_at'])),
     };
 }
@@ -100,6 +122,7 @@ export function QuestionCreateToJSONTyped(value?: QuestionCreate | null, ignoreD
         'correct_answer': value['correctAnswer'],
         'memo': value['memo'],
         'learning': value['learning'],
+        'reason_tag': value['reasonTag'],
         'next_review_at': value['nextReviewAt'] == null ? value['nextReviewAt'] : value['nextReviewAt'].toISOString().substring(0,10),
     };
 }

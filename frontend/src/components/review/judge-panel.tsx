@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import type { MistakeNoteResponse } from "@/generated";
+import TagPicker from "@/components/reason-tag/tag-picker";
 import { inputBase, labelBase } from "@/lib/form-styles";
+import type { ReasonTag } from "@/lib/reason-tags";
 
 function CheckIcon({ size = 16 }: { size?: number }) {
   return (
@@ -46,6 +48,8 @@ function toDateInput(date: Date | null): string {
 export type SavePayload = {
   memo?: string;
   learning?: string;
+  // 正解時は送らない（＝現在のタグを維持）。不正解時は null も送りうる（＝解除）。
+  reasonTag?: ReasonTag | null;
   nextReviewAt: string;
 };
 
@@ -72,6 +76,7 @@ export default function JudgePanel({
 }: Props) {
   const [memo, setMemo] = useState(note.memo ?? "");
   const [learning, setLearning] = useState(note.learning ?? "");
+  const [reasonTag, setReasonTag] = useState<ReasonTag | null>(note.reasonTag);
   const [nextReviewAt, setNextReviewAt] = useState(
     toDateInput(note.nextReviewAt)
   );
@@ -176,6 +181,11 @@ export default function JudgePanel({
 
       <div className="bg-amber-lt px-5 sm:px-6 py-5 flex flex-col gap-4">
         <div>
+          <span className={labelBase + " block"}>間違いの種類</span>
+          <TagPicker value={reasonTag} onChange={setReasonTag} disabled={saving} />
+        </div>
+
+        <div>
           <label className={labelBase} htmlFor="review-memo">
             間違えた理由
           </label>
@@ -220,7 +230,7 @@ export default function JudgePanel({
           <button
             type="button"
             disabled={saving}
-            onClick={() => onSave({ memo, learning, nextReviewAt })}
+            onClick={() => onSave({ memo, learning, reasonTag, nextReviewAt })}
             className="bg-amber text-white rounded-md px-7 py-2.5 text-[13px] font-bold hover:bg-amber-dk disabled:opacity-50 transition-colors duration-150"
           >
             保存してホームへ

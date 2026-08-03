@@ -9,6 +9,7 @@ Name | Type
 `memo` | string
 `learning` | string
 `nextReviewAt` | Date
+`reasonTag` | string
 
 ## Example
 
@@ -20,6 +21,7 @@ const example = {
   "memo": null,
   "learning": null,
   "nextReviewAt": null,
+  "reasonTag": null,
 } satisfies MistakeNoteUpdate
 
 console.log(example)

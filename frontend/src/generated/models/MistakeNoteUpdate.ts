@@ -37,7 +37,28 @@ export interface MistakeNoteUpdate {
      * @memberof MistakeNoteUpdate
      */
     nextReviewAt?: Date | null;
+    /**
+     * 
+     * @type {MistakeNoteUpdateReasonTagEnum}
+     * @memberof MistakeNoteUpdate
+     */
+    reasonTag?: MistakeNoteUpdateReasonTagEnum | null;
 }
+
+
+/**
+ * @export
+ */
+export const MistakeNoteUpdateReasonTagEnum = {
+    Misread: 'misread',
+    Approach: 'approach',
+    Knowledge: 'knowledge',
+    Calculation: 'calculation',
+    Time: 'time',
+    Other: 'other'
+} as const;
+export type MistakeNoteUpdateReasonTagEnum = typeof MistakeNoteUpdateReasonTagEnum[keyof typeof MistakeNoteUpdateReasonTagEnum];
+
 
 export function MistakeNoteUpdateFromJSON(json: any): MistakeNoteUpdate {
     return MistakeNoteUpdateFromJSONTyped(json, false);
@@ -52,6 +73,7 @@ export function MistakeNoteUpdateFromJSONTyped(json: any, ignoreDiscriminator: b
         'memo': json['memo'] == null ? undefined : json['memo'],
         'learning': json['learning'] == null ? undefined : json['learning'],
         'nextReviewAt': json['next_review_at'] == null ? undefined : (new Date(json['next_review_at'])),
+        'reasonTag': json['reason_tag'] == null ? undefined : json['reason_tag'],
     };
 }
 
@@ -69,6 +91,7 @@ export function MistakeNoteUpdateToJSONTyped(value?: MistakeNoteUpdate | null, i
         'memo': value['memo'],
         'learning': value['learning'],
         'next_review_at': value['nextReviewAt'] == null ? value['nextReviewAt'] : value['nextReviewAt'].toISOString().substring(0,10),
+        'reason_tag': value['reasonTag'],
     };
 }
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { MistakeNoteResponse } from "@/generated";
+import TagBadge from "@/components/reason-tag/tag-badge";
 import { formatReviewDate, overdueDaysFrom } from "@/lib/review-date";
 
 // Shared by the rows and the desktop column header so the columns stay aligned
@@ -77,13 +78,18 @@ export default function MistakeRow({
 
       {/* Question, with subject/unit above and the memo underneath */}
       <div className="min-w-0">
-        <div className="flex flex-wrap items-center text-[11px] font-bold text-muted tracking-[0.07em] uppercase mb-1.5">
+        <div className="flex flex-wrap items-center gap-y-1 text-[11px] font-bold text-muted tracking-[0.07em] uppercase mb-1.5">
           {note.question.subject.name}
           {note.question.unit && (
             <>
               <span className="mx-1 opacity-40">›</span>
               {note.question.unit.name}
             </>
+          )}
+          {note.reasonTag && (
+            <span className="ml-2">
+              <TagBadge tag={note.reasonTag} />
+            </span>
           )}
           {isOverdue && (
             <span className="inline-flex items-center gap-1 bg-amber text-white text-[10px] font-bold tracking-[0.04em] px-1.5 py-px rounded ml-2">
