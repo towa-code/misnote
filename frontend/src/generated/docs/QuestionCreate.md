@@ -12,6 +12,7 @@ Name | Type
 `correctAnswer` | string
 `memo` | string
 `learning` | string
+`reasonTag` | string
 `nextReviewAt` | Date
 
 ## Example
@@ -27,6 +28,7 @@ const example = {
   "correctAnswer": null,
   "memo": null,
   "learning": null,
+  "reasonTag": null,
   "nextReviewAt": null,
 } satisfies QuestionCreate
 

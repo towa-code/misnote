@@ -72,12 +72,15 @@
   "correct_answer": "x = 2",
   "memo": "符号のミスに注意",
   "learning": "移項するとき符号が反転することを公式として覚える",
+  "reason_tag": "calculation",
   "next_review_at": "2024-01-08"
 }
 ```
 
-> `unit_id`・`memo`・`learning`・`next_review_at` は省略可。`unit_id` を指定する場合は `subject_id` の科目に属する単元であること（違反時は 400）。  
-> `memo`・`learning`・`next_review_at` の**いずれかが指定された場合**、`mistake_notes` レコードが自動で作成される（初期値: `status=active`、`wrong_count=1`、`correct_streak=0`、`next_review_at` 未指定時は `null`）。
+> `unit_id`・`learning`・`reason_tag`・`next_review_at` は省略可。`unit_id` を指定する場合は `subject_id` の科目に属する単元であること（違反時は 400）。  
+> `memo`・`learning`・`reason_tag`・`next_review_at` の**いずれかが指定された場合**、`mistake_notes` レコードが自動で作成される（初期値: `status=active`、`wrong_count=1`、`correct_streak=0`、`next_review_at` 未指定時は `null`）。  
+> `reason_tag` に取りうる値は misread / approach / knowledge / calculation / time / other。それ以外は 422。  
+> 実装との差異: `memo` は現在**必須**（`QuestionCreate.memo` が `min_length=1`）。そのため上の自動作成条件は事実上つねに成立する。任意に戻す案は [クイック保存](../../newfunction/quick-save.md) を参照。
 
 **レスポンス**
 ```json

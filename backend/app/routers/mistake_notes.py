@@ -25,6 +25,7 @@ def _build_response(note: MistakeNote) -> MistakeNoteResponse:
         ),
         memo=note.memo,
         learning=note.learning,
+        reason_tag=note.reason_tag,
         status=note.status,
         wrong_count=note.wrong_count,
         correct_streak=note.correct_streak,
@@ -107,6 +108,10 @@ def update_note(
         note.learning = body.learning
     if body.next_review_at is not None:
         note.next_review_at = body.next_review_at
+    # 他の3つと違い、送信の有無で判定する。null を明示的に送ればタグを外せる
+    # （分類を間違えたときに直せる必要があるため）。
+    if "reason_tag" in body.model_fields_set:
+        note.reason_tag = body.reason_tag
     db.commit()
     db.refresh(note)
     return _build_response(note)

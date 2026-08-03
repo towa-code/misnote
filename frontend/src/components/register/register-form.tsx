@@ -4,8 +4,10 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { SubjectResponse, UnitResponse } from "@/generated";
+import TagPicker from "@/components/reason-tag/tag-picker";
 import { questionsApi, subjectsApi, unitsApi } from "@/lib/api";
 import { inputBase, labelBase } from "@/lib/form-styles";
+import type { ReasonTag } from "@/lib/reason-tags";
 
 // Explicit "必須" badge: clearer for students than a bare asterisk
 function RequiredBadge() {
@@ -71,6 +73,7 @@ export default function RegisterForm() {
   const [unitId, setUnitId] = useState("");
   const [questionBody, setQuestionBody] = useState("");
   const [answer, setAnswer] = useState("");
+  const [reasonTag, setReasonTag] = useState<ReasonTag | null>(null);
   const [memo, setMemo] = useState("");
   const [learning, setLearning] = useState("");
   const [nextReviewAt, setNextReviewAt] = useState("");
@@ -106,6 +109,7 @@ export default function RegisterForm() {
           unitId: unitId || undefined,
           questionText: questionBody,
           correctAnswer: answer || undefined,
+          reasonTag: reasonTag ?? undefined,
           memo,
           learning: learning || undefined,
           nextReviewAt: nextReviewAt ? new Date(nextReviewAt) : undefined,
@@ -226,6 +230,12 @@ export default function RegisterForm() {
             </div>
 
             <div className="flex flex-col gap-[18px]">
+              {/* 間違いの種類 */}
+              <div>
+                <span className={labelBase + " block"}>間違いの種類（任意）</span>
+                <TagPicker value={reasonTag} onChange={setReasonTag} />
+              </div>
+
               {/* 間違えた理由 */}
               <div>
                 <label className={labelBase}>

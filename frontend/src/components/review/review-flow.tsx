@@ -93,6 +93,10 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
           ...(payload.learning !== undefined
             ? { learning: payload.learning }
             : {}),
+          // Same here: omitting the key keeps the tag, sending null clears it
+          ...(payload.reasonTag !== undefined
+            ? { reasonTag: payload.reasonTag }
+            : {}),
           nextReviewAt: payload.nextReviewAt
             ? new Date(payload.nextReviewAt)
             : null,

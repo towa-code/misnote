@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import Column, Date, DateTime, Enum, ForeignKey, Integer, Text, UniqueConstraint, func
+from sqlalchemy import Column, Date, DateTime, Enum, ForeignKey, Integer, String, Text, UniqueConstraint, func
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 
@@ -16,6 +16,9 @@ class MistakeNote(Base):
     question_id = Column(UUID(as_uuid=True), ForeignKey("questions.id"), nullable=False)
     memo = Column(Text, nullable=True)
     learning = Column(Text, nullable=True)
+    # 値の妥当性は app/schemas/mistake_note.py の ReasonTag（Pydantic）が保証する。
+    # タグ一覧は今後増減する前提なので、ネイティブ ENUM にはしない。
+    reason_tag = Column(String(32), nullable=True)
     status = Column(Enum("active", "mastered", name="mistake_status"), nullable=False, default="active")
     wrong_count = Column(Integer, nullable=False, default=1)
     correct_streak = Column(Integer, nullable=False, default=0)

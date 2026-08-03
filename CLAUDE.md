@@ -89,6 +89,7 @@ This is the core domain logic, spread across `routers/attempts.py` and `routers/
 - Manually reverting `mastered → active` via the status endpoint resets `correct_streak` to 0; setting `mastered` clears `next_review_at`.
 - `GET /mistake-notes/today` returns notes where `status == "active" AND next_review_at <= today` (nulls excluded — unscheduled notes are a separate concern on the home screen).
 - The list endpoints are status-partitioned: bare `GET /mistake-notes` returns only `status == "active"` notes, `GET /mistake-notes/mastered` only `status == "mastered"` ones. There is no endpoint returning both.
+- `mistake_notes.reason_tag` is the "why did I get this wrong" tag: a nullable VARCHAR holding one of `misread` / `approach` / `knowledge` / `calculation` / `time` / `other`, validated by the `ReasonTag` `Literal` in `app/schemas/mistake_note.py` rather than a DB constraint. It is set through `POST /v1/questions` and `PUT /v1/mistake-notes/{id}`; that PUT decides whether to write it from `model_fields_set`, so an explicit `null` clears the tag (the other three fields use `is not None` and cannot be cleared). Japanese labels live only in `frontend/src/lib/reason-tags.ts`. See `docs/superpowers/specs/2026-08-03-reason-tags-design.md`.
 - `unit_id` on `questions` is nullable; if set, it must belong to the question's `subject_id` (`routers/questions.py::_validate_unit`, 400 on mismatch).
 - Deleting a `Subject` or `Unit` returns 409 if it still has related units/questions attached.
 

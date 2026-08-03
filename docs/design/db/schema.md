@@ -90,6 +90,7 @@
 | question_id | UUID | → questions（**UNIQUE**：1問題につきノートは1件） |
 | memo | TEXT | 間違えた理由・ポイント |
 | learning | TEXT | 今回学んだこと |
+| reason_tag | VARCHAR(32) | 間違いの原因タグ（nullable = 未分類）。値は misread / approach / knowledge / calculation / time / other。値の妥当性は Pydantic が保証し、DB 側に制約は置かない（タグ一覧が変わる前提のため） |
 | status | ENUM | active / mastered（デフォルト active） |
 | wrong_count | INTEGER | 間違えた回数（作成時 1） |
 | correct_streak | INTEGER | 連続正解回数（デフォルト 0） |

@@ -3,6 +3,7 @@ from uuid import UUID
 
 from pydantic import BaseModel, Field
 
+from app.schemas.mistake_note import ReasonTag
 from app.schemas.refs import SubjectRef, UnitRef
 
 
@@ -13,6 +14,7 @@ class QuestionCreate(BaseModel):
     correct_answer: str | None = None
     memo: str = Field(..., min_length=1)  # 間違えた理由は必須
     learning: str | None = None
+    reason_tag: ReasonTag | None = None
     next_review_at: date | None = None
 
 

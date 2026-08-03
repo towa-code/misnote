@@ -23,7 +23,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 | [quick-save.md](./quick-save.md) | クイック保存 | 間違えた理由なしで問題だけ保存し、あとで整理 | ◎ | 小 | なし |
 | [preset-subjects-units.md](./preset-subjects-units.md) | 科目・単元プリセットマスタ | 標準的な科目/単元を選ぶだけで登録 | ○ | 中 | なし |
 | [review-interval-suggestion.md](./review-interval-suggestion.md) | 復習日の自動提案 | 忘却曲線ベースで次の復習日を提案（設定は手動のまま） | ◎ | 小 | なし |
-| [mistake-reason-tags.md](./mistake-reason-tags.md) | 間違い原因タグ | 計算ミス/知識不足などをタグ化し弱点を可視化 | ◎ | 中 | なし |
+| [mistake-reason-tags.md](./mistake-reason-tags.md) | 間違い原因タグ ✅**実装済み** | 計算ミス/知識不足などをタグ化し弱点を可視化 | ◎ | 中 | なし |
 | [cram-mode.md](./cram-mode.md) | テスト前総復習モード | 範囲指定で復習日に関係なく一括復習 | ○ | 小 | なし |
 | [folder-browse.md](./folder-browse.md) | 科目フォルダ・ブラウズ | 科目→単元→問題とたどって過去問題を振り返る | ○ | 小〜中 | なし |
 | [stats-dashboard.md](./stats-dashboard.md) | 統計ダッシュボード | 克服率・単元別間違い数・継続日数 | ○ | 中 | 原因タグがあると効果大 |
@@ -40,7 +40,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 1. **quick-save** — ユーザー起案。コスト小で「入口の軽さ」が即改善する
 2. **preset-subjects-units** — ユーザー起案。初期設定の負担をなくす
 3. **review-interval-suggestion** — DB変更なしで「伴走」体験が生まれる
-4. **mistake-reason-tags** — 最大の差別化。統計の土台にもなる
+4. ~~**mistake-reason-tags**~~ — 実装済み（2026-08-03）
 5. **cram-mode** — 既存APIの小さな拡張で実現できる
 6. **folder-browse** — ほぼ既存APIで科目・単元起点の振り返り導線が作れる
 7. **stats-dashboard** — タグ導入後にやると価値が跳ね上がる
