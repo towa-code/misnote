@@ -29,6 +29,7 @@
   },
   "memo": "符号のミスに注意",
   "learning": "移項するとき符号が反転することを公式として覚える",
+  "reason_tag": "calculation",
   "status": "active",
   "wrong_count": 3,
   "correct_streak": 1,
@@ -84,11 +85,16 @@ status が `mastered` の一覧を返す。[ページネーション](./conventi
 {
   "memo": "符号のミスに注意。移項するとき符号が変わる",
   "learning": "移項するとき符号が反転することを公式として覚える",
+  "reason_tag": "calculation",
   "next_review_at": "2024-01-08"
 }
 ```
 
 **レスポンス** — 上記共通形
+
+> すべて省略可。`memo`・`learning`・`next_review_at` は省略時のみ現在値が維持される
+> （`null` を送っても消せない）。`reason_tag` だけは送信の有無で判定するため、
+> 明示的に `null` を送るとタグを外せる。
 
 ---
 
