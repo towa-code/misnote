@@ -81,6 +81,14 @@ export class UnitsApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("HTTPBearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
 
         let urlPath = `/v1/subjects/{subject_id}/units`;
         urlPath = urlPath.replace('{subject_id}', encodeURIComponent(String(requestParameters['subjectId'])));
@@ -127,6 +135,14 @@ export class UnitsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("HTTPBearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
 
         let urlPath = `/v1/units/{unit_id}`;
         urlPath = urlPath.replace('{unit_id}', encodeURIComponent(String(requestParameters['unitId'])));
@@ -171,6 +187,14 @@ export class UnitsApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("HTTPBearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
 
         let urlPath = `/v1/subjects/{subject_id}/units`;
         urlPath = urlPath.replace('{subject_id}', encodeURIComponent(String(requestParameters['subjectId'])));
@@ -225,6 +249,14 @@ export class UnitsApi extends runtime.BaseAPI {
 
         headerParameters['Content-Type'] = 'application/json';
 
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("HTTPBearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
 
         let urlPath = `/v1/units/{unit_id}`;
         urlPath = urlPath.replace('{unit_id}', encodeURIComponent(String(requestParameters['unitId'])));

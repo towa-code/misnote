@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Noto_Sans_JP, Noto_Serif_JP } from "next/font/google";
-import AppShell from "@/components/layout/app-shell";
+import AuthGate from "@/components/auth/auth-gate";
 import "./globals.css";
 
 const notoSans = Noto_Sans_JP({
@@ -31,7 +31,7 @@ export default function RootLayout({
       className={`${notoSans.variable} ${notoSerif.variable} h-full`}
     >
       <body className="min-h-full bg-bg text-text font-sans antialiased">
-        <AppShell>{children}</AppShell>
+        <AuthGate>{children}</AuthGate>
       </body>
     </html>
   );

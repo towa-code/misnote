@@ -1,26 +1,13 @@
-from contextlib import asynccontextmanager
-
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.encoders import jsonable_encoder
+from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 
-from app.database import SessionLocal
-from app.routers import attempts, mistake_notes, questions, subjects
+from app.routers import attempts, auth, mistake_notes, questions, subjects
 from app.routers.units import subjects_router as units_subjects_router, units_router
-from app.seed import ensure_seed_subjects, ensure_seed_user
 
-
-@asynccontextmanager
-async def lifespan(app: FastAPI):
-    db = SessionLocal()
-    try:
-        ensure_seed_user(db)
-        ensure_seed_subjects(db)
-    finally:
-        db.close()
-    yield
-
-
-app = FastAPI(title="misnote API", version="0.1.0", lifespan=lifespan)
+app = FastAPI(title="misnote API", version="0.1.0")
 
 app.add_middleware(
     CORSMiddleware,
@@ -30,6 +17,23 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError) -> JSONResponse:
+    """既定のハンドラと同じ形を保ちつつ、password フィールドの入力値だけ伏せ字にする。
+
+    既定の RequestValidationError ハンドラはバリデーションに失敗したフィールドの
+    入力値をそのまま返すため、8文字未満・72バイト超などでパスワードが平文の
+    まま応答ボディに乗ってしまう。devtools 履歴やログに残るのを防ぐ。
+    """
+    errors = jsonable_encoder(exc.errors())
+    for error in errors:
+        if "password" in error.get("loc", ()):
+            error["input"] = "***"
+    return JSONResponse(status_code=422, content={"detail": errors})
+
+
+app.include_router(auth.router,            prefix="/v1/auth",          tags=["auth"])
 app.include_router(subjects.router,        prefix="/v1/subjects",      tags=["subjects"])
 app.include_router(units_subjects_router,  prefix="/v1/subjects",      tags=["units"])
 app.include_router(units_router,           prefix="/v1/units",         tags=["units"])

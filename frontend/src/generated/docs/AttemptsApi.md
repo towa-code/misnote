@@ -26,7 +26,11 @@ import type { CreateAttemptV1QuestionsQuestionIdAttemptsPostRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new AttemptsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AttemptsApi(config);
 
   const body = {
     // string
@@ -61,7 +65,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -95,7 +99,11 @@ import type { ListAttemptsV1QuestionsQuestionIdAttemptsGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new AttemptsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new AttemptsApi(config);
 
   const body = {
     // string
@@ -127,7 +135,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 

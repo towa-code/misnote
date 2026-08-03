@@ -28,7 +28,11 @@ import type { CreateUnitV1SubjectsSubjectIdUnitsPostRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new UnitsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new UnitsApi(config);
 
   const body = {
     // string
@@ -63,7 +67,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -97,7 +101,11 @@ import type { DeleteUnitV1UnitsUnitIdDeleteRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new UnitsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new UnitsApi(config);
 
   const body = {
     // string
@@ -129,7 +137,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -163,7 +171,11 @@ import type { ListUnitsV1SubjectsSubjectIdUnitsGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new UnitsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new UnitsApi(config);
 
   const body = {
     // string
@@ -195,7 +207,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -229,7 +241,11 @@ import type { UpdateUnitV1UnitsUnitIdPutRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new UnitsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new UnitsApi(config);
 
   const body = {
     // string
@@ -264,7 +280,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 

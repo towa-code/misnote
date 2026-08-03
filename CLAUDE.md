@@ -8,12 +8,12 @@ misnote (間違いノートアプリ) is a spaced-repetition "mistake notebook" 
 
 The repo has three parts:
 - `backend/` — FastAPI + PostgreSQL API. Functionally implemented for all core resources (subjects, units, questions, attempts, mistake notes).
-- `frontend/` — Next.js app, tracked in this repo (no nested `.git`). 3 of the 5 planned screens are built and wired to the real API through the generated client: home (`/`), question registration (`/register`), subject/unit management (`/subjects`). `/mistakes` is still a "準備中" placeholder and the review screen has no route yet — those two are the remaining Phase 2 work.
+- `frontend/` — Next.js app, tracked in this repo (no nested `.git`). All 5 designed screens are built and wired to the real API through the generated client: home (`/`), question registration (`/register`), subject/unit management (`/subjects`), mistake list (`/mistakes`), review (`/review/[id]`). Auth added three more: `/login`, `/signup`, `/account`.
 - `docs/` — design docs (schema, API contracts, screen specs) written before implementation. Treat these as the source of truth for intended behavior, but verify against actual code since implementation can drift (see below).
 
-There is currently no authentication: `backend/app/deps.py::get_current_user_id()` hardcodes a seed user UUID (`00000000-0000-0000-0000-000000000001`), auto-created on startup by `app/seed.py`. Real auth (local JWT, then AWS Cognito) is a later phase — see `docs/ROADMAP.md`.
+Local JWT authentication is implemented: `backend/app/deps.py::get_current_user_id()` validates the `Authorization: Bearer` header (HS256, 7-day expiry) and returns the signed-in user's id — every endpoint depends on it except `/v1/auth/register` and `/v1/auth/login`. Hashing (`bcrypt`) and JWT (`python-jose`) utilities live in `app/auth.py`; registration/login/`me` are in `app/routers/auth.py`. There is no seed user anymore — `app/seed.py` was removed when auth landed, and users start with an empty account after registering. AWS Cognito (Phase 4) will replace this, swapping only how `deps.py` verifies the token.
 
-**No automated test suite exists yet** (no pytest config/tests dir in `backend/`, no test framework wired up in `frontend/`).
+Backend tests: `cd backend && pip install -r requirements-dev.txt && pytest`. Tests run against a separate PostgreSQL database (`misnote_test`) and each test is rolled back afterward. The `tests/conftest.py` `client` fixture overrides the `get_current_user_id` dependency so most tests don't need a real token; tests that exercise auth itself use the `anon_client` fixture instead.
 
 ## Commands
 
@@ -37,6 +37,14 @@ alembic downgrade -1
 
 Or via Docker (from repo root): `cp backend/.env.example backend/.env && docker compose up`.
 
+Every endpoint requires a token; get one with:
+```bash
+curl -X POST http://localhost:8000/v1/auth/login \
+  -H "Content-Type: application/json" \
+  -d '{"email": "you@example.com", "password": "..."}'
+# use the returned access_token as: -H "Authorization: Bearer <token>"
+```
+
 ### Frontend (`frontend/`)
 
 ```bash
@@ -45,28 +53,30 @@ npm run build
 npm run lint
 ```
 
-`npm run generate` regenerates the typed API client into `src/generated/` from the backend's OpenAPI schema (`../backend/openapi.json` — run the backend first so that file exists, e.g. `curl http://localhost:8000/openapi.json -o ../backend/openapi.json`).
+`npm run generate` regenerates the typed API client into `src/generated/` from the backend's OpenAPI schema (`../backend/openapi.json` — run the backend first so that file exists, e.g. `curl http://localhost:8000/openapi.json -o ../backend/openapi.json`). The generator needs Java 11+; the system `java` is 1.8 and gets rejected, so run it with the Homebrew JDK instead: `JAVA_HOME=/opt/homebrew/opt/openjdk npm run generate`.
 
-`frontend/CLAUDE.md` just points to `frontend/AGENTS.md`, which warns that this Next.js version (16.2.9) has breaking API/convention changes not reflected in training data, and to check `node_modules/next/dist/docs/` before writing Next.js code.
+`frontend/CLAUDE.md` just points to `frontend/AGENTS.md`, which warns that this Next.js version (16.2.9) has breaking API/convention changes not reflected in training data, and to check `node_modules/next/dist/docs/` before writing Next.js code. One example that already bit us: Next.js 16's bundled React Compiler lint rules make `react-hooks/set-state-in-effect` (a synchronous `setState` inside `useEffect`) a hard lint error — see the documented `eslint-disable-next-line` in `src/components/auth/auth-gate.tsx`.
 
 ## Architecture
 
 ### Backend request flow
 
-`app/main.py` wires per-resource `APIRouter`s under `/v1/...` prefixes (e.g. `subjects.router` → `/v1/subjects`, `questions.router` → `/v1/questions`). Note `units` is split into two routers combined at different prefixes: `units_subjects_router` (nested `/v1/subjects/{id}/units`) and `units_router` (`/v1/units/{id}`). `attempts.router` mounts under `/v1/questions` (`/v1/questions/{id}/attempts`).
+`app/main.py` wires per-resource `APIRouter`s under `/v1/...` prefixes (e.g. `subjects.router` → `/v1/subjects`, `questions.router` → `/v1/questions`). Note `units` is split into two routers combined at different prefixes: `units_subjects_router` (nested `/v1/subjects/{id}/units`) and `units_router` (`/v1/units/{id}`). `attempts.router` mounts under `/v1/questions` (`/v1/questions/{id}/attempts`). `auth.router` mounts at `/v1/auth` (`/register`, `/login`, `/me`) and is the only router with endpoints that don't require a token (`/register`, `/login`).
 
 Each resource follows the same triad:
 - `app/models/<x>.py` — SQLAlchemy model.
 - `app/schemas/<x>.py` — Pydantic request/response models. Nested reference shapes (e.g. a question's embedded subject/unit) live in `app/schemas/refs.py` (`SubjectRef`, `UnitRef`, `QuestionRef`).
 - `app/routers/<x>.py` — endpoints; each has a local `_build_response()` helper that assembles the nested response shape from the ORM object.
 
-All queries are scoped by `user_id` (from `get_current_user_id()`) for data isolation; `units` are scoped indirectly through their `subject_id`.
+All queries are scoped by `user_id` (from `get_current_user_id()`) for data isolation, including `units` — each `units.py` endpoint checks the parent subject's owner before reading or writing.
 
 ### Frontend structure
 
 - `src/app/<route>/page.tsx` files are thin; the actual UI lives in `src/components/<feature>/` (e.g. `/` renders `components/home/home-content.tsx`).
 - API calls go through the singletons exported by `src/lib/api.ts` (`subjectsApi`, `unitsApi`, `questionsApi`, `mistakeNotesApi`), which wrap the generated clients in `src/generated/`. No hand-written `fetch`.
 - `src/components/layout/nav-items.tsx::NAV_ITEMS` is the single source of navigation entries, consumed by both `sidebar.tsx` (desktop) and `bottom-nav.tsx` (mobile); `app-shell.tsx` combines them.
+- `src/components/auth/auth-gate.tsx` wraps `AppShell` in `app/layout.tsx`: it renders `/login`/`/signup` without the shell, redirects to `/login` when there's no token, and otherwise renders the shelled app.
+- `src/lib/auth-token.ts` is the sole place that touches `localStorage` for the token (`getToken`/`setToken`/`clearToken`); `src/lib/api.ts` reads it to attach the `Authorization` header and clears it on a 401 response.
 
 ### Mistake-note / mastery rules
 
@@ -91,4 +101,4 @@ This is the core domain logic, spread across `routers/attempts.py` and `routers/
 
 ## Docs map
 
-`docs/design/` has the full pre-implementation spec: `db/schema.md` + `db/design.md` (ER diagram, indexes, mastery rules), `api/*.md` (per-resource endpoint contracts), `api/conventions.md` (auth, pagination, error codes, OpenAPI-generator workflow), `screens/*.md` (screen-by-screen UX spec), `mockups/*.html` (static HTML mockups). `docs/ROADMAP.md` has the phased implementation plan (Phase 0 Docker skeleton → Phase 1 backend API → Phase 2 frontend → Phase 3 local JWT → Phase 4 AWS). Treat these as design intent, not a guarantee of current behavior — cross-check against the actual router/model code, which has already diverged in small ways (e.g. auth base URL and Cognito flow in `conventions.md` describe the eventual AWS target, not the current no-auth local state).
+`docs/design/` has the full pre-implementation spec: `db/schema.md` + `db/design.md` (ER diagram, indexes, mastery rules), `api/*.md` (per-resource endpoint contracts), `api/conventions.md` (auth, pagination, error codes, OpenAPI-generator workflow), `screens/*.md` (screen-by-screen UX spec), `mockups/*.html` (static HTML mockups). `docs/ROADMAP.md` has the phased implementation plan (Phase 0 Docker skeleton → Phase 1 backend API → Phase 2 frontend → Phase 3 local JWT → Phase 4 AWS, now on Phase 4). `docs/superpowers/specs/2026-07-31-auth-design.md` is the design doc for the Phase 3 local-JWT work. Treat these as design intent, not a guarantee of current behavior — cross-check against the actual router/model code, which can still diverge in small ways as implementation continues.

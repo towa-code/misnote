@@ -4,14 +4,14 @@
 
 | 項目 | 内容 |
 |-----|-----|
-| ベースURL | `https://api.misnote.com/v1` |
-| 認証方式 | Amazon Cognito (JWTトークン) |
+| ベースURL | `http://localhost:8000/v1`（Phase 4 で `https://api.misnote.com/v1`） |
+| 認証方式 | FastAPI が発行する JWT（HS256・有効期限7日）。Phase 4 で Cognito に差し替え |
 | データ形式 | JSON |
 
 ### 認証ヘッダー
 
 ```
-Authorization: Bearer {CognitoのJWTトークン}
+Authorization: Bearer {ログインAPIが返すJWT}
 ```
 
 ---
@@ -33,13 +33,14 @@ Authorization: Bearer {CognitoのJWTトークン}
 |----------------|------|
 | 400 | ビジネスルール違反（例：単元が指定科目に属していない） |
 | 401 | 認証エラー（トークンが無効） |
-| 403 | 権限エラー（他のユーザーのデータにアクセス） |
 | 404 | データが見つからない |
 | 409 | 競合エラー（紐づくデータが存在するため削除不可） |
 | 422 | バリデーションエラー（必須項目の欠落・型不一致。FastAPI が自動で返す） |
 | 500 | サーバーエラー |
 
 > 形式チェック（Pydantic）は 422、形式は正しいが業務的に不正なリクエストは 400 を使う
+>
+> 他ユーザーのデータへのアクセスは、存在自体を秘匿するため 403 ではなく 404 を返す。
 
 **エラーレスポンスの形式**
 ```json
@@ -107,6 +108,9 @@ frontend/src/generated/
 
 | メソッド | パス | 説明 |
 |---------|------|------|
+| POST | `/auth/register` | ユーザー登録 |
+| POST | `/auth/login` | ログイン（JWTを返す） |
+| GET | `/auth/me` | ログイン中のユーザー情報 |
 | GET | `/subjects` | 科目一覧取得 |
 | POST | `/subjects` | 科目作成 |
 | PUT | `/subjects/{id}` | 科目更新 |

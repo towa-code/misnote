@@ -30,7 +30,11 @@ import type { GetNoteV1MistakeNotesNoteIdGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new MistakeNotesApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new MistakeNotesApi(config);
 
   const body = {
     // string
@@ -62,7 +66,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -96,7 +100,11 @@ import type { ListActiveV1MistakeNotesGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new MistakeNotesApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new MistakeNotesApi(config);
 
   const body = {
     // number (optional)
@@ -131,7 +139,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -165,7 +173,11 @@ import type { ListMasteredV1MistakeNotesMasteredGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new MistakeNotesApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new MistakeNotesApi(config);
 
   const body = {
     // number (optional)
@@ -200,7 +212,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -234,7 +246,11 @@ import type { ListTodayV1MistakeNotesTodayGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new MistakeNotesApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new MistakeNotesApi(config);
 
   try {
     const data = await api.listTodayV1MistakeNotesTodayGet();
@@ -258,7 +274,7 @@ This endpoint does not need any parameter.
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -291,7 +307,11 @@ import type { UpdateNoteV1MistakeNotesNoteIdPutRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new MistakeNotesApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new MistakeNotesApi(config);
 
   const body = {
     // string
@@ -326,7 +346,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -360,7 +380,11 @@ import type { UpdateStatusV1MistakeNotesNoteIdStatusPutRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new MistakeNotesApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new MistakeNotesApi(config);
 
   const body = {
     // string
@@ -395,7 +419,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 

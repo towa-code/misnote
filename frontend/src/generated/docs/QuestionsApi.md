@@ -29,7 +29,11 @@ import type { CreateQuestionV1QuestionsPostRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new QuestionsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new QuestionsApi(config);
 
   const body = {
     // QuestionCreate
@@ -61,7 +65,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -95,7 +99,11 @@ import type { DeleteQuestionV1QuestionsQuestionIdDeleteRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new QuestionsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new QuestionsApi(config);
 
   const body = {
     // string
@@ -127,7 +135,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -161,7 +169,11 @@ import type { GetQuestionV1QuestionsQuestionIdGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new QuestionsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new QuestionsApi(config);
 
   const body = {
     // string
@@ -193,7 +205,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -227,7 +239,11 @@ import type { ListQuestionsV1QuestionsGetRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new QuestionsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new QuestionsApi(config);
 
   const body = {
     // string (optional)
@@ -268,7 +284,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
@@ -302,7 +318,11 @@ import type { UpdateQuestionV1QuestionsQuestionIdPutRequest } from '';
 
 async function example() {
   console.log("🚀 Testing  SDK...");
-  const api = new QuestionsApi();
+  const config = new Configuration({ 
+    // Configure HTTP bearer authorization: HTTPBearer
+    accessToken: "YOUR BEARER TOKEN",
+  });
+  const api = new QuestionsApi(config);
 
   const body = {
     // string
@@ -337,7 +357,7 @@ example().catch(console.error);
 
 ### Authorization
 
-No authorization required
+[HTTPBearer](../README.md#HTTPBearer)
 
 ### HTTP request headers
 
