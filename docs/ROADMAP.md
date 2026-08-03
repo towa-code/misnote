@@ -7,10 +7,10 @@
 ## フェーズ概要
 
 ```
-Phase 0  環境構築          ─ Docker + 骨格作成
-Phase 1  バックエンドAPI   ─ FastAPI + PostgreSQL（ローカル）
-Phase 2  フロントエンド    ─ Next.js + 生成クライアント
-Phase 3  認証              ─ シンプルJWT（ローカル）              ✅ 完了
+Phase 0  環境構築          ─ Docker + 骨格作成                    ✅ 完了
+Phase 1  バックエンドAPI   ─ FastAPI + PostgreSQL（ローカル）      ✅ 完了
+Phase 2  フロントエンド    ─ Next.js + 生成クライアント            ✅ 完了
+Phase 3  認証              ─ シンプルJWT（ローカル）               ✅ 完了
 Phase 4  クラウド移行      ─ AWS（RDS / ECS / Cognito）           ← 次はここ
 ```
 
@@ -67,10 +67,10 @@ services:
 
 ### チェックリスト
 
-- [ ] `docker compose up` で PostgreSQL 起動確認
-- [ ] FastAPI 起動・`http://localhost:8000/docs` で Swagger UI 確認
-- [ ] Next.js `npm run dev` で `http://localhost:3000` 確認
-- [ ] frontend から `http://localhost:8000` への CORS 許可設定
+- [x] `docker compose up` で PostgreSQL 起動確認
+- [x] FastAPI 起動・`http://localhost:8000/docs` で Swagger UI 確認
+- [x] Next.js `npm run dev` で `http://localhost:3000` 確認
+- [x] frontend から `http://localhost:8000` への CORS 許可設定
 
 ---
 
@@ -113,13 +113,18 @@ curl http://localhost:8000/openapi.json -o frontend/openapi.json
 
 ### チェックリスト
 
-- [ ] Alembic マイグレーション成功
-- [ ] 全エンドポイントを Swagger UI から手動テスト
-- [ ] `POST /questions`で `memo` を渡したとき `mistake_notes` が自動生成されること
-- [ ] 不正解の attempt で既存ノートの `wrong_count` が加算され、重複ノートが作られないこと
-- [ ] 3回連続正解で attempt レスポンスの `mastery_suggested` が `true` になること（mastered へは自動遷移しないこと）
-- [ ] `GET /mistake-notes/today` が `next_review_at <= today` の結果のみ返すこと
-- [ ] `openapi.json` が出力されること
+- [x] Alembic マイグレーション成功
+- [x] 全エンドポイントを Swagger UI から手動テスト
+- [x] `POST /questions`で `memo` を渡したとき `mistake_notes` が自動生成されること
+- [x] 不正解の attempt で既存ノートの `wrong_count` が加算され、重複ノートが作られないこと
+- [x] 3回連続正解で attempt レスポンスの `mastery_suggested` が `true` になること（mastered へは自動遷移しないこと）
+- [x] `GET /mistake-notes/today` が `next_review_at <= today` の結果のみ返すこと
+- [x] `openapi.json` が出力されること
+
+> 検証の実態: Swagger UI を1つずつクリックしたのではなく、curl と実画面での操作、
+> および Phase 3 で整備した pytest スイート（`backend/tests/`）で確認している。
+> 設計時になかった追加エンドポイント: `GET /mistake-notes/mastered`（克服済み一覧）。
+> 一覧APIは status で分割されており、`GET /mistake-notes` は active のみを返す。
 
 ---
 
@@ -153,11 +158,11 @@ npx @openapitools/openapi-generator-cli generate \
 
 ### チェックリスト
 
-- [ ] openapi-generator が型エラーなく生成されること
-- [ ] 科目・単元を追加・編集・削除できること
-- [ ] 問題を登録すると苦手問題一覧に表示されること
-- [ ] ホームに今日の復習問題が表示されること
-- [ ] 復習フロー（問題 → 答え → 正解/不正解 → 保存）が一通り動くこと
+- [x] openapi-generator が型エラーなく生成されること
+- [x] 科目・単元を追加・編集・削除できること
+- [x] 問題を登録すると苦手問題一覧に表示されること
+- [x] ホームに今日の復習問題が表示されること
+- [x] 復習フロー（問題 → 答え → 正解/不正解 → 保存）が一通り動くこと
 
 ---
 
