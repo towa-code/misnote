@@ -30,6 +30,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 | [photo-upload.md](./photo-upload.md) | 問題の写真登録 | 問題集をスマホで撮って登録 | ◎ | 中〜大 | ストレージ（ローカル→S3） |
 | [ai-assist.md](./ai-assist.md) | AI補助 | 間違えた理由の言語化補助・類題生成 | ◎ | 中 | LLM API（利用料発生） |
 | [reminder-notification.md](./reminder-notification.md) | 復習日リマインダー | メール/プッシュで復習日を通知 | △ | 中〜大 | 認証（Phase 3）・定期実行基盤 |
+| [grade-aware-content.md](./grade-aware-content.md) | 学年に応じた最適化 | 学年を持たせて文言・科目プリセットをその学年に合わせる | ○ | 中 | プリセットと組むと効果大 |
 
 差別化度: ◎=このアプリの個性になる / ○=体験を底上げする / △=定番機能（あると便利）
 
@@ -47,6 +48,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 8. **photo-upload** — 実用性は大きいがストレージ設計が絡む
 9. **ai-assist** — API費用と品質検証が必要
 10. **reminder-notification** — 認証（Phase 3）完了後に着手
+11. **grade-aware-content** — preset-subjects-units の後に組むと効果が大きい（文言の集約だけは先に済ませられる）
 
 ---
 
