@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date, datetime
 from uuid import UUID
 
 from pydantic import BaseModel
@@ -18,6 +18,7 @@ class AttemptResponse(BaseModel):
     mistake_note_id: UUID | None
     correct_streak: int | None
     mastery_suggested: bool | None
+    suggested_next_review_at: date | None
 
 
 class AttemptHistoryItem(BaseModel):

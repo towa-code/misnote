@@ -3,8 +3,10 @@
 import { useState } from "react";
 import type { MistakeNoteResponse } from "@/generated";
 import TagPicker from "@/components/reason-tag/tag-picker";
+import DateChip from "@/components/review-date/date-chip";
 import { inputBase, labelBase } from "@/lib/form-styles";
 import type { ReasonTag } from "@/lib/reason-tags";
+import { formatSuggestion, toDateInput } from "@/lib/review-date";
 
 function CheckIcon({ size = 16 }: { size?: number }) {
   return (
@@ -41,10 +43,6 @@ function PencilIcon() {
   );
 }
 
-function toDateInput(date: Date | null): string {
-  return date ? date.toISOString().slice(0, 10) : "";
-}
-
 export type SavePayload = {
   memo?: string;
   learning?: string;
@@ -57,6 +55,7 @@ type Props = {
   note: MistakeNoteResponse;
   phase: "revealed" | "correct" | "wrong";
   masterySuggested: boolean;
+  suggestedNextReviewAt: Date | null;
   saving: boolean;
   onJudge: (isCorrect: boolean) => void;
   onSave: (payload: SavePayload) => void;
@@ -68,6 +67,7 @@ export default function JudgePanel({
   note,
   phase,
   masterySuggested,
+  suggestedNextReviewAt,
   saving,
   onJudge,
   onSave,
@@ -79,6 +79,19 @@ export default function JudgePanel({
   const [reasonTag, setReasonTag] = useState<ReasonTag | null>(note.reasonTag);
   const [nextReviewAt, setNextReviewAt] = useState(
     toDateInput(note.nextReviewAt)
+  );
+
+  // 提案は押すと日付欄に入るだけ。保存は下の「保存してホームへ」に任せる
+  const suggestionChip = suggestedNextReviewAt && (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-[12px] text-muted">次回のおすすめ</span>
+      <DateChip
+        label={formatSuggestion(suggestedNextReviewAt)}
+        selected={nextReviewAt === toDateInput(suggestedNextReviewAt)}
+        disabled={saving}
+        onClick={() => setNextReviewAt(toDateInput(suggestedNextReviewAt))}
+      />
+    </div>
   );
 
   if (phase === "revealed") {
@@ -125,6 +138,8 @@ export default function JudgePanel({
               3回連続で正解しています。克服済みにしますか？
             </div>
           )}
+
+          {suggestionChip}
 
           <div className="max-w-[200px]">
             <label className={labelBase} htmlFor="next-review-at">
@@ -193,10 +208,13 @@ export default function JudgePanel({
             id="review-memo"
             rows={2}
             className={inputBase + " resize-y leading-relaxed"}
-            placeholder="例：符号のミスに注意"
+            placeholder="単なるミスで終わらせず、具体的に書いてみよう"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
           />
+          <p className="text-[11px] text-muted mt-1.5">
+            どこでつまずいたかまで書いておくと、次に同じ形の問題で気づけます
+          </p>
         </div>
 
         <div>
@@ -207,11 +225,16 @@ export default function JudgePanel({
             id="review-learning"
             rows={2}
             className={inputBase + " resize-y leading-relaxed"}
-            placeholder="例：移項するとき符号が反転することを覚える"
+            placeholder="似た問題にも対応できるようにまとめてみよう"
             value={learning}
             onChange={(e) => setLearning(e.target.value)}
           />
+          <p className="text-[11px] text-muted mt-1.5">
+            解き方のコツとして残すと、初めて見る問題でも通用します
+          </p>
         </div>
+
+        {suggestionChip}
 
         <div className="max-w-[200px]">
           <label className={labelBase} htmlFor="next-review-at-wrong">

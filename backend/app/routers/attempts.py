@@ -1,3 +1,4 @@
+from datetime import date, timedelta
 from uuid import UUID
 
 from fastapi import APIRouter, Depends, HTTPException, status
@@ -12,6 +13,14 @@ from app.schemas.attempt import AttemptCreate, AttemptHistoryItem, AttemptRespon
 router = APIRouter()
 
 MASTERY_THRESHOLD = 3
+
+# 解答後の correct_streak 0 / 1 / 2 / 3以上 に対応する提案間隔（日）
+SUGGEST_INTERVALS = [1, 3, 7, 14]
+
+
+def _suggest_next_review(correct_streak: int) -> date:
+    days = SUGGEST_INTERVALS[min(correct_streak, len(SUGGEST_INTERVALS) - 1)]
+    return date.today() + timedelta(days=days)
 
 
 @router.post("/{question_id}/attempts", response_model=AttemptResponse, status_code=status.HTTP_201_CREATED)
@@ -61,6 +70,9 @@ def create_attempt(
     mistake_note_id = note.id if note else None
     correct_streak = note.correct_streak if note else None
     mastery_suggested = (correct_streak >= MASTERY_THRESHOLD) if correct_streak is not None else None
+    suggested_next_review_at = (
+        _suggest_next_review(correct_streak) if correct_streak is not None else None
+    )
 
     return AttemptResponse(
         id=attempt.id,
@@ -71,6 +83,7 @@ def create_attempt(
         mistake_note_id=mistake_note_id,
         correct_streak=correct_streak,
         mastery_suggested=mastery_suggested,
+        suggested_next_review_at=suggested_next_review_at,
     )
 
 

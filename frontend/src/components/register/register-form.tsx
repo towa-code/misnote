@@ -5,9 +5,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { SubjectResponse, UnitResponse } from "@/generated";
 import TagPicker from "@/components/reason-tag/tag-picker";
+import DateChip from "@/components/review-date/date-chip";
 import { questionsApi, subjectsApi, unitsApi } from "@/lib/api";
 import { inputBase, labelBase } from "@/lib/form-styles";
 import type { ReasonTag } from "@/lib/reason-tags";
+import { addDays, toDateInput } from "@/lib/review-date";
+
+// 復習日のクイック指定（今日から何日後か）
+const QUICK_DAYS = [1, 3, 7];
 
 // Explicit "必須" badge: clearer for students than a bare asterisk
 function RequiredBadge() {
@@ -245,11 +250,14 @@ export default function RegisterForm() {
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
                   rows={3}
-                  placeholder="例：符号のミスに注意。移項するとき符号が変わる"
+                  placeholder="単なるミスで終わらせず、具体的に書いてみよう"
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
                   required
                 />
+                <p className="text-[11px] text-muted mt-1.5">
+                  どこでつまずいたかまで書いておくと、次に同じ形の問題で気づけます
+                </p>
               </div>
 
               {/* 今回学んだこと */}
@@ -258,10 +266,13 @@ export default function RegisterForm() {
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
                   rows={3}
-                  placeholder="例：移項するとき符号が反転することを公式として覚える"
+                  placeholder="似た問題にも対応できるようにまとめてみよう"
                   value={learning}
                   onChange={(e) => setLearning(e.target.value)}
                 />
+                <p className="text-[11px] text-muted mt-1.5">
+                  解き方のコツとして残すと、初めて見る問題でも通用します
+                </p>
               </div>
 
               {/* 次の復習日 */}
@@ -273,6 +284,20 @@ export default function RegisterForm() {
                   value={nextReviewAt}
                   onChange={(e) => setNextReviewAt(e.target.value)}
                 />
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {QUICK_DAYS.map((days) => {
+                    const value = toDateInput(addDays(days));
+                    return (
+                      <DateChip
+                        key={days}
+                        label={`+${days}日`}
+                        selected={nextReviewAt === value}
+                        disabled={submitting}
+                        onClick={() => setNextReviewAt(value)}
+                      />
+                    );
+                  })}
+                </div>
                 <p className="text-[11px] text-muted mt-1.5">
                   未設定の場合、苦手問題一覧に追加されます
                 </p>

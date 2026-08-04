@@ -14,6 +14,7 @@ Name | Type
 `mistakeNoteId` | string
 `correctStreak` | number
 `masterySuggested` | boolean
+`suggestedNextReviewAt` | Date
 
 ## Example
 
@@ -30,6 +31,7 @@ const example = {
   "mistakeNoteId": null,
   "correctStreak": null,
   "masterySuggested": null,
+  "suggestedNextReviewAt": null,
 } satisfies AttemptResponse
 
 console.log(example)
