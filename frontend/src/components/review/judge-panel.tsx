@@ -208,7 +208,7 @@ export default function JudgePanel({
             id="review-memo"
             rows={2}
             className={inputBase + " resize-y leading-relaxed"}
-            placeholder="例：符号のミスに注意"
+            placeholder="どこで何を勘違いしたかまで書くと、次に同じ間違いに気づけます"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
           />
@@ -222,7 +222,7 @@ export default function JudgePanel({
             id="review-learning"
             rows={2}
             className={inputBase + " resize-y leading-relaxed"}
-            placeholder="例：移項するとき符号が反転することを覚える"
+            placeholder="次に同じ問題が出たらどう解くかを書くと、復習のときに思い出せます"
             value={learning}
             onChange={(e) => setLearning(e.target.value)}
           />

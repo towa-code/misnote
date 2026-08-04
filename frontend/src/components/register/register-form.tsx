@@ -250,7 +250,7 @@ export default function RegisterForm() {
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
                   rows={3}
-                  placeholder="例：符号のミスに注意。移項するとき符号が変わる"
+                  placeholder="どこで何を勘違いしたかまで書くと、次に同じ間違いに気づけます"
                   value={memo}
                   onChange={(e) => setMemo(e.target.value)}
                   required
@@ -263,7 +263,7 @@ export default function RegisterForm() {
                 <textarea
                   className={inputBase + " resize-y leading-relaxed"}
                   rows={3}
-                  placeholder="例：移項するとき符号が反転することを公式として覚える"
+                  placeholder="次に同じ問題が出たらどう解くかを書くと、復習のときに思い出せます"
                   value={learning}
                   onChange={(e) => setLearning(e.target.value)}
                 />
