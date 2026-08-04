@@ -3,8 +3,10 @@
 import { useState } from "react";
 import type { MistakeNoteResponse } from "@/generated";
 import TagPicker from "@/components/reason-tag/tag-picker";
+import DateChip from "@/components/review-date/date-chip";
 import { inputBase, labelBase } from "@/lib/form-styles";
 import type { ReasonTag } from "@/lib/reason-tags";
+import { formatSuggestion, toDateInput } from "@/lib/review-date";
 
 function CheckIcon({ size = 16 }: { size?: number }) {
   return (
@@ -41,10 +43,6 @@ function PencilIcon() {
   );
 }
 
-function toDateInput(date: Date | null): string {
-  return date ? date.toISOString().slice(0, 10) : "";
-}
-
 export type SavePayload = {
   memo?: string;
   learning?: string;
@@ -57,6 +55,7 @@ type Props = {
   note: MistakeNoteResponse;
   phase: "revealed" | "correct" | "wrong";
   masterySuggested: boolean;
+  suggestedNextReviewAt: Date | null;
   saving: boolean;
   onJudge: (isCorrect: boolean) => void;
   onSave: (payload: SavePayload) => void;
@@ -68,6 +67,7 @@ export default function JudgePanel({
   note,
   phase,
   masterySuggested,
+  suggestedNextReviewAt,
   saving,
   onJudge,
   onSave,
@@ -79,6 +79,19 @@ export default function JudgePanel({
   const [reasonTag, setReasonTag] = useState<ReasonTag | null>(note.reasonTag);
   const [nextReviewAt, setNextReviewAt] = useState(
     toDateInput(note.nextReviewAt)
+  );
+
+  // 提案は押すと日付欄に入るだけ。保存は下の「保存してホームへ」に任せる
+  const suggestionChip = suggestedNextReviewAt && (
+    <div className="flex flex-wrap items-center gap-2">
+      <span className="text-[12px] text-muted">次回のおすすめ</span>
+      <DateChip
+        label={formatSuggestion(suggestedNextReviewAt)}
+        selected={nextReviewAt === toDateInput(suggestedNextReviewAt)}
+        disabled={saving}
+        onClick={() => setNextReviewAt(toDateInput(suggestedNextReviewAt))}
+      />
+    </div>
   );
 
   if (phase === "revealed") {
@@ -125,6 +138,8 @@ export default function JudgePanel({
               3回連続で正解しています。克服済みにしますか？
             </div>
           )}
+
+          {suggestionChip}
 
           <div className="max-w-[200px]">
             <label className={labelBase} htmlFor="next-review-at">
@@ -212,6 +227,8 @@ export default function JudgePanel({
             onChange={(e) => setLearning(e.target.value)}
           />
         </div>
+
+        {suggestionChip}
 
         <div className="max-w-[200px]">
           <label className={labelBase} htmlFor="next-review-at-wrong">

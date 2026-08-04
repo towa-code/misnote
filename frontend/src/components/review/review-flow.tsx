@@ -50,6 +50,9 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
   const [userAnswer, setUserAnswer] = useState("");
   const [phase, setPhase] = useState<Phase>("answering");
   const [masterySuggested, setMasterySuggested] = useState(false);
+  const [suggestedNextReviewAt, setSuggestedNextReviewAt] = useState<Date | null>(
+    null
+  );
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
@@ -73,6 +76,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
         },
       });
       setMasterySuggested(attempt.masterySuggested === true);
+      setSuggestedNextReviewAt(attempt.suggestedNextReviewAt);
       setPhase(isCorrect ? "correct" : "wrong");
     } catch {
       setError("回答の記録に失敗しました。もう一度お試しください。");
@@ -256,6 +260,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
             note={note}
             phase={phase}
             masterySuggested={masterySuggested}
+            suggestedNextReviewAt={suggestedNextReviewAt}
             saving={saving}
             onJudge={handleJudge}
             onSave={handleSave}

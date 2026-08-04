@@ -67,6 +67,12 @@ export interface AttemptResponse {
      * @memberof AttemptResponse
      */
     masterySuggested: boolean | null;
+    /**
+     * 
+     * @type {Date}
+     * @memberof AttemptResponse
+     */
+    suggestedNextReviewAt: Date | null;
 }
 
 export function AttemptResponseFromJSON(json: any): AttemptResponse {
@@ -87,6 +93,7 @@ export function AttemptResponseFromJSONTyped(json: any, ignoreDiscriminator: boo
         'mistakeNoteId': json['mistake_note_id'],
         'correctStreak': json['correct_streak'],
         'masterySuggested': json['mastery_suggested'],
+        'suggestedNextReviewAt': (json['suggested_next_review_at'] == null ? null : new Date(json['suggested_next_review_at'])),
     };
 }
 
@@ -109,6 +116,7 @@ export function AttemptResponseToJSONTyped(value?: AttemptResponse | null, ignor
         'mistake_note_id': value['mistakeNoteId'],
         'correct_streak': value['correctStreak'],
         'mastery_suggested': value['masterySuggested'],
+        'suggested_next_review_at': value['suggestedNextReviewAt'] == null ? value['suggestedNextReviewAt'] : value['suggestedNextReviewAt'].toISOString().substring(0,10),
     };
 }
 

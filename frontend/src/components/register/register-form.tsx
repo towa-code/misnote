@@ -5,9 +5,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import type { SubjectResponse, UnitResponse } from "@/generated";
 import TagPicker from "@/components/reason-tag/tag-picker";
+import DateChip from "@/components/review-date/date-chip";
 import { questionsApi, subjectsApi, unitsApi } from "@/lib/api";
 import { inputBase, labelBase } from "@/lib/form-styles";
 import type { ReasonTag } from "@/lib/reason-tags";
+import { addDays, toDateInput } from "@/lib/review-date";
+
+// 復習日のクイック指定（今日から何日後か）
+const QUICK_DAYS = [1, 3, 7];
 
 // Explicit "必須" badge: clearer for students than a bare asterisk
 function RequiredBadge() {
@@ -273,6 +278,20 @@ export default function RegisterForm() {
                   value={nextReviewAt}
                   onChange={(e) => setNextReviewAt(e.target.value)}
                 />
+                <div className="flex flex-wrap gap-2 mt-2">
+                  {QUICK_DAYS.map((days) => {
+                    const value = toDateInput(addDays(days));
+                    return (
+                      <DateChip
+                        key={days}
+                        label={`+${days}日`}
+                        selected={nextReviewAt === value}
+                        disabled={submitting}
+                        onClick={() => setNextReviewAt(value)}
+                      />
+                    );
+                  })}
+                </div>
                 <p className="text-[11px] text-muted mt-1.5">
                   未設定の場合、苦手問題一覧に追加されます
                 </p>
