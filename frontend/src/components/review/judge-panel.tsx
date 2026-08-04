@@ -208,10 +208,13 @@ export default function JudgePanel({
             id="review-memo"
             rows={2}
             className={inputBase + " resize-y leading-relaxed"}
-            placeholder="どこで何を勘違いしたかまで書くと、次に同じ間違いに気づけます"
+            placeholder="単なるミスで終わらせず、具体的に書いてみよう"
             value={memo}
             onChange={(e) => setMemo(e.target.value)}
           />
+          <p className="text-[11px] text-muted mt-1.5">
+            どこでつまずいたかまで書いておくと、次に同じ形の問題で気づけます
+          </p>
         </div>
 
         <div>
@@ -222,10 +225,13 @@ export default function JudgePanel({
             id="review-learning"
             rows={2}
             className={inputBase + " resize-y leading-relaxed"}
-            placeholder="次に同じ問題が出たらどう解くかを書くと、復習のときに思い出せます"
+            placeholder="似た問題にも対応できるようにまとめてみよう"
             value={learning}
             onChange={(e) => setLearning(e.target.value)}
           />
+          <p className="text-[11px] text-muted mt-1.5">
+            解き方のコツとして残すと、初めて見る問題でも通用します
+          </p>
         </div>
 
         {suggestionChip}
