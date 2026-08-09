@@ -828,32 +828,22 @@ git commit -m "style: drop the old slate/amber tokens and switch to the new pale
 - 色の意味は4つに限る: 青＝未克服/行動、緑＝克服済み、金＝遅れ、赤＝間違い/エラー
 ```
 
-- [ ] **Step 2: 各モックアップの `:root` を差し替える**
+- [ ] **Step 2: モックアップの一括更新は行わない（2026-08-09 に決定）**
 
-`01_home_blue.html` の `:root` ブロックが正。以下の5ファイルの `:root` を同じ内容に置き換え、本文中の `var(--navy)` → `var(--ink)`、`var(--amber)` → 用途に応じて `var(--primary)` か `var(--late)` に振り分ける。
+当初は `02`〜`06` と `00_prototype.html` の `:root` を差し替える予定だったが、**やらないことにした。** モックアップは実装前の設計資料であり、実装が完了したいまは `frontend/` のコード自体が正になる。旧配色のまま残る資料を追いかけて塗り直す価値は薄い。
 
-対象: `02_register.html`, `03_mistake_list.html`, `04_subjects.html`, `05_review.html`, `06_home_upcoming_variants.html`, `00_prototype.html`
+代わりに `common-ui.md` 側で2点を明示する。
 
-振り分けの規則は Task 2〜6 と同じ。ボタン・リンク・フォーカス・選択状態は `primary`、遅延表示だけが `late`、エラーと不正解は `red`。
+- カラートークンの正は `frontend/src/app/globals.css` の `@theme`（モックアップではない）
+- `01_home_blue.html` 以外のモックアップは旧配色のままなので、配色の参照に使わない
 
-- [ ] **Step 3: 各モックアップに旧トークンが残っていないことを確認する**
+`01_home.html` と `01_home_blue.html` はどちらも残す。前者は旧配色との比較材料、後者は新配色の見た目の参照。
 
-Run: `cd docs/design/mockups && grep -lE 'navy|amber' *.html`
-Expected: 出力なし（`01_home.html` は比較用の原本として残すため、対象から外す場合はここで明示的に除外する）
-
-判断: `01_home.html` は**削除せず残す**。旧配色との比較材料として価値があるため。上記 grep は `grep -lE 'navy|amber' *.html | grep -v '^01_home.html$'` として実行する。
-
-- [ ] **Step 4: モックアップをブラウザで確認する**
-
-Run: `cd docs/design/mockups && python3 -m http.server 8899`
-
-`http://localhost:8899/` から各ファイルを開き、色が揃っていることを確認する。確認後はサーバを停止する（`pkill -f "http.server 8899"`）。
-
-- [ ] **Step 5: コミット**
+- [ ] **Step 3: コミット**
 
 ```bash
-git add docs/design/screens/common-ui.md docs/design/mockups/
-git commit -m "docs: update the color tokens in common-ui and the remaining mockups"
+git add docs/design/screens/common-ui.md
+git commit -m "docs: update the color tokens in common-ui"
 ```
 
 ---
