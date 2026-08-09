@@ -35,14 +35,14 @@ export default function UpcomingItem({ item }: Props) {
       className={[
         "group grid items-center gap-4 sm:gap-5 px-3 py-3.5 border-b border-border last:border-b-0",
         "grid-cols-[72px_1fr_auto] sm:grid-cols-[88px_1fr_auto]",
-        "rounded-md transition-colors duration-150 hover:bg-navy-lt active:bg-navy-lt",
+        "rounded-md transition-colors duration-150 hover:bg-ink-lt active:bg-ink-lt",
       ].join(" ")}
     >
       {/* Left: date (the key info for a scheduled item) */}
       <span
         className={[
           "text-[13px] font-bold whitespace-nowrap",
-          isUnscheduled ? "text-amber" : "text-navy-md",
+          isUnscheduled ? "text-primary" : "text-ink-md",
         ].join(" ")}
       >
         {formatUpcomingDate(item.nextReviewAt)}
@@ -59,7 +59,7 @@ export default function UpcomingItem({ item }: Props) {
             </>
           )}
         </div>
-        <p className="text-[14px] text-navy-md leading-relaxed">
+        <p className="text-[14px] text-ink-md leading-relaxed">
           {item.questionBody}
         </p>
       </div>
@@ -69,7 +69,7 @@ export default function UpcomingItem({ item }: Props) {
         <XIcon />
         {item.wrongCount}回
         <span
-          className="hidden sm:block ml-1 text-muted/60 group-hover:text-amber group-hover:translate-x-0.5 transition-[color,transform] duration-150"
+          className="hidden sm:block ml-1 text-muted/60 group-hover:text-primary group-hover:translate-x-0.5 transition-[color,transform] duration-150"
           aria-hidden="true"
         >
           <ChevronRightIcon />
