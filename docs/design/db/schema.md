@@ -10,6 +10,7 @@
 | `questions` | 問題 |
 | `attempts` | 回答履歴 |
 | `mistake_notes` | 間違いノート＋復習管理 |
+| `drafts` | クイック保存の下書き（まだ問題になっていないメモ） |
 
 ---
 
@@ -100,9 +101,24 @@
 
 ---
 
+## `drafts`（下書き）
+
+| カラム名 | 型 | 説明 |
+|---------|-----|------|
+| id | UUID | 主キー |
+| user_id | UUID | → users |
+| body | TEXT | 書き留めた本文 |
+| created_at | TIMESTAMP | 作成日時 |
+
+> クイック保存で「問題文だけ」を書き留めるためのテーブル。`questions` は `subject_id` が NOT NULL なので、科目を選ばずに保存するにはこの独立したテーブルが要る。
+> 下書きは編集せず、本登録するか削除するかのどちらかなので `updated_at` は持たない。本登録は `/register?draft={id}` で本文を流し込み、成功後に下書きを削除する（データとしての引き継ぎは本文のみで、リレーションは残さない）。
+
+---
+
 ## 関連ドキュメント
 
 - [DB: 設計思想・ER図・インデックス](./design.md)
 - [API: 問題](../api/questions.md)
 - [API: 回答](../api/attempts.md)
 - [API: 間違いノート](../api/mistake-notes.md)
+- [API: 下書き](../api/drafts.md)

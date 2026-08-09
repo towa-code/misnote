@@ -17,6 +17,7 @@ This directory is the **design documentation subtree** of the misnote (間違い
 | `design/api/questions.md` | Questions API — full CRUD, unit validation, mistake_note auto-create |
 | `design/api/attempts.md` | Attempts API — correct_streak side effects, mastery_suggested |
 | `design/api/mistake-notes.md` | Mistake-notes API — today/mastered filters, status endpoint, nested response shape |
+| `design/api/drafts.md` | Drafts API — quick-save notes that aren't questions yet |
 | `design/db/schema.md` | Full schema (6 tables) — all columns and FK relationships |
 | `design/db/design.md` | ER diagram, indexes, design rationale, correct_streak/mastery rules |
 | `design/screens/transitions.md` | Screen transition diagram |
@@ -25,6 +26,7 @@ This directory is the **design documentation subtree** of the misnote (間違い
 | `design/screens/review.md` | Review flow — self-grading, mastery_suggested UI, memo update |
 | `design/screens/mistake-list.md` | Mistake list — active/mastered tabs |
 | `design/screens/subjects.md` | Subject & unit management |
+| `design/screens/quick-save.md` | Quick save — draft list plus the save modal |
 | `design/screens/common-ui.md` | Color tokens, interactions, responsive breakpoints (applies to all screens) |
 | `design/mockups/` | Static HTML mockups (one per screen + `00_prototype.html` combining all screens) |
 | `ROADMAP.md` | Implementation roadmap (Phase 0–4: local Docker → backend → frontend → local JWT → AWS) |
@@ -53,3 +55,4 @@ This directory is the **design documentation subtree** of the misnote (間違い
 - `next_review_at` is user-set (not auto-calculated) and nullable; `GET /mistake-notes/today` filters by this date and excludes `null` (the home screen shows unscheduled notes separately)
 - `attempts.user_answer` is optional — the review flow is self-graded
 - All PKs are UUIDs; all tables are scoped to `user_id` for data isolation
+- `drafts` (quick save) hangs off `users` only — it is a note that isn't a question yet, so it holds just `body` and has no link to subjects, questions, or notes. Promoting one copies its text into the register form and then deletes the draft

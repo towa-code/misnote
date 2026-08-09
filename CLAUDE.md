@@ -7,8 +7,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 misnote (間違いノートアプリ) is a spaced-repetition "mistake notebook" app for students: users log questions they got wrong, add notes on what they misunderstood, set their own next-review date, and re-attempt questions until they've mastered them.
 
 The repo has three parts:
-- `backend/` — FastAPI + PostgreSQL API. Functionally implemented for all core resources (subjects, units, questions, attempts, mistake notes).
-- `frontend/` — Next.js app, tracked in this repo (no nested `.git`). All 5 designed screens are built and wired to the real API through the generated client: home (`/`), question registration (`/register`), subject/unit management (`/subjects`), mistake list (`/mistakes`), review (`/review/[id]`). Auth added three more: `/login`, `/signup`, `/account`.
+- `backend/` — FastAPI + PostgreSQL API. Functionally implemented for all core resources (subjects, units, questions, attempts, mistake notes, drafts).
+- `frontend/` — Next.js app, tracked in this repo (no nested `.git`). All 5 designed screens are built and wired to the real API through the generated client: home (`/`), question registration (`/register`), subject/unit management (`/subjects`), mistake list (`/mistakes`), review (`/review/[id]`). Auth added three more: `/login`, `/signup`, `/account`, and quick save added `/quick`.
 - `docs/` — design docs (schema, API contracts, screen specs) written before implementation. Treat these as the source of truth for intended behavior, but verify against actual code since implementation can drift (see below).
 
 Local JWT authentication is implemented: `backend/app/deps.py::get_current_user_id()` validates the `Authorization: Bearer` header (HS256, 7-day expiry) and returns the signed-in user's id — every endpoint depends on it except `/v1/auth/register` and `/v1/auth/login`. Hashing (`bcrypt`) and JWT (`python-jose`) utilities live in `app/auth.py`; registration/login/`me` are in `app/routers/auth.py`. There is no seed user anymore — `app/seed.py` was removed when auth landed, and users start with an empty account after registering. AWS Cognito (Phase 4) will replace this, swapping only how `deps.py` verifies the token.
@@ -61,7 +61,7 @@ npm run lint
 
 ### Backend request flow
 
-`app/main.py` wires per-resource `APIRouter`s under `/v1/...` prefixes (e.g. `subjects.router` → `/v1/subjects`, `questions.router` → `/v1/questions`). Note `units` is split into two routers combined at different prefixes: `units_subjects_router` (nested `/v1/subjects/{id}/units`) and `units_router` (`/v1/units/{id}`). `attempts.router` mounts under `/v1/questions` (`/v1/questions/{id}/attempts`). `auth.router` mounts at `/v1/auth` (`/register`, `/login`, `/me`) and is the only router with endpoints that don't require a token (`/register`, `/login`).
+`app/main.py` wires per-resource `APIRouter`s under `/v1/...` prefixes (e.g. `subjects.router` → `/v1/subjects`, `questions.router` → `/v1/questions`). Note `units` is split into two routers combined at different prefixes: `units_subjects_router` (nested `/v1/subjects/{id}/units`) and `units_router` (`/v1/units/{id}`). `attempts.router` mounts under `/v1/questions` (`/v1/questions/{id}/attempts`). `auth.router` mounts at `/v1/auth` (`/register`, `/login`, `/me`) and is the only router with endpoints that don't require a token (`/register`, `/login`). `drafts.router` mounts at `/v1/drafts`.
 
 Each resource follows the same triad:
 - `app/models/<x>.py` — SQLAlchemy model.
@@ -94,6 +94,15 @@ This is the core domain logic, spread across `routers/attempts.py` and `routers/
 - `unit_id` on `questions` is nullable; if set, it must belong to the question's `subject_id` (`routers/questions.py::_validate_unit`, 400 on mismatch).
 - Deleting a `Subject` or `Unit` returns 409 if it still has related units/questions attached.
 
+### Quick save (drafts)
+
+`drafts` is deliberately **separate** from `questions`/`mistake_notes` — it holds a note that isn't a question yet, with only `body` (plus `id`/`user_id`/`created_at`). It exists because `questions.subject_id` is NOT NULL, so saving "just the question text" is impossible through `questions`. Keeping it separate is also what let the register form's required `memo` (commit d9d14c4) stay required.
+
+- `GET/POST /v1/drafts`, `GET/DELETE /v1/drafts/{id}`. The list is `created_at DESC`. No update endpoint — a draft is either promoted or deleted, which is why there's no `updated_at`.
+- `/quick` lists drafts and saves through a modal; the modal stays open after each save so several can be typed in a row. It is the only modal in the app and uses the native `<dialog>` + `showModal()`. **`m-auto` is required on it** — Tailwind's preflight sets `margin: 0`, which kills `<dialog>`'s default centering.
+- Promoting a draft goes through the normal register form: `/register?draft=<id>` prefills `question_text` from `GET /drafts/{id}`, and a successful `POST /questions` then deletes the draft. Both draft calls fail soft — a missing draft just renders an empty form, and a failed delete still navigates home. `app/register/page.tsx` reads `searchParams` server-side and passes `draftId` down, so no `useSearchParams`/Suspense is involved.
+- See `docs/superpowers/specs/2026-08-09-quick-save-design.md` for why the originally proposed "note-less question = unorganized" design was dropped.
+
 ### Conventions
 
 - All PKs are UUIDs.
@@ -103,4 +112,4 @@ This is the core domain logic, spread across `routers/attempts.py` and `routers/
 
 ## Docs map
 
-`docs/design/` has the full pre-implementation spec: `db/schema.md` + `db/design.md` (ER diagram, indexes, mastery rules), `api/*.md` (per-resource endpoint contracts), `api/conventions.md` (auth, pagination, error codes, OpenAPI-generator workflow), `screens/*.md` (screen-by-screen UX spec), `mockups/*.html` (static HTML mockups). `docs/ROADMAP.md` has the phased implementation plan (Phase 0 Docker skeleton → Phase 1 backend API → Phase 2 frontend → Phase 3 local JWT → Phase 4 AWS, now on Phase 4). `docs/superpowers/specs/2026-07-31-auth-design.md` is the design doc for the Phase 3 local-JWT work. Treat these as design intent, not a guarantee of current behavior — cross-check against the actual router/model code, which can still diverge in small ways as implementation continues.
+`docs/design/` has the full pre-implementation spec: `db/schema.md` + `db/design.md` (ER diagram, indexes, mastery rules), `api/*.md` (per-resource endpoint contracts), `api/conventions.md` (auth, pagination, error codes, OpenAPI-generator workflow), `screens/*.md` (screen-by-screen UX spec), `mockups/*.html` (static HTML mockups). `docs/ROADMAP.md` has the phased implementation plan (Phase 0 Docker skeleton → Phase 1 backend API → Phase 2 frontend → Phase 3 local JWT → Phase 4 AWS, now on Phase 4). `docs/superpowers/specs/2026-07-31-auth-design.md` is the design doc for the Phase 3 local-JWT work. `docs/newfunction/` is the backlog of feature ideas — everything there is a proposal, not something to implement unasked (its README says so explicitly). Treat these as design intent, not a guarantee of current behavior — cross-check against the actual router/model code, which can still diverge in small ways as implementation continues.

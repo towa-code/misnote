@@ -132,6 +132,10 @@ frontend/src/generated/
 | GET | `/mistake-notes/{id}` | 間違いノート詳細取得 |
 | PUT | `/mistake-notes/{id}` | メモ・復習日を更新 |
 | PUT | `/mistake-notes/{id}/status` | ステータス変更 |
+| GET | `/drafts` | 下書き一覧取得 |
+| GET | `/drafts/{id}` | 下書き取得 |
+| POST | `/drafts` | 下書き作成 |
+| DELETE | `/drafts/{id}` | 下書き削除 |
 
 ---
 
@@ -143,3 +147,4 @@ frontend/src/generated/
 - [問題API](./questions.md)
 - [回答API](./attempts.md)
 - [間違いノートAPI](./mistake-notes.md)
+- [下書きAPI](./drafts.md)

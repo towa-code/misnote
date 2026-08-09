@@ -70,6 +70,12 @@
 
 自分の下書きを `created_at DESC`（新しい順）で返す。`limit` / `offset` は既存慣例どおり 100 / 0 を既定値とする。
 
+### `GET /v1/drafts/{draft_id}` → 200
+
+本登録画面（`/register?draft={id}`）が本文を読み込むために使う。他人の下書き・存在しない ID はいずれも 404。
+
+> 当初のスペックでは3本（POST / GET一覧 / DELETE）としていたが、prefill には1件取得が要るため実装時に追加した。
+
 ### `DELETE /v1/drafts/{draft_id}` → 204
 
 他人の下書き・存在しない ID はいずれも 404。
@@ -102,6 +108,8 @@ class DraftResponse(BaseModel):
 
 **アプリ内で最初のモーダルになる**（既存のダイアログ実装はない）。ネイティブの `<dialog>` 要素と `showModal()` を使う。Escape での閉じる・フォーカストラップ・背景の inert 化・バックドロップをブラウザが担保するので、自前実装より事故が少ない。
 
+> 実装時にハマった点：Tailwind の preflight が全要素に `margin: 0` を当てるため、`<dialog>` 既定の `margin: auto` による中央寄せが潰れて左上に貼り付く。`m-auto` を明示する。
+
 - 中身はテキストエリアと「保存」ボタンのみ
 - **保存してもモーダルは閉じない。** 入力欄をクリアし「保存しました」を表示して、背後の一覧を更新する。授業中に何問も連続で打ち込むのがこの機能の使い所なので、1問ごとに開き直させない
 - 閉じるのは明示的に閉じたときだけ（閉じるボタン・Escape・バックドロップ）
@@ -113,13 +121,13 @@ class DraftResponse(BaseModel):
 - 登録に成功したら `DELETE /v1/drafts/{id}` を呼び、下書きを片付けてから `/` に遷移する
 - 下書きの取得に失敗した場合（すでに削除済みなど）は prefill せず、通常の登録画面として動作させる
 - **下書きの削除に失敗しても登録自体は成功しているので、エラーで止めずに `/` へ進む。** 下書きが一覧に残るだけで、ユーザーは手動で消せる
-- Next.js 16 の `useSearchParams` は Suspense 境界の扱いが本バージョン固有なので、実装前に `node_modules/next/dist/docs/` を確認する（`frontend/AGENTS.md` の指示）
+- Next.js 16 の `useSearchParams` は Suspense 境界が要る（`node_modules/next/dist/docs/` で確認）。そこで `app/register/page.tsx` を server component のまま `searchParams`（Promise）を `await` し、`draftId` を props で渡す形にした。フックも Suspense 境界も使わない
 
 ### ナビゲーション
 
 `components/layout/nav-items.tsx::NAV_ITEMS` に「クイック保存」を追加する。ここが単一の定義元なので、デスクトップのサイドバーとモバイルのボトムナビが両方拾う。入口の軽さが目的の機能なので、ボトムナビから1タップで届くことに意味がある。
 
-ボトムナビが4→5項目になる。幅が窮屈になるようなら実装時に配置を相談する。
+ボトムナビが4→5項目になる。実測すると、ラベル「クイック保存」は 11px で 68px 幅。375px 端末は1セル 75px で収まるが、320px 端末は1セル 64px で折り返す。
 
 ### API クライアント
 
@@ -135,9 +143,10 @@ class DraftResponse(BaseModel):
 - `body` が空文字なら 422
 - `GET /v1/drafts` が新しい順に返る
 - `GET /v1/drafts` が他人の下書きを返さない
+- `GET /v1/drafts/{id}` が本文を返す
 - `DELETE /v1/drafts/{id}` が 204、削除後は一覧から消える
-- 他人の下書きの削除は 404
-- 存在しない ID の削除は 404
+- 他人の下書きの取得・削除は 404
+- 存在しない ID の取得・削除は 404
 
 ---
 

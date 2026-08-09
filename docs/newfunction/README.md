@@ -20,10 +20,11 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 
 | ドキュメント | 機能 | 一言説明 | 差別化度 | 実装コスト | 依存・前提 |
 |---|---|---|---|---|---|
-| [quick-save.md](./quick-save.md) | クイック保存 | 間違えた理由なしで問題だけ保存し、あとで整理 | ◎ | 小 | なし |
+| [quick-save.md](./quick-save.md) | クイック保存 ✅**実装済み** | 問題文だけの下書きを書き留め、あとで本登録する | ◎ | 小 | なし |
 | [preset-subjects-units.md](./preset-subjects-units.md) | 科目・単元プリセットマスタ | 標準的な科目/単元を選ぶだけで登録 | ○ | 中 | なし |
 | [review-interval-suggestion.md](./review-interval-suggestion.md) | 復習日の自動提案 ✅**実装済み** | 忘却曲線ベースで次の復習日を提案（設定は手動のまま） | ◎ | 小 | なし |
 | [mistake-reason-tags.md](./mistake-reason-tags.md) | 間違い原因タグ ✅**実装済み** | 計算ミス/知識不足などをタグ化し弱点を可視化 | ◎ | 中 | なし |
+| [question-edit.md](./question-edit.md) | 問題の編集画面 | 登録済みの問題文・正解をあとから直す（APIは実装済み、画面がない） | △ | 小 | なし |
 | [cram-mode.md](./cram-mode.md) | テスト前総復習モード | 範囲指定で復習日に関係なく一括復習 | ○ | 小 | なし |
 | [folder-browse.md](./folder-browse.md) | 科目フォルダ・ブラウズ | 科目→単元→問題とたどって過去問題を振り返る | ○ | 小〜中 | なし |
 | [stats-dashboard.md](./stats-dashboard.md) | 統計ダッシュボード | 克服率・単元別間違い数・継続日数 | ○ | 中 | 原因タグがあると効果大 |
@@ -38,17 +39,18 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 
 ## おすすめの実装順
 
-1. **quick-save** — ユーザー起案。コスト小で「入口の軽さ」が即改善する
+1. ~~**quick-save**~~ — 実装済み（2026-08-09）。当初案ではなく独立した `drafts` リソースとして実装した
 2. **preset-subjects-units** — ユーザー起案。初期設定の負担をなくす
 3. ~~**review-interval-suggestion**~~ — 実装済み（2026-08-04）
 4. ~~**mistake-reason-tags**~~ — 実装済み（2026-08-03）
-5. **cram-mode** — 既存APIの小さな拡張で実現できる
-6. **folder-browse** — ほぼ既存APIで科目・単元起点の振り返り導線が作れる
-7. **stats-dashboard** — タグ導入後にやると価値が跳ね上がる
-8. **photo-upload** — 実用性は大きいがストレージ設計が絡む
-9. **ai-assist** — API費用と品質検証が必要
-10. **reminder-notification** — 認証（Phase 3）完了後に着手
-11. **grade-aware-content** — preset-subjects-units の後に組むと効果が大きい（文言の集約だけは先に済ませられる）
+5. **question-edit** — API は実装済みで画面だけ。穴を塞ぐ意味で優先度は高め
+6. **cram-mode** — 既存APIの小さな拡張で実現できる
+7. **folder-browse** — ほぼ既存APIで科目・単元起点の振り返り導線が作れる
+8. **stats-dashboard** — タグ導入後にやると価値が跳ね上がる
+9. **photo-upload** — 実用性は大きいがストレージ設計が絡む（クイック保存の下書きに写真を足す形も検討できる）
+10. **ai-assist** — API費用と品質検証が必要
+11. **reminder-notification** — 認証（Phase 3）完了後に着手
+12. **grade-aware-content** — preset-subjects-units の後に組むと効果が大きい（文言の集約だけは先に済ませられる）
 
 ---
 
