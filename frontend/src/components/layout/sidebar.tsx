@@ -8,10 +8,10 @@ export default function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="hidden lg:flex flex-col fixed top-0 left-0 bottom-0 w-[260px] bg-navy">
+    <aside className="hidden lg:flex flex-col fixed top-0 left-0 bottom-0 w-[260px] bg-ink">
       {/* Logo */}
       <div className="px-7 py-[28px] border-b border-white/10 font-serif text-[23px] font-bold text-white tracking-[0.05em]">
-        mis<span className="text-amber-br">note</span>
+        mis<span className="text-primary-br">note</span>
       </div>
 
       {/* Nav */}
@@ -27,7 +27,7 @@ export default function Sidebar() {
                 "flex items-center gap-3 rounded-md text-[15px] font-medium tracking-[0.02em] transition-colors duration-150",
                 "py-3",
                 isActive
-                  ? "bg-amber-br/20 text-white border-l-[3px] border-amber-br pl-[13px] pr-[16px]"
+                  ? "bg-primary-br/20 text-white border-l-[3px] border-primary-br pl-[13px] pr-[16px]"
                   : "text-white/70 pl-[16px] pr-[16px] hover:bg-white/7 hover:text-white",
               ].join(" ")}
             >
