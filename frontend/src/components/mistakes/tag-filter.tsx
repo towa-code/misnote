@@ -70,8 +70,8 @@ export default function TagFilterChips({ notes, filter, onChange }: Props) {
             className={[
               "rounded-full border px-3 py-1 text-[12px] transition-colors duration-150",
               selected
-                ? "border-navy bg-navy font-bold text-white"
-                : "border-border bg-surface text-muted hover:border-[#CBD5E1] hover:bg-navy-lt hover:text-navy",
+                ? "border-primary bg-primary font-bold text-white"
+                : "border-border bg-surface text-muted hover:border-line hover:bg-ink-lt hover:text-ink",
             ].join(" ")}
           >
             {chip.label}

@@ -107,7 +107,7 @@ export default function MistakesContent() {
             {[0, 1, 2].map((i) => (
               <div
                 key={i}
-                className="animate-pulse h-20 rounded-md bg-navy-lt/70"
+                className="animate-pulse h-20 rounded-md bg-ink-lt/70"
                 aria-hidden="true"
               />
             ))}
