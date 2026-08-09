@@ -773,6 +773,16 @@ Expected: 出力なし（終了コード1）
 Run: `cd frontend/src && grep -rnoE '#[0-9A-Fa-f]{6}' --include='*.tsx' --include='*.ts' . | grep -v generated`
 Expected: 出力なし（終了コード1）。`globals.css` の3箇所（focus ring と body の2つ）だけは意図的に残る。
 
+- [ ] **Step 4b: 生の Tailwind 既製クラスが残っていないことを確認する**
+
+**この刷新の目的は「既製 swatch の寄せ集めをやめる」ことなので、`bg-red-50` のような番号付きクラスが残っていたら目的を達していない。** 独自トークンは番号を持たない（`bg-red` / `bg-red-lt` / `text-line`）。旧トークン名 (`navy` / `amber`) を探す grep ではこれを捕まえられない。実際 Task 4・5・6 はこの見落としを全部素通りさせ、7ファイル9箇所が生き残った。
+
+Run:
+```
+cd frontend/src && grep -rnE '\b(bg|text|border)-(red|green|blue|slate|gray|amber|yellow|orange|emerald)-[0-9]{2,3}\b' --include='*.tsx' --include='*.ts' . | grep -v generated
+```
+Expected: 出力なし（終了コード1）
+
 - [ ] **Step 5: ビルドと lint**
 
 Run: `cd frontend && npm run lint && npm run build`
