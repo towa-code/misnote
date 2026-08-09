@@ -410,7 +410,7 @@ export default function SubjectsManager() {
                         </>
                       ) : (
                         <>
-                          <span className="text-[12px] text-line">—</span>
+                          <span className="text-[12px] text-muted">—</span>
                           <span className="flex-1 text-[13px] text-ink">
                             {unit.name}
                           </span>

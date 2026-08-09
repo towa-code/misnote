@@ -159,7 +159,7 @@ export default function JudgePanel({
               type="button"
               disabled={saving}
               onClick={() => onSave({ nextReviewAt })}
-              className="bg-green text-white rounded-md px-7 py-2.5 text-[13px] font-bold hover:opacity-88 disabled:opacity-50 transition-opacity duration-150"
+              className="bg-primary text-white rounded-md px-7 py-2.5 text-[13px] font-bold hover:bg-primary-dk disabled:opacity-50 transition-colors duration-150"
             >
               保存してホームへ
             </button>

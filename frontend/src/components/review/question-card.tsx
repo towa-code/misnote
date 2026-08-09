@@ -31,7 +31,7 @@ export default function QuestionCard({ note, revealed }: Props) {
                 {correctAnswer}
               </div>
             ) : (
-              <div className="text-[13px] text-line">
+              <div className="text-[13px] text-muted">
                 正解は登録されていません
               </div>
             )}

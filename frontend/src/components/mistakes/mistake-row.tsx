@@ -124,11 +124,7 @@ export default function MistakeRow({
           <span
             className={[
               "text-[12px] whitespace-nowrap",
-              isOverdue
-                ? "text-text font-bold"
-                : note.nextReviewAt
-                  ? "text-muted"
-                  : "text-line",
+              isOverdue ? "text-text font-bold" : "text-muted",
             ].join(" ")}
           >
             {note.nextReviewAt ? formatReviewDate(note.nextReviewAt) : "未設定"}

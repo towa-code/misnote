@@ -87,7 +87,12 @@ export default function ReviewItem({ item }: Props) {
           <XIcon />
           {item.wrongCount}回間違い
         </span>
-        <span className="text-[12px] text-muted whitespace-nowrap sm:text-right">
+        <span
+          className={[
+            "text-[12px] whitespace-nowrap sm:text-right",
+            isOverdue ? "text-text font-bold" : "text-muted",
+          ].join(" ")}
+        >
           {item.nextReviewAt && formatReviewDate(item.nextReviewAt)}
         </span>
         <span
