@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=1280" />
+  <title>ホーム — 今日の復習</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+JP:wght@400;500;700&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      /* 面（サイドバー・見出し罫） */
+      --ink:        #13294B;
+      --ink-md:     #33517E;
+      --ink-lt:     #EDF2F9;
+
+      /* ブランド／主要アクション */
+      --primary:    #1668C4;  /* 白地 5.5:1 */
+      --primary-dk: #114F98;  /* ホバー */
+      --primary-br: #4FA3F7;  /* ink 上の専用アクセント。白地では使わない（2.6:1） */
+      --primary-lt: #EAF3FE;
+
+      /* 状態色 */
+      --late:       #E0A32E;  /* 復習が遅れている。ink 文字で 6.5:1。白文字では使わない */
+      --late-lt:    #FFF6E0;
+      --red:        #C0242A;  /* 間違い・不正解。5.9:1 */
+      --green:      #0A7A5A;  /* 正解・克服。5.3:1 */
+      --green-lt:   #E7F7F1;
+      --mint:       #3FD6A8;  /* 克服率バーの到達色。ink 上専用 */
+
+      /* 地・線・文字 */
+      --bg:         #F5F8FC;
+      --surface:    #FFFFFF;
+      --border:     #DCE4EF;
+      --line:       #B9C6D9;
+      --text:       #0E1E33;
+      --muted:      #5B6B85;  /* 白地 5.4:1 */
+      --sidebar-w: 240px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Noto Sans JP', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      font-size: 14px;
+    }
+    *:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* SIDEBAR */
+    .sidebar {
+      width: var(--sidebar-w);
+      background: var(--ink);
+      display: flex; flex-direction: column;
+      position: fixed; top: 0; left: 0; bottom: 0;
+    }
+    .logo {
+      padding: 26px 24px 22px;
+      font-family: 'Noto Serif JP', serif;
+      font-size: 20px; font-weight: 700;
+      color: #fff; letter-spacing: 0.05em;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+    .logo span { color: var(--primary-br); }
+    .nav { padding: 16px 12px; display: flex; flex-direction: column; gap: 2px; }
+    .nav-item {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 14px; border-radius: 6px;
+      font-size: 13px; font-weight: 500;
+      color: rgba(255,255,255,0.5); cursor: pointer;
+      letter-spacing: 0.02em; transition: background 0.15s, color 0.15s;
+    }
+    .nav-item:hover { background: rgba(255,255,255,0.07); color: rgba(255,255,255,0.85); }
+    .nav-item.active {
+      background: rgba(79,163,247,0.18); color: #fff;
+      border-left: 3px solid var(--primary-br); padding-left: 11px;
+    }
+    .nav-icon { width: 16px; height: 16px; flex-shrink: 0; }
+    .sidebar-bottom {
+      margin-top: auto; padding: 16px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+    }
+    .progress-label { font-size: 11px; color: rgba(255,255,255,0.55); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 8px; }
+    /* 溝＝未克服（青）、伸びた部分＝克服済み（ミント）。サマリーの青/緑と同じ意味で読める */
+    .progress-bar-wrap { background: rgba(79,163,247,0.28); border-radius: 99px; height: 5px; margin-bottom: 6px; }
+    .progress-bar-fill { background: var(--mint); border-radius: 99px; height: 5px; width: 40%; }
+    .progress-stat { font-size: 12px; color: rgba(255,255,255,0.6); }
+    .progress-stat strong { color: rgba(255,255,255,0.8); }
+
+    /* MAIN */
+    .main { margin-left: var(--sidebar-w); flex: 1; }
+    .header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 36px;
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .header h1 { font-family: 'Noto Serif JP', serif; font-size: 22px; font-weight: 700; letter-spacing: 0.02em; }
+    .header .date { font-size: 12px; color: var(--muted); margin-top: 4px; letter-spacing: 0.02em; }
+    .add-btn {
+      display: flex; align-items: center; gap: 6px;
+      background: var(--primary); color: #fff; border: none;
+      border-radius: 6px; padding: 10px 20px;
+      font-family: 'Noto Sans JP', sans-serif;
+      font-size: 13px; font-weight: 700; cursor: pointer;
+      transition: background 0.15s;
+    }
+    .add-btn:hover { background: var(--primary-dk); }
+
+    /* CONTENT */
+    .content { padding: 28px 36px; max-width: 1000px; }
+    .summary-row {
+      display: flex; gap: 1px; margin-bottom: 32px;
+      background: var(--border); border: 1px solid var(--border);
+      border-radius: 8px; overflow: hidden;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+    }
+    /* 青＝未克服、緑＝克服済み の2極だけ。Today は苦手問題の部分集合なので同じ青を持つ。
+       上罫は数字と同じことを二重に言うだけなので置かない。金はここには出ない（遅れ専用） */
+    .stat-cell { flex: 1; background: var(--surface); padding: 18px 24px; }
+    .stat-cell .label { font-size: 11px; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 6px; }
+    .stat-cell .value { font-family: 'Noto Serif JP', serif; font-size: 32px; font-weight: 700; color: var(--primary); line-height: 1; }
+    .stat-cell .sub { font-size: 12px; color: var(--muted); margin-top: 4px; }
+    .stat-cell.green .value { color: var(--green); }
+
+    .section-header {
+      display: flex; align-items: baseline; gap: 12px;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 2px solid var(--ink);
+    }
+    .section-header h2 { font-family: 'Noto Serif JP', serif; font-size: 16px; font-weight: 700; letter-spacing: 0.04em; }
+    .section-count { font-size: 13px; color: var(--muted); }
+
+    .row-list { display: flex; flex-direction: column; }
+    .row-item {
+      display: grid; grid-template-columns: 1fr 160px 130px;
+      align-items: center; gap: 24px;
+      padding: 18px 8px; border-bottom: 1px solid var(--border);
+      cursor: pointer; border-radius: 6px; transition: background 0.12s;
+    }
+    .row-item:last-child { border-bottom: none; }
+    .row-item:hover { background: var(--ink-lt); }
+    /* 遅れは「地の色＋左の帯＋バッジ」で示す。本文の色は変えない（行ごと沈ませない） */
+    .row-item.overdue { background: var(--late-lt); box-shadow: inset 3px 0 0 var(--late); }
+    .row-item.overdue:hover { background: #FBEDCE; }
+
+    .row-subject {
+      font-size: 11px; font-weight: 700; color: var(--muted);
+      letter-spacing: 0.07em; text-transform: uppercase;
+      margin-bottom: 6px; display: flex; align-items: center; gap: 0;
+    }
+    .row-subject .sep { margin: 0 5px; opacity: 0.4; }
+    .overdue-badge {
+      display: inline-flex; align-items: center; gap: 3px;
+      background: var(--late); color: var(--ink);
+      font-size: 10px; font-weight: 700; letter-spacing: 0.04em;
+      padding: 1px 7px; border-radius: 4px; margin-left: 8px;
+      vertical-align: middle;
+    }
+    .row-question { font-size: 15px; font-weight: 500; line-height: 1.5; }
+    .row-question.overdue-q { color: var(--text); }
+
+    .wrong-pill {
+      display: flex; align-items: center; gap: 4px;
+      font-size: 12px; color: var(--red); font-weight: 700; white-space: nowrap;
+    }
+    .date-pill { font-size: 12px; color: var(--muted); white-space: nowrap; text-align: right; }
+  </style>
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="logo">mis<span>note</span></div>
+    <nav class="nav">
+      <div class="nav-item active">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        ホーム
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
+        苦手問題
+      </div>
+      <div class="nav-item">
+        <svg class="nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        科目管理
+      </div>
+    </nav>
+    <div class="sidebar-bottom">
+      <div class="progress-label">克服率</div>
+      <div class="progress-bar-wrap"><div class="progress-bar-fill"></div></div>
+      <div class="progress-stat"><strong>8</strong> 問克服 / 全 20 問</div>
+    </div>
+  </aside>
+
+  <div class="main">
+    <div class="header">
+      <div>
+        <h1>今日の復習</h1>
+        <div class="date">2026年6月30日（月）</div>
+      </div>
+      <button class="add-btn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        問題を登録
+      </button>
+    </div>
+
+    <div class="content">
+      <div class="summary-row">
+        <div class="stat-cell today">
+          <div class="label">Today</div>
+          <div class="value">3</div>
+          <div class="sub">問</div>
+        </div>
+        <div class="stat-cell">
+          <div class="label">苦手問題</div>
+          <div class="value">12</div>
+          <div class="sub">問（active）</div>
+        </div>
+        <div class="stat-cell green">
+          <div class="label">克服済み</div>
+          <div class="value">8</div>
+          <div class="sub">問</div>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h2>復習リスト</h2>
+        <span class="section-count">3問</span>
+      </div>
+
+      <div class="row-list">
+        <div class="row-item overdue">
+          <div>
+            <div class="row-subject">
+              理科
+              <span class="overdue-badge">
+                <svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+                2日遅れ
+              </span>
+            </div>
+            <div class="row-question overdue-q">光の屈折の法則（スネルの法則）を式で書け</div>
+          </div>
+          <div class="wrong-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            2回間違い
+          </div>
+          <div class="date-pill">6月28日予定</div>
+        </div>
+        <div class="row-item">
+          <div>
+            <div class="row-subject">数学 <span class="sep">›</span> 二次方程式</div>
+            <div class="row-question">次の方程式を解け：2x² − 5x + 3 = 0</div>
+          </div>
+          <div class="wrong-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            3回間違い
+          </div>
+          <div class="date-pill">今日</div>
+        </div>
+        <div class="row-item">
+          <div>
+            <div class="row-subject">英語 <span class="sep">›</span> 文法</div>
+            <div class="row-question">現在完了形と過去形の違いを説明せよ</div>
+          </div>
+          <div class="wrong-pill">
+            <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+            1回間違い
+          </div>
+          <div class="date-pill">今日</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
