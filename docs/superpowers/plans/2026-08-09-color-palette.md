@@ -99,12 +99,22 @@ Expected: ビルド成功。`@theme` の構文エラーが出ないこと。
 
 - [ ] **Step 3: 生成されるユーティリティを実際に確かめる**
 
-`frontend/src/app/layout.tsx` の `<body>` の className に一時的に `border-primary` を足してビルドし、CSS 出力に `#1668C4` が含まれることを確認する。
+**Tailwind v4 は、どのユーティリティからも参照されていない `@theme` トークンを出力から削り落とす。** そのため「トークンを足しただけ」ではCSS出力に現れない。実際に使う側を一時的に書いて確認する。
 
-Run: `cd frontend && npm run build && grep -rc '1668C4' .next/static/css/ 2>/dev/null | head`
-Expected: 1以上の数値が出る（トークンがユーティリティとして生成されている）
+`frontend/src/app/layout.tsx` の `<body>` の className の末尾に一時的に `border-primary bg-late-lt text-mint border-line` を足す。
 
-確認できたら `border-primary` を削除して元に戻す。
+Run: `cd frontend && rm -rf .next && npm run build >/dev/null 2>&1 && grep -rhoiE -- '--color-(primary|late-lt|mint|line):[^;]*' .next/static/chunks/*.css | sort -u`
+Expected: 4行が出る。
+```
+--color-late-lt:#fff6e0
+--color-line:#b9c6d9
+--color-mint:#3fd6a8
+--color-primary:#1668c4
+```
+
+注意点が3つある。(1) 出力先は `.next/static/css/` ではなく `.next/static/chunks/`。(2) Tailwind v4 は hex を**小文字**で出力するため grep は大文字小文字を無視する必要がある。(3) `.next/dev/` 以下には開発サーバの古い成果物が残っていることがあり、それを掴むと確認にならない。だから先に `rm -rf .next` する。
+
+確認できたら一時的に足した4クラスを削除して元に戻す。`git diff frontend/src/app/layout.tsx` が空になることまで確かめる。
 
 - [ ] **Step 4: lint を通す**
 
