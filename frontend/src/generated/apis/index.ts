@@ -2,6 +2,7 @@
 /* eslint-disable */
 export * from './AttemptsApi';
 export * from './AuthApi';
+export * from './DraftsApi';
 export * from './HealthApi';
 export * from './MistakeNotesApi';
 export * from './QuestionsApi';

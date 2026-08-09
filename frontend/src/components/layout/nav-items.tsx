@@ -44,6 +44,24 @@ function MistakesIcon() {
   );
 }
 
+function QuickIcon() {
+  return (
+    <svg
+      width="16"
+      height="16"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      <path d="M13 2L3 14h8l-1 8 10-12h-8z" />
+    </svg>
+  );
+}
+
 function SubjectsIcon() {
   return (
     <svg
@@ -86,6 +104,7 @@ function AccountIcon() {
 
 export const NAV_ITEMS: NavItem[] = [
   { href: "/",         label: "ホーム",     Icon: HomeIcon },
+  { href: "/quick",    label: "クイック保存", Icon: QuickIcon },
   { href: "/mistakes", label: "苦手問題",   Icon: MistakesIcon },
   { href: "/subjects", label: "科目管理",   Icon: SubjectsIcon },
   { href: "/account",  label: "アカウント", Icon: AccountIcon },

@@ -1,5 +1,6 @@
 apis/AttemptsApi.ts
 apis/AuthApi.ts
+apis/DraftsApi.ts
 apis/HealthApi.ts
 apis/MistakeNotesApi.ts
 apis/QuestionsApi.ts
@@ -11,6 +12,9 @@ docs/AttemptHistoryItem.md
 docs/AttemptResponse.md
 docs/AttemptsApi.md
 docs/AuthApi.md
+docs/DraftCreate.md
+docs/DraftResponse.md
+docs/DraftsApi.md
 docs/HTTPValidationError.md
 docs/HealthApi.md
 docs/LocationInner.md
@@ -42,6 +46,8 @@ index.ts
 models/AttemptCreate.ts
 models/AttemptHistoryItem.ts
 models/AttemptResponse.ts
+models/DraftCreate.ts
+models/DraftResponse.ts
 models/HTTPValidationError.ts
 models/LocationInner.ts
 models/MistakeNoteResponse.ts

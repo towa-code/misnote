@@ -6,7 +6,7 @@ import Link from "next/link";
 import type { SubjectResponse, UnitResponse } from "@/generated";
 import TagPicker from "@/components/reason-tag/tag-picker";
 import DateChip from "@/components/review-date/date-chip";
-import { questionsApi, subjectsApi, unitsApi } from "@/lib/api";
+import { draftsApi, questionsApi, subjectsApi, unitsApi } from "@/lib/api";
 import { inputBase, labelBase } from "@/lib/form-styles";
 import type { ReasonTag } from "@/lib/reason-tags";
 import { addDays, toDateInput } from "@/lib/review-date";
@@ -69,7 +69,12 @@ function SelectWrapper({ children }: { children: React.ReactNode }) {
   );
 }
 
-export default function RegisterForm() {
+type Props = {
+  // クイック保存の下書きから来たときだけ渡る
+  draftId?: string;
+};
+
+export default function RegisterForm({ draftId }: Props) {
   const router = useRouter();
 
   const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
@@ -88,6 +93,15 @@ export default function RegisterForm() {
   useEffect(() => {
     subjectsApi.listSubjectsV1SubjectsGet().then(setSubjects);
   }, []);
+
+  useEffect(() => {
+    if (!draftId) return;
+    // 取得できなくても（すでに削除済みなど）通常の登録画面として使えればよい
+    draftsApi
+      .getDraftV1DraftsDraftIdGet({ draftId })
+      .then((draft) => setQuestionBody(draft.body))
+      .catch(() => {});
+  }, [draftId]);
 
   useEffect(() => {
     if (!subjectId) return;
@@ -120,6 +134,12 @@ export default function RegisterForm() {
           nextReviewAt: nextReviewAt ? new Date(nextReviewAt) : undefined,
         },
       });
+      if (draftId) {
+        // 登録はもう成功しているので、下書きの後片付けに失敗しても止めない
+        await draftsApi
+          .deleteDraftV1DraftsDraftIdDelete({ draftId })
+          .catch(() => {});
+      }
       router.push("/");
     } catch {
       setError("登録に失敗しました。時間をおいて再度お試しください。");
