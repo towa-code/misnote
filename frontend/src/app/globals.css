@@ -1,6 +1,24 @@
 @import "tailwindcss";
 
 @theme {
+  /* --- New palette (2026-08-09 color overhaul). 旧 navy/amber 系は移行後に削除する --- */
+  --color-ink:        #13294B;
+  --color-ink-md:     #33517E;
+  --color-ink-lt:     #EDF2F9;
+
+  --color-primary:    #1668C4;
+  --color-primary-dk: #114F98;
+  --color-primary-br: #4FA3F7;  /* ink 面専用。白地では 2.6:1 */
+  --color-primary-lt: #EAF3FE;
+
+  --color-late:       #E0A32E;  /* 塗り専用。文字色に使わない */
+  --color-late-lt:    #FFF6E0;
+  --color-late-md:    #FBEDCE;
+
+  --color-red-lt:     #FCEBEA;
+  --color-mint:       #3FD6A8;  /* ink 面専用 */
+  --color-line:       #B9C6D9;
+
   /* --- Color tokens (from mockup :root) --- */
   --color-navy:       #1E293B;
   --color-navy-md:    #334155;
