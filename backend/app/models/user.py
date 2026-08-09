@@ -20,3 +20,4 @@ class User(Base):
     subjects = relationship("Subject", back_populates="user", cascade="all, delete-orphan")
     questions = relationship("Question", back_populates="user", cascade="all, delete-orphan")
     mistake_notes = relationship("MistakeNote", back_populates="user", cascade="all, delete-orphan")
+    drafts = relationship("Draft", back_populates="user", cascade="all, delete-orphan")

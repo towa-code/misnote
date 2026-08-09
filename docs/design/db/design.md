@@ -12,8 +12,13 @@ users
  │
  ├──< attempts >── questions
  │
- └──< mistake_notes >── questions
+ ├──< mistake_notes >── questions
+ │
+ └──< drafts
 ```
+
+`drafts`（クイック保存の下書き）は `users` にしか繋がらない。まだ問題になっていないメモなので、
+科目にも問題にも紐づかない独立した島として置く。
 
 ---
 
@@ -37,6 +42,7 @@ users
 - `attempts` は同じ問題を何度解いても履歴として残る
 - `mistake_notes` は `question_id` にUNIQUE制約を持ち、1問題につき1件。不正解の attempt を記録したとき、ノートが無ければ自動作成し、あれば既存ノートを更新する（重複は作らない）
 - `next_review_at` はユーザーが自分で次の復習日を設定する（自動計算しない）
+- `drafts` は `questions` と別テーブルにしてある。`questions.subject_id` は NOT NULL なので、`questions` を使う限り「科目すら選ばずに保存」ができないため。本登録は本文を `/register` に流し込んで通常の登録を行い、成功後に下書きを削除する。下書きと問題の間にリレーションは張らない
 
 ---
 

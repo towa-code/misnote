@@ -4,7 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 
-from app.routers import attempts, auth, mistake_notes, questions, subjects
+from app.routers import attempts, auth, drafts, mistake_notes, questions, subjects
 from app.routers.units import subjects_router as units_subjects_router, units_router
 
 app = FastAPI(title="misnote API", version="0.1.0")
@@ -44,6 +44,7 @@ app.include_router(units_router,           prefix="/v1/units",         tags=["un
 app.include_router(questions.router,       prefix="/v1/questions",     tags=["questions"])
 app.include_router(mistake_notes.router,   prefix="/v1/mistake-notes", tags=["mistake-notes"])
 app.include_router(attempts.router,        prefix="/v1/questions",     tags=["attempts"])
+app.include_router(drafts.router,          prefix="/v1/drafts",        tags=["drafts"])
 
 
 @app.get("/health", tags=["health"])

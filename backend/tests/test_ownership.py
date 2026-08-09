@@ -73,6 +73,20 @@ def test_the_owner_can_still_manage_their_units(as_user):
     assert as_user.delete(f"/v1/units/{unit_id}").status_code == 204
 
 
+def test_drafts_are_not_visible_to_other_users(as_user, switch_to, other_user):
+    as_user.post("/v1/drafts", json={"body": "授業で間違えた問題"})
+
+    assert switch_to(other_user).get("/v1/drafts").json() == []
+
+
+def test_another_users_draft_cannot_be_read_or_deleted(as_user, switch_to, other_user):
+    draft_id = as_user.post("/v1/drafts", json={"body": "授業で間違えた問題"}).json()["id"]
+
+    intruder = switch_to(other_user)
+    assert intruder.get(f"/v1/drafts/{draft_id}").status_code == 404
+    assert intruder.delete(f"/v1/drafts/{draft_id}").status_code == 404
+
+
 def test_questions_and_notes_are_not_visible_to_other_users(as_user, switch_to, other_user):
     subject_id = as_user.post("/v1/subjects", json={"name": "数学"}).json()["id"]
     as_user.post(
