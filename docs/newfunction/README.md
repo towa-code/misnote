@@ -27,7 +27,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 | [question-edit.md](./question-edit.md) | 問題の編集画面 | 登録済みの問題文・正解をあとから直す（APIは実装済み、画面がない） | △ | 小 | なし |
 | [cram-mode.md](./cram-mode.md) | テスト前総復習モード | 範囲指定で復習日に関係なく一括復習 | ○ | 小 | なし |
 | [folder-browse.md](./folder-browse.md) | 科目フォルダ・ブラウズ | 科目→単元→問題とたどって過去問題を振り返る | ○ | 小〜中 | なし |
-| [stats-dashboard.md](./stats-dashboard.md) | 統計ダッシュボード | 克服率・単元別間違い数・継続日数 | ○ | 中 | 原因タグがあると効果大 |
+| [stats-dashboard.md](./stats-dashboard.md) | 統計ダッシュボード ⚠️**一部実装済み** | 克服率・単元別間違い数・継続日数 | ○ | 中 | 原因タグがあると効果大 |
 | [photo-upload.md](./photo-upload.md) | 問題の写真登録 | 問題集をスマホで撮って登録 | ◎ | 中〜大 | ストレージ（ローカル→S3） |
 | [ai-assist.md](./ai-assist.md) | AI補助 | 間違えた理由の言語化補助・類題生成 | ◎ | 中 | LLM API（利用料発生） |
 | [reminder-notification.md](./reminder-notification.md) | 復習日リマインダー | メール/プッシュで復習日を通知 | △ | 中〜大 | 認証（Phase 3）・定期実行基盤 |
@@ -46,7 +46,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 5. **question-edit** — API は実装済みで画面だけ。穴を塞ぐ意味で優先度は高め
 6. **cram-mode** — 既存APIの小さな拡張で実現できる
 7. **folder-browse** — ほぼ既存APIで科目・単元起点の振り返り導線が作れる
-8. **stats-dashboard** — タグ導入後にやると価値が跳ね上がる
+8. **stats-dashboard** — タグ導入後にやると価値が跳ね上がる。克服率だけは `GET /v1/stats/summary` として実装済み（2026-08-09、サイドバーのバー用）
 9. **photo-upload** — 実用性は大きいがストレージ設計が絡む（クイック保存の下書きに写真を足す形も検討できる）
 10. **ai-assist** — API費用と品質検証が必要
 11. **reminder-notification** — 認証（Phase 3）完了後に着手

@@ -18,6 +18,7 @@ This directory is the **design documentation subtree** of the misnote (間違い
 | `design/api/attempts.md` | Attempts API — correct_streak side effects, mastery_suggested |
 | `design/api/mistake-notes.md` | Mistake-notes API — today/mastered filters, status endpoint, nested response shape |
 | `design/api/drafts.md` | Drafts API — quick-save notes that aren't questions yet |
+| `design/api/stats.md` | Stats API — the counts behind the sidebar's mastery-rate bar |
 | `design/db/schema.md` | Full schema (6 tables) — all columns and FK relationships |
 | `design/db/design.md` | ER diagram, indexes, design rationale, correct_streak/mastery rules |
 | `design/screens/transitions.md` | Screen transition diagram |
@@ -27,7 +28,7 @@ This directory is the **design documentation subtree** of the misnote (間違い
 | `design/screens/mistake-list.md` | Mistake list — active/mastered tabs |
 | `design/screens/subjects.md` | Subject & unit management |
 | `design/screens/quick-save.md` | Quick save — draft list plus the save modal |
-| `design/screens/common-ui.md` | Color tokens, interactions, responsive breakpoints (applies to all screens) |
+| `design/screens/common-ui.md` | Color tokens, interactions, the sidebar mastery-rate bar, responsive breakpoints (applies to all screens) |
 | `design/mockups/` | Static HTML mockups (one per screen + `00_prototype.html` combining all screens) |
 | `ROADMAP.md` | Implementation roadmap (Phase 0–4: local Docker → backend → frontend → local JWT → AWS) |
 | `superpowers/specs/2026-07-31-auth-design.md` | Design doc for local JWT auth (Phase 3): token scheme, password-hashing library choice, `deps.py`/`units.py` changes, frontend auth routes |

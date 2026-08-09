@@ -136,6 +136,7 @@ frontend/src/generated/
 | GET | `/drafts/{id}` | 下書き取得 |
 | POST | `/drafts` | 下書き作成 |
 | DELETE | `/drafts/{id}` | 下書き削除 |
+| GET | `/stats/summary` | 克服率の件数取得 |
 
 ---
 
@@ -148,3 +149,4 @@ frontend/src/generated/
 - [回答API](./attempts.md)
 - [間違いノートAPI](./mistake-notes.md)
 - [下書きAPI](./drafts.md)
+- [統計API](./stats.md)

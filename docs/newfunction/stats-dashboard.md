@@ -4,6 +4,8 @@
 
 **目的：** 「どれだけ克服できたか」「どこが弱点か」「どれだけ続けられているか」を数字で見せ、学習のモチベーションと自己分析を支える。
 
+> **一部実装済み（2026-08-09）：** サイドバーの克服率バーのために `GET /v1/stats/summary` を作り、`mastered_count` / `total_count` だけを返している（[API仕様](../design/api/stats.md)・[設計](../superpowers/specs/2026-08-09-mastery-progress-design.md)）。継続日数・科目別・アクティビティ・原因タグ内訳と `/stats` 画面は未着手。本案を実装するときは、既存の `summary` にフィールドを足す形になる。
+
 ---
 
 ## 概要（UX）
@@ -28,7 +30,7 @@
 
 | メソッド | パス | 返す内容 |
 |---------|------|---------|
-| GET | `/v1/stats/summary` | 全体件数・克服率・継続日数 |
+| GET | `/v1/stats/summary` | 全体件数・克服率・継続日数（**件数2つは実装済み**。継続日数が未追加） |
 | GET | `/v1/stats/by-subject` | 科目（・単元）別の note 数 / wrong_count 合計 / 克服率 |
 | GET | `/v1/stats/activity?days=30` | 日別の解答数（正解/不正解内訳つき） |
 | GET | `/v1/stats/reason-tags` | 原因タグ別件数（タグ機能導入後） |
