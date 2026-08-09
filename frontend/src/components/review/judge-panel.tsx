@@ -184,8 +184,8 @@ export default function JudgePanel({
   }
 
   return (
-    <div className="border border-amber rounded-lg overflow-hidden">
-      <div className="bg-amber px-5 py-3 flex items-center gap-2">
+    <div className="border border-red rounded-lg overflow-hidden">
+      <div className="bg-red px-5 py-3 flex items-center gap-2">
         <span className="text-white">
           <PencilIcon />
         </span>
@@ -194,7 +194,7 @@ export default function JudgePanel({
         </span>
       </div>
 
-      <div className="bg-amber-lt px-5 sm:px-6 py-5 flex flex-col gap-4">
+      <div className="bg-red-lt px-5 sm:px-6 py-5 flex flex-col gap-4">
         <div>
           <span className={labelBase + " block"}>間違いの種類</span>
           <TagPicker value={reasonTag} onChange={setReasonTag} disabled={saving} />
@@ -254,7 +254,7 @@ export default function JudgePanel({
             type="button"
             disabled={saving}
             onClick={() => onSave({ memo, learning, reasonTag, nextReviewAt })}
-            className="bg-amber text-white rounded-md px-7 py-2.5 text-[13px] font-bold hover:bg-amber-dk disabled:opacity-50 transition-colors duration-150"
+            className="bg-primary text-white rounded-md px-7 py-2.5 text-[13px] font-bold hover:bg-primary-dk disabled:opacity-50 transition-colors duration-150"
           >
             保存してホームへ
           </button>
