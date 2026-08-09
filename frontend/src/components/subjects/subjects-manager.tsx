@@ -244,7 +244,7 @@ export default function SubjectsManager() {
             className={
               "mb-5 rounded-md border px-4 py-3 text-[13px] " +
               (message.type === "error"
-                ? "bg-red-50 border-red-200 text-red-700"
+                ? "bg-red-lt border-red text-red"
                 : "bg-ink-lt border-border text-ink")
             }
           >
@@ -357,7 +357,7 @@ export default function SubjectsManager() {
                         type="button"
                         aria-label={`${subject.name}を削除`}
                         onClick={() => handleDeleteSubject(subject)}
-                        className="text-muted hover:text-red-700 hover:bg-red-50 rounded-md p-2 transition-colors"
+                        className="text-muted hover:text-red hover:bg-red-lt rounded-md p-2 transition-colors"
                       >
                         <TrashIcon />
                       </button>
@@ -433,7 +433,7 @@ export default function SubjectsManager() {
                               type="button"
                               aria-label={`${unit.name}を削除`}
                               onClick={() => handleDeleteUnit(subject.id, unit)}
-                              className="text-muted hover:text-red-700 hover:bg-red-50 rounded-md p-1.5 transition-colors"
+                              className="text-muted hover:text-red hover:bg-red-lt rounded-md p-1.5 transition-colors"
                             >
                               <TrashIcon />
                             </button>

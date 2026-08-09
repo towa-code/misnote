@@ -69,7 +69,7 @@ export default function QuickContent() {
         {error && (
           <div
             role="alert"
-            className="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+            className="mb-5 rounded-md border border-red bg-red-lt px-4 py-3 text-[13px] text-red"
           >
             {error}
           </div>

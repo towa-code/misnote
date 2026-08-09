@@ -58,7 +58,7 @@ export default function DraftRow({ draft, onDelete }: Props) {
           type="button"
           aria-label="この下書きを削除"
           onClick={() => onDelete(draft)}
-          className="rounded-md p-2 text-muted transition-colors hover:bg-red-50 hover:text-red-700"
+          className="rounded-md p-2 text-muted transition-colors hover:bg-red-lt hover:text-red"
         >
           <TrashIcon />
         </button>

@@ -330,7 +330,7 @@ export default function RegisterForm({ draftId }: Props) {
             {error && (
               <p
                 role="alert"
-                className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+                className="rounded-md border border-red bg-red-lt px-4 py-3 text-[13px] text-red"
               >
                 {error}
               </p>
