@@ -41,7 +41,7 @@ export default function HomePageHeader() {
 
       <Link
         href="/register"
-        className="flex items-center gap-2 bg-amber text-white rounded-md px-6 py-3 text-[15px] font-bold hover:bg-amber-dk transition-colors duration-150"
+        className="flex items-center gap-2 bg-primary text-white rounded-md px-6 py-3 text-[15px] font-bold hover:bg-primary-dk transition-colors duration-150"
       >
         <PlusIcon />
         問題を登録

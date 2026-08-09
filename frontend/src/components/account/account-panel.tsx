@@ -33,7 +33,7 @@ export default function AccountPanel() {
 
       <div className="p-5 sm:p-9 max-w-[520px]">
         {error && (
-          <p className="mb-5 bg-amber-lt border border-amber text-amber text-[13px] rounded-md px-3 py-2.5">
+          <p className="mb-5 bg-red-lt border border-red text-red text-[13px] rounded-md px-3 py-2.5">
             {error}
           </p>
         )}
@@ -56,7 +56,7 @@ export default function AccountPanel() {
         <button
           type="button"
           onClick={handleLogout}
-          className="mt-6 px-4 py-2.5 rounded-md border border-border bg-surface text-[13px] font-bold text-muted transition-colors duration-150 hover:bg-navy-lt hover:border-[#CBD5E1] hover:text-navy"
+          className="mt-6 px-4 py-2.5 rounded-md border border-border bg-surface text-[13px] font-bold text-muted transition-colors duration-150 hover:bg-ink-lt hover:border-line hover:text-ink"
         >
           ログアウト
         </button>

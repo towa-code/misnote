@@ -33,15 +33,15 @@ export default function MistakeTabs({
             className={[
               "px-4 sm:px-5 py-2.5 text-[13px] tracking-[0.02em] border-b-2 transition-colors duration-150",
               selected
-                ? "text-navy font-bold border-amber"
-                : "text-muted font-medium border-transparent hover:text-navy",
+                ? "text-ink font-bold border-primary"
+                : "text-muted font-medium border-transparent hover:text-ink",
             ].join(" ")}
           >
             {label}
             <span
               className={[
                 "inline-block align-middle ml-1.5 px-1.5 py-px rounded-[10px] text-[11px] font-bold",
-                selected ? "bg-amber-lt text-amber" : "bg-navy-lt text-muted",
+                selected ? "bg-primary-lt text-primary" : "bg-ink-lt text-muted",
               ].join(" ")}
             >
               {count}

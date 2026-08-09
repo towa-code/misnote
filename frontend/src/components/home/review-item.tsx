@@ -55,8 +55,8 @@ export default function ReviewItem({ item }: Props) {
         "sm:grid sm:grid-cols-[1fr_auto_auto_auto] sm:items-center sm:gap-6",
         "rounded-md transition-colors duration-150",
         isOverdue
-          ? "bg-amber-lt hover:bg-[#FFF3CC]"
-          : "hover:bg-navy-lt active:bg-navy-lt",
+          ? "bg-late-lt hover:bg-late-md shadow-[inset_3px_0_0_var(--color-late)]"
+          : "hover:bg-ink-lt active:bg-ink-lt",
       ].join(" ")}
     >
       {/* Subject + question */}
@@ -70,16 +70,13 @@ export default function ReviewItem({ item }: Props) {
             </>
           )}
           {isOverdue && (
-            <span className="inline-flex items-center gap-1 bg-amber text-white text-[10px] font-bold tracking-[0.04em] px-1.5 py-px rounded ml-2">
+            <span className="inline-flex items-center gap-1 bg-late text-ink text-[10px] font-bold tracking-[0.04em] px-1.5 py-px rounded ml-2">
               <AlertIcon />
               {item.overdueDays}日遅れ
             </span>
           )}
         </div>
-        <p className={[
-          "text-[15px] font-medium leading-relaxed",
-          isOverdue ? "text-amber" : "text-text",
-        ].join(" ")}>
+        <p className="text-[15px] font-medium leading-relaxed text-text">
           {item.questionBody}
         </p>
       </div>
@@ -90,11 +87,16 @@ export default function ReviewItem({ item }: Props) {
           <XIcon />
           {item.wrongCount}回間違い
         </span>
-        <span className="text-[12px] text-muted whitespace-nowrap sm:text-right">
+        <span
+          className={[
+            "text-[12px] whitespace-nowrap sm:text-right",
+            isOverdue ? "text-text font-bold" : "text-muted",
+          ].join(" ")}
+        >
           {item.nextReviewAt && formatReviewDate(item.nextReviewAt)}
         </span>
         <span
-          className="hidden sm:block text-muted/60 group-hover:text-amber group-hover:translate-x-0.5 transition-[color,transform] duration-150"
+          className="hidden sm:block text-muted/60 group-hover:text-primary group-hover:translate-x-0.5 transition-[color,transform] duration-150"
           aria-hidden="true"
         >
           <ChevronRightIcon />
