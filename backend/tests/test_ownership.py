@@ -101,3 +101,18 @@ def test_questions_and_notes_are_not_visible_to_other_users(as_user, switch_to, 
     intruder = switch_to(other_user)
     assert intruder.get("/v1/questions").json() == []
     assert intruder.get("/v1/mistake-notes").json() == []
+
+
+def test_stats_do_not_count_another_users_notes(as_user, switch_to, other_user):
+    subject_id = as_user.post("/v1/subjects", json={"name": "数学"}).json()["id"]
+    as_user.post(
+        "/v1/questions",
+        json={
+            "subject_id": subject_id,
+            "question_text": "x^2-5x+6=0 を解け",
+            "memo": "因数分解の形を見落とした",
+        },
+    )
+
+    summary = switch_to(other_user).get("/v1/stats/summary").json()
+    assert summary == {"mastered_count": 0, "total_count": 0}

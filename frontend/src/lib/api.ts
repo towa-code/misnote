@@ -7,6 +7,7 @@ import {
   MistakeNotesApi,
   AttemptsApi,
   DraftsApi,
+  StatsApi,
 } from "@/generated";
 import { clearToken, getToken } from "@/lib/auth-token";
 
@@ -40,3 +41,4 @@ export const questionsApi = new QuestionsApi(config);
 export const mistakeNotesApi = new MistakeNotesApi(config);
 export const attemptsApi = new AttemptsApi(config);
 export const draftsApi = new DraftsApi(config);
+export const statsApi = new StatsApi(config);

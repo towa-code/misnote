@@ -61,7 +61,7 @@ npm run lint
 
 ### Backend request flow
 
-`app/main.py` wires per-resource `APIRouter`s under `/v1/...` prefixes (e.g. `subjects.router` → `/v1/subjects`, `questions.router` → `/v1/questions`). Note `units` is split into two routers combined at different prefixes: `units_subjects_router` (nested `/v1/subjects/{id}/units`) and `units_router` (`/v1/units/{id}`). `attempts.router` mounts under `/v1/questions` (`/v1/questions/{id}/attempts`). `auth.router` mounts at `/v1/auth` (`/register`, `/login`, `/me`) and is the only router with endpoints that don't require a token (`/register`, `/login`). `drafts.router` mounts at `/v1/drafts`.
+`app/main.py` wires per-resource `APIRouter`s under `/v1/...` prefixes (e.g. `subjects.router` → `/v1/subjects`, `questions.router` → `/v1/questions`). Note `units` is split into two routers combined at different prefixes: `units_subjects_router` (nested `/v1/subjects/{id}/units`) and `units_router` (`/v1/units/{id}`). `attempts.router` mounts under `/v1/questions` (`/v1/questions/{id}/attempts`). `auth.router` mounts at `/v1/auth` (`/register`, `/login`, `/me`) and is the only router with endpoints that don't require a token (`/register`, `/login`). `drafts.router` mounts at `/v1/drafts` and `stats.router` at `/v1/stats`.
 
 Each resource follows the same triad:
 - `app/models/<x>.py` — SQLAlchemy model.
@@ -102,6 +102,16 @@ This is the core domain logic, spread across `routers/attempts.py` and `routers/
 - `/quick` lists drafts and saves through a modal; the modal stays open after each save so several can be typed in a row. It is the only modal in the app and uses the native `<dialog>` + `showModal()`. **`m-auto` is required on it** — Tailwind's preflight sets `margin: 0`, which kills `<dialog>`'s default centering.
 - Promoting a draft goes through the normal register form: `/register?draft=<id>` prefills `question_text` from `GET /drafts/{id}`, and a successful `POST /questions` then deletes the draft. Both draft calls fail soft — a missing draft just renders an empty form, and a failed delete still navigates home. `app/register/page.tsx` reads `searchParams` server-side and passes `draftId` down, so no `useSearchParams`/Suspense is involved.
 - See `docs/superpowers/specs/2026-08-09-quick-save-design.md` for why the originally proposed "note-less question = unorganized" design was dropped.
+
+### Mastery-rate bar (stats)
+
+`GET /v1/stats/summary` returns `{mastered_count, total_count}` — the only endpoint on `app/routers/stats.py`. It exists solely to feed the sidebar's mastery-rate bar (`frontend/src/components/layout/mastery-progress.tsx`).
+
+- **克服率 = mastered notes ÷ all mistake notes (active + mastered).** The denominator is "questions you've gotten wrong at least once", so a question with no note isn't counted. Percentages are computed client-side; the endpoint returns raw counts only.
+- One COUNT query using PostgreSQL's `FILTER` clause. No new table, no migration.
+- The sidebar mounts once in `AppShell`, so the component refetches on every `usePathname()` change — without that, mastering a question wouldn't move the bar until a reload.
+- It renders `null` while loading and on failure (a 0% bar would read as "克服率0"), and the sidebar is `hidden lg:flex`, so on mobile the bar is invisible but the request still fires.
+- This is a slice of the `stats-dashboard` backlog item; the other three proposed `/v1/stats` endpoints don't exist. See `docs/superpowers/specs/2026-08-09-mastery-progress-design.md`.
 
 ### Conventions
 
