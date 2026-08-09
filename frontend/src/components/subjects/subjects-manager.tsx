@@ -8,7 +8,7 @@ import { subjectsApi, unitsApi } from "@/lib/api";
 const CONFLICT_MESSAGE = "先に問題を移動または削除してください";
 
 const inputBase =
-  "border border-border rounded-md px-3 py-2 text-[13px] bg-white text-text focus:outline-none focus:border-amber focus:shadow-[0_0_0_3px_#FFFBEB]";
+  "border border-border rounded-md px-3 py-2 text-[13px] bg-white text-text focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_var(--color-primary-lt)]";
 
 function PlusIcon() {
   return (
@@ -230,7 +230,7 @@ export default function SubjectsManager() {
             setAddingSubject(true);
             setNewSubjectName("");
           }}
-          className="flex items-center gap-2 bg-amber text-white rounded-md px-5 py-2.5 text-[13px] font-bold hover:bg-amber-dk transition-colors duration-150"
+          className="flex items-center gap-2 bg-primary text-white rounded-md px-5 py-2.5 text-[13px] font-bold hover:bg-primary-dk transition-colors duration-150"
         >
           <PlusIcon />
           科目を追加
@@ -245,7 +245,7 @@ export default function SubjectsManager() {
               "mb-5 rounded-md border px-4 py-3 text-[13px] " +
               (message.type === "error"
                 ? "bg-red-50 border-red-200 text-red-700"
-                : "bg-navy-lt border-border text-navy")
+                : "bg-ink-lt border-border text-ink")
             }
           >
             {message.text}
@@ -268,7 +268,7 @@ export default function SubjectsManager() {
             <button
               type="button"
               onClick={handleAddSubject}
-              className="bg-amber text-white rounded-md px-4 py-2 text-[12px] font-bold hover:bg-amber-dk transition-colors"
+              className="bg-primary text-white rounded-md px-4 py-2 text-[12px] font-bold hover:bg-primary-dk transition-colors"
             >
               保存
             </button>
@@ -290,7 +290,7 @@ export default function SubjectsManager() {
             <button
               type="button"
               onClick={() => setAddingSubject(true)}
-              className="bg-amber text-white rounded-md px-6 py-3 text-[13px] font-bold hover:bg-amber-dk transition-colors duration-150"
+              className="bg-primary text-white rounded-md px-6 py-3 text-[13px] font-bold hover:bg-primary-dk transition-colors duration-150"
             >
               科目を追加する
             </button>
@@ -322,7 +322,7 @@ export default function SubjectsManager() {
                       <button
                         type="button"
                         onClick={() => handleSaveSubjectEdit(subject.id)}
-                        className="bg-amber text-white rounded-md px-3 py-1.5 text-[12px] font-bold hover:bg-amber-dk transition-colors"
+                        className="bg-primary text-white rounded-md px-3 py-1.5 text-[12px] font-bold hover:bg-primary-dk transition-colors"
                       >
                         保存
                       </button>
@@ -349,7 +349,7 @@ export default function SubjectsManager() {
                           setEditingSubjectId(subject.id);
                           setEditingSubjectName(subject.name);
                         }}
-                        className="text-muted hover:text-navy hover:bg-navy-lt rounded-md p-2 transition-colors"
+                        className="text-muted hover:text-ink hover:bg-ink-lt rounded-md p-2 transition-colors"
                       >
                         <EditIcon />
                       </button>
@@ -396,7 +396,7 @@ export default function SubjectsManager() {
                             onClick={() =>
                               handleSaveUnitEdit(subject.id, unit.id)
                             }
-                            className="bg-amber text-white rounded-md px-3 py-1.5 text-[12px] font-bold hover:bg-amber-dk transition-colors"
+                            className="bg-primary text-white rounded-md px-3 py-1.5 text-[12px] font-bold hover:bg-primary-dk transition-colors"
                           >
                             保存
                           </button>
@@ -410,8 +410,8 @@ export default function SubjectsManager() {
                         </>
                       ) : (
                         <>
-                          <span className="text-[12px] text-[#CBD5E1]">—</span>
-                          <span className="flex-1 text-[13px] text-navy">
+                          <span className="text-[12px] text-line">—</span>
+                          <span className="flex-1 text-[13px] text-ink">
                             {unit.name}
                           </span>
                           <div className="flex gap-0.5 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-within:opacity-100 transition-opacity">
@@ -425,7 +425,7 @@ export default function SubjectsManager() {
                                 });
                                 setEditingUnitName(unit.name);
                               }}
-                              className="text-muted hover:text-navy hover:bg-navy-lt rounded-md p-1.5 transition-colors"
+                              className="text-muted hover:text-ink hover:bg-ink-lt rounded-md p-1.5 transition-colors"
                             >
                               <EditIcon />
                             </button>
@@ -460,7 +460,7 @@ export default function SubjectsManager() {
                     <button
                       type="button"
                       onClick={() => handleAddUnit(subject.id)}
-                      className="bg-amber text-white rounded-md px-3 py-1.5 text-[12px] font-bold hover:bg-amber-dk transition-colors"
+                      className="bg-primary text-white rounded-md px-3 py-1.5 text-[12px] font-bold hover:bg-primary-dk transition-colors"
                     >
                       保存
                     </button>
@@ -479,7 +479,7 @@ export default function SubjectsManager() {
                       setAddingUnitFor(subject.id);
                       setNewUnitName("");
                     }}
-                    className="w-full flex items-center gap-1.5 px-4 py-2.5 pl-7 text-[12px] font-bold text-amber border-t border-border hover:bg-amber-lt transition-colors"
+                    className="w-full flex items-center gap-1.5 px-4 py-2.5 pl-7 text-[12px] font-bold text-primary border-t border-border hover:bg-primary-lt transition-colors"
                   >
                     <PlusIcon />
                     単元を追加

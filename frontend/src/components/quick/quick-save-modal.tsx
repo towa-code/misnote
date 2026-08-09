@@ -85,7 +85,7 @@ export default function QuickSaveModal({ open, onClose, onSaved }: Props) {
         if (e.target === dialogRef.current) dialogRef.current?.close();
       }}
       aria-labelledby="quick-save-title"
-      className="m-auto w-[min(560px,calc(100vw-2rem))] rounded-lg border border-border bg-white p-0 text-text shadow-lg backdrop:bg-navy/40"
+      className="m-auto w-[min(560px,calc(100vw-2rem))] rounded-lg border border-border bg-white p-0 text-text shadow-lg backdrop:bg-ink/40"
     >
       <div className="flex items-center justify-between gap-3 border-b border-border px-5 py-4">
         <h2
@@ -98,7 +98,7 @@ export default function QuickSaveModal({ open, onClose, onSaved }: Props) {
           type="button"
           aria-label="閉じる"
           onClick={() => dialogRef.current?.close()}
-          className="rounded-md p-2 -mr-2 text-muted transition-colors hover:bg-navy-lt hover:text-text"
+          className="rounded-md p-2 -mr-2 text-muted transition-colors hover:bg-ink-lt hover:text-text"
         >
           <CloseIcon />
         </button>
@@ -140,7 +140,7 @@ export default function QuickSaveModal({ open, onClose, onSaved }: Props) {
           type="button"
           onClick={handleSave}
           disabled={saving || body.trim() === ""}
-          className="rounded-md bg-amber px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-amber-dk disabled:cursor-not-allowed disabled:opacity-60"
+          className="rounded-md bg-primary px-6 py-2.5 text-[13px] font-bold text-white transition-colors hover:bg-primary-dk disabled:cursor-not-allowed disabled:opacity-60"
         >
           {saving ? "保存中…" : "保存"}
         </button>
