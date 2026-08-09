@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NAV_ITEMS } from "@/components/layout/nav-items";
+import MasteryProgress from "@/components/layout/mastery-progress";
 
 export default function Sidebar() {
   const pathname = usePathname();
@@ -37,6 +38,9 @@ export default function Sidebar() {
           );
         })}
       </nav>
+
+      {/* 克服率（nav が flex-1 なので、ここが最下部に押し下げられる） */}
+      <MasteryProgress />
     </aside>
   );
 }

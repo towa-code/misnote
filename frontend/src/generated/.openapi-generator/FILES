@@ -4,6 +4,7 @@ apis/DraftsApi.ts
 apis/HealthApi.ts
 apis/MistakeNotesApi.ts
 apis/QuestionsApi.ts
+apis/StatsApi.ts
 apis/SubjectsApi.ts
 apis/UnitsApi.ts
 apis/index.ts
@@ -27,6 +28,8 @@ docs/QuestionRef.md
 docs/QuestionResponse.md
 docs/QuestionUpdate.md
 docs/QuestionsApi.md
+docs/StatsApi.md
+docs/StatsSummary.md
 docs/SubjectCreate.md
 docs/SubjectRef.md
 docs/SubjectResponse.md
@@ -57,6 +60,7 @@ models/QuestionCreate.ts
 models/QuestionRef.ts
 models/QuestionResponse.ts
 models/QuestionUpdate.ts
+models/StatsSummary.ts
 models/SubjectCreate.ts
 models/SubjectRef.ts
 models/SubjectResponse.ts
