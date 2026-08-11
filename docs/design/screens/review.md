@@ -33,6 +33,7 @@
 | 復習日の提案チップ（suggested_next_review_at） | 正誤選択後（提案が `null` のときは非表示）。押すと日付欄に入るだけで、保存は既存の保存ボタン |
 | 「克服済みにする」ボタン | 正解選択後（`mastery_suggested` 時は提案バナーで強調） |
 | メモ・復習日 編集フォーム | 不正解選択後 |
+| 間違いの種類（reason_tag）のタグ選択 | 不正解選択後のメモ編集フォーム内（既存のタグを初期選択。正解時のフォームには出さない） |
 
 ---
 
@@ -40,7 +41,7 @@
 
 - `GET /mistake-notes/{id}`（URL直接アクセス・リロード時のデータ取得）
 - `POST /questions/{id}/attempts`（正解/不正解と任意の user_answer を記録。レスポンスに correct_streak / mastery_suggested / suggested_next_review_at）
-- `PUT /mistake-notes/{id}`（メモ・復習日を更新）
+- `PUT /mistake-notes/{id}`（メモ・復習日・間違いの種類を更新）
 - `PUT /mistake-notes/{id}/status`（正解時：「克服済みにする」で mastered 化）
 
 ---

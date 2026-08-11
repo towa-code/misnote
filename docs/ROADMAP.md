@@ -15,7 +15,8 @@ Phase 4  クラウド移行      ─ AWS（RDS / ECS / Cognito）           ← 
 ```
 
 **現在地：** Phase 0〜3 が完了。ローカルJWTによるユーザー登録・ログイン・全API認証必須化・
-フロントエンドのログイン導線とアカウント画面まで実装済み。次は Phase 4 のクラウド移行
+フロントエンドのログイン導線とアカウント画面まで実装済み。その後フェーズ計画の外で機能を3件追加した
+（[Phase 3 完了後の追加実装](#phase-3-完了後の追加実装)）。次は Phase 4 のクラウド移行
 （RDS / ECS / Cognito への切り替え）。
 
 ---
@@ -77,6 +78,8 @@ services:
 ## Phase 1 — バックエンドAPI
 
 **目標：** 設計書通りの全エンドポイントをローカルで動かす。認証はいったん不要（全リクエストを単一のシードユーザーとして処理）。
+
+> これは当時の目標。シードユーザーは Phase 3 で廃止され、現在は `/auth/register` と `/auth/login` 以外の全エンドポイントが認証必須。
 
 ### Step 1-1: DB モデル・マイグレーション
 
@@ -199,6 +202,19 @@ npx @openapitools/openapi-generator-cli generate \
 
 ---
 
+## Phase 3 完了後の追加実装
+
+Phase 4 に進む前に、`docs/newfunction/` の案から3件を実装した。いずれもフェーズ計画の外で、
+Phase 4 の前提にはなっていない。
+
+| 実装日 | 機能 | 内容 | 設計ドキュメント |
+|--------|------|------|-----------------|
+| 2026-08-03 | 間違い原因タグ | `mistake_notes.reason_tag`（6種）と一覧の絞り込み | [spec](./superpowers/specs/2026-08-03-reason-tags-design.md) |
+| 2026-08-04 | 復習日の提案 | 連続正解数から次の復習日を提案（保存はユーザー操作のまま） | [spec](./superpowers/specs/2026-08-04-review-interval-suggestion-design.md) |
+| 2026-08-09 | クイック保存 | 独立した `drafts` リソースと `/quick` 画面・本登録への導線 | [spec](./superpowers/specs/2026-08-09-quick-save-design.md) |
+
+---
+
 ## Phase 4 — クラウド移行（AWS）
 
 **目標：** ローカルで動いているアプリをそのまま AWS に載せる。コードの変更は認証部分（Cognito 差し替え）のみに留める。
@@ -239,6 +255,7 @@ npx @openapitools/openapi-generator-cli generate \
 ## 関連ドキュメント
 
 - [アプリ概要](./design/overview.md)
-- [DB設計](./design/db-design.md)
-- [API設計](./design/api-design.md)
-- [画面設計](./design/screen-design.md)
+- [DB設計](./design/db/design.md) / [テーブル定義](./design/db/schema.md)
+- [API共通仕様](./design/api/conventions.md)
+- [画面設計](./design/screens/)
+- [新機能案インデックス](./newfunction/README.md)
