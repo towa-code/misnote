@@ -17,14 +17,14 @@ const QUICK_DAYS = [1, 3, 7];
 // Explicit "必須" badge: clearer for students than a bare asterisk
 function RequiredBadge() {
   return (
-    <span className="ml-1.5 rounded bg-amber px-1.5 py-px text-[10px] font-bold tracking-normal text-white">
+    <span className="ml-1.5 rounded bg-primary px-1.5 py-px text-[10px] font-bold tracking-normal text-white">
       必須
     </span>
   );
 }
 
 const sectionHeading =
-  "font-serif text-[13px] font-bold tracking-[0.06em] uppercase pb-2.5 border-b-2 border-navy mb-5";
+  "font-serif text-[13px] font-bold tracking-[0.06em] uppercase pb-2.5 border-b-2 border-ink mb-5";
 
 function ChevronLeftIcon() {
   return (
@@ -153,7 +153,7 @@ export default function RegisterForm({ draftId }: Props) {
       <div className="bg-white border-b border-border px-5 sm:px-9 py-[18px] flex items-center gap-2">
         <Link
           href="/"
-          className="flex items-center justify-center text-amber rounded-md p-2.5 -ml-2.5 transition-colors hover:bg-amber-lt"
+          className="flex items-center justify-center text-primary rounded-md p-2.5 -ml-2.5 transition-colors hover:bg-primary-lt"
           aria-label="戻る"
         >
           <ChevronLeftIcon />
@@ -250,7 +250,7 @@ export default function RegisterForm({ draftId }: Props) {
           <div>
             <div className={sectionHeading}>メモ・復習日</div>
 
-            <div className="bg-navy-lt border-l-[3px] border-navy rounded-r-md px-3.5 py-3 text-[12px] text-muted leading-relaxed mb-5">
+            <div className="bg-ink-lt border-l-[3px] border-ink rounded-r-md px-3.5 py-3 text-[12px] text-muted leading-relaxed mb-5">
               間違えた理由や気をつけることをメモしておくと、次の復習がより効果的になります。あとから編集することもできます。
             </div>
 
@@ -330,7 +330,7 @@ export default function RegisterForm({ draftId }: Props) {
             {error && (
               <p
                 role="alert"
-                className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+                className="rounded-md border border-red bg-red-lt px-4 py-3 text-[13px] text-red"
               >
                 {error}
               </p>
@@ -339,13 +339,13 @@ export default function RegisterForm({ draftId }: Props) {
               <button
                 type="submit"
                 disabled={submitting}
-                className="bg-amber text-white border-none rounded-md px-8 py-3 text-[13px] font-bold cursor-pointer transition-colors hover:bg-amber-dk disabled:opacity-60 disabled:cursor-not-allowed"
+                className="bg-primary text-white border-none rounded-md px-8 py-3 text-[13px] font-bold cursor-pointer transition-colors hover:bg-primary-dk disabled:opacity-60 disabled:cursor-not-allowed"
               >
                 {submitting ? "登録中…" : "登録する"}
               </button>
               <Link
                 href="/"
-                className="bg-white text-muted border border-border rounded-md px-5 py-3 text-[13px] transition-colors hover:bg-navy-lt hover:border-[#CBD5E1] hover:text-text"
+                className="bg-white text-muted border border-border rounded-md px-5 py-3 text-[13px] transition-colors hover:bg-ink-lt hover:border-line hover:text-text"
               >
                 キャンセル
               </Link>

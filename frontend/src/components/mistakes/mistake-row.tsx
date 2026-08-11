@@ -56,11 +56,11 @@ export default function MistakeRow({
         "relative flex flex-col gap-3 px-3 py-4 border-b border-border last:border-b-0",
         ROW_GRID,
         "sm:items-center rounded-md transition-colors duration-150",
-        isOverdue ? "bg-amber-lt" : "",
+        isOverdue ? "bg-late-lt shadow-[inset_3px_0_0_var(--color-late)]" : "",
         variant === "active"
           ? isOverdue
-            ? "hover:bg-[#FFF3CC]"
-            : "hover:bg-navy-lt"
+            ? "hover:bg-late-md"
+            : "hover:bg-ink-lt"
           : "",
       ].join(" ")}
     >
@@ -92,18 +92,13 @@ export default function MistakeRow({
             </span>
           )}
           {isOverdue && (
-            <span className="inline-flex items-center gap-1 bg-amber text-white text-[10px] font-bold tracking-[0.04em] px-1.5 py-px rounded ml-2">
+            <span className="inline-flex items-center gap-1 bg-late text-ink text-[10px] font-bold tracking-[0.04em] px-1.5 py-px rounded ml-2">
               <AlertIcon />
               {overdueDays}日遅れ
             </span>
           )}
         </div>
-        <p
-          className={[
-            "text-[15px] font-medium leading-relaxed",
-            isOverdue ? "text-amber" : "text-text",
-          ].join(" ")}
-        >
+        <p className="text-[15px] font-medium leading-relaxed text-text">
           {note.question.questionText}
         </p>
         {note.memo && (
@@ -129,11 +124,7 @@ export default function MistakeRow({
           <span
             className={[
               "text-[12px] whitespace-nowrap",
-              isOverdue
-                ? "text-amber font-bold"
-                : note.nextReviewAt
-                  ? "text-muted"
-                  : "text-[#CBD5E1]",
+              isOverdue ? "text-text font-bold" : "text-muted",
             ].join(" ")}
           >
             {note.nextReviewAt ? formatReviewDate(note.nextReviewAt) : "未設定"}
@@ -154,13 +145,13 @@ export default function MistakeRow({
               type="button"
               disabled={busy}
               onClick={() => onChangeStatus(note.id, "mastered")}
-              className="px-3 py-1.5 rounded-[5px] border border-border bg-surface text-[12px] text-muted whitespace-nowrap hover:bg-navy-lt hover:border-[#CBD5E1] hover:text-navy disabled:opacity-50 transition-colors duration-150"
+              className="px-3 py-1.5 rounded-[5px] border border-border bg-surface text-[12px] text-muted whitespace-nowrap hover:bg-ink-lt hover:border-line hover:text-ink disabled:opacity-50 transition-colors duration-150"
             >
               克服済みにする
             </button>
             <Link
               href={`/review/${note.id}`}
-              className="px-3.5 py-1.5 rounded-[5px] bg-amber text-white text-[12px] font-bold whitespace-nowrap hover:bg-amber-dk transition-colors duration-150"
+              className="px-3.5 py-1.5 rounded-[5px] bg-primary text-white text-[12px] font-bold whitespace-nowrap hover:bg-primary-dk transition-colors duration-150"
             >
               復習する
             </Link>
@@ -170,7 +161,7 @@ export default function MistakeRow({
             type="button"
             disabled={busy}
             onClick={() => onChangeStatus(note.id, "active")}
-            className="px-3 py-1.5 rounded-[5px] border border-border bg-surface text-[12px] text-muted whitespace-nowrap hover:bg-navy-lt hover:border-[#CBD5E1] hover:text-navy disabled:opacity-50 transition-colors duration-150"
+            className="px-3 py-1.5 rounded-[5px] border border-border bg-surface text-[12px] text-muted whitespace-nowrap hover:bg-ink-lt hover:border-line hover:text-ink disabled:opacity-50 transition-colors duration-150"
           >
             苦手に戻す
           </button>

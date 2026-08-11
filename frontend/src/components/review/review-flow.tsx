@@ -134,7 +134,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
     <div className="bg-surface border-b border-border px-5 sm:px-9 py-[18px] flex items-center gap-2">
       <Link
         href="/"
-        className="flex items-center justify-center text-amber rounded-md p-2.5 -ml-2.5 transition-colors hover:bg-amber-lt"
+        className="flex items-center justify-center text-primary rounded-md p-2.5 -ml-2.5 transition-colors hover:bg-primary-lt"
         aria-label="戻る"
       >
         <ChevronLeftIcon />
@@ -154,9 +154,9 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
           aria-busy="true"
         >
           <span className="sr-only">読み込み中</span>
-          <div className="animate-pulse h-4 w-44 rounded bg-navy-lt" aria-hidden="true" />
-          <div className="animate-pulse h-32 rounded-lg bg-navy-lt/70" aria-hidden="true" />
-          <div className="animate-pulse h-24 rounded-lg bg-navy-lt/70" aria-hidden="true" />
+          <div className="animate-pulse h-4 w-44 rounded bg-ink-lt" aria-hidden="true" />
+          <div className="animate-pulse h-32 rounded-lg bg-ink-lt/70" aria-hidden="true" />
+          <div className="animate-pulse h-24 rounded-lg bg-ink-lt/70" aria-hidden="true" />
         </div>
       </>
     );
@@ -170,7 +170,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
           <span className="text-5xl mb-5" role="img" aria-label="">
             🔍
           </span>
-          <h2 className="font-serif text-[18px] font-bold text-navy mb-2">
+          <h2 className="font-serif text-[18px] font-bold text-ink mb-2">
             この問題は見つかりませんでした
           </h2>
           <p className="text-[14px] text-muted max-w-xs leading-relaxed mb-7">
@@ -178,7 +178,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
           </p>
           <Link
             href="/"
-            className="inline-flex items-center gap-2 bg-amber text-white rounded-md px-6 py-3 text-[15px] font-bold hover:bg-amber-dk transition-colors duration-150"
+            className="inline-flex items-center gap-2 bg-primary text-white rounded-md px-6 py-3 text-[15px] font-bold hover:bg-primary-dk transition-colors duration-150"
           >
             ホームへ戻る
           </Link>
@@ -195,7 +195,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
         {error && (
           <div
             role="alert"
-            className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+            className="rounded-md border border-red bg-red-lt px-4 py-3 text-[13px] text-red"
           >
             {error}
           </div>
@@ -203,11 +203,11 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
 
         {/* Meta: subject/unit, wrong count, current streak */}
         <div className="flex flex-wrap items-center gap-2.5">
-          <span className="text-[11px] font-bold text-navy bg-navy-lt tracking-[0.07em] uppercase px-2.5 py-[3px] rounded">
+          <span className="text-[11px] font-bold text-ink bg-ink-lt tracking-[0.07em] uppercase px-2.5 py-[3px] rounded">
             {note.question.subject.name}
             {note.question.unit && ` › ${note.question.unit.name}`}
           </span>
-          <span className="text-[#CBD5E1]" aria-hidden="true">
+          <span className="text-line" aria-hidden="true">
             ·
           </span>
           <span className="flex items-center gap-1 text-[12px] font-bold text-red">
@@ -216,7 +216,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
           </span>
           {note.correctStreak > 0 && (
             <>
-              <span className="text-[#CBD5E1]" aria-hidden="true">
+              <span className="text-line" aria-hidden="true">
                 ·
               </span>
               <span className="flex items-center gap-1 text-[12px] font-bold text-green">
@@ -248,7 +248,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
             <button
               type="button"
               onClick={() => setPhase("revealed")}
-              className="w-full py-4 rounded-lg bg-navy-lt border border-dashed border-[#CBD5E1] text-[14px] font-bold text-muted tracking-[0.02em] hover:bg-[#E8EEF7] hover:border-navy hover:text-navy transition-colors duration-150"
+              className="w-full py-4 rounded-lg bg-ink-lt border border-dashed border-line text-[14px] font-bold text-muted tracking-[0.02em] hover:bg-primary-lt hover:border-primary hover:text-primary transition-colors duration-150"
             >
               答えを見る
             </button>

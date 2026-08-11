@@ -8,7 +8,7 @@ export default function BottomNav() {
   const pathname = usePathname();
 
   return (
-    <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-navy border-t border-white/10 flex">
+    <nav className="lg:hidden fixed bottom-0 left-0 right-0 bg-ink border-t border-white/10 flex">
       {NAV_ITEMS.map(({ href, label, Icon }) => {
         const isActive = href === "/" ? pathname === "/" : pathname.startsWith(href);
         return (
@@ -18,7 +18,7 @@ export default function BottomNav() {
             aria-current={isActive ? "page" : undefined}
             className={[
               "flex flex-1 flex-col items-center justify-center gap-1 min-h-[56px] text-[11px] font-medium tracking-[0.03em] transition-colors duration-150",
-              isActive ? "text-amber-br" : "text-white/70 hover:text-white",
+              isActive ? "text-primary-br" : "text-white/70 hover:text-white",
             ].join(" ")}
           >
             <Icon />

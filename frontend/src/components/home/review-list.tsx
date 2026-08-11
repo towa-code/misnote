@@ -15,10 +15,10 @@ export default function ReviewList({
 }: Props) {
   return (
     <section className="mt-8">
-      {/* Today: main section with navy-underlined header */}
+      {/* Today: main section with ink-underlined header */}
       {todayItems.length > 0 && (
         <>
-          <div className="flex items-baseline gap-3 pb-2.5 mb-4 border-b-2 border-navy">
+          <div className="flex items-baseline gap-3 pb-2.5 mb-4 border-b-2 border-ink">
             <h2 className="font-serif text-[16px] font-bold tracking-[0.04em]">復習リスト</h2>
             <span className="text-[13px] text-muted">{todayItems.length}問</span>
           </div>

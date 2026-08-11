@@ -88,17 +88,17 @@ export default function HomeContent() {
           {[0, 1, 2].map((i) => (
             <div key={i} className="flex-1 bg-surface px-6 py-[18px]">
               <div className="animate-pulse space-y-2.5">
-                <div className="h-3 w-14 rounded bg-navy-lt" />
-                <div className="h-8 w-10 rounded bg-navy-lt" />
-                <div className="h-3 w-20 rounded bg-navy-lt" />
+                <div className="h-3 w-14 rounded bg-ink-lt" />
+                <div className="h-8 w-10 rounded bg-ink-lt" />
+                <div className="h-3 w-20 rounded bg-ink-lt" />
               </div>
             </div>
           ))}
         </div>
         <div className="mt-9 space-y-4" aria-hidden="true">
-          <div className="animate-pulse h-5 w-32 rounded bg-navy-lt" />
+          <div className="animate-pulse h-5 w-32 rounded bg-ink-lt" />
           {[0, 1, 2].map((i) => (
-            <div key={i} className="animate-pulse h-16 rounded-md bg-navy-lt/70" />
+            <div key={i} className="animate-pulse h-16 rounded-md bg-ink-lt/70" />
           ))}
         </div>
       </div>
@@ -115,7 +115,7 @@ export default function HomeContent() {
       {error && (
         <div
           role="alert"
-          className="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+          className="mb-5 rounded-md border border-red bg-red-lt px-4 py-3 text-[13px] text-red"
         >
           {error}
         </div>

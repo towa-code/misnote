@@ -50,7 +50,7 @@ export default function DraftRow({ draft, onDelete }: Props) {
       <div className="flex shrink-0 items-center gap-1">
         <Link
           href={`/register?draft=${draft.id}`}
-          className="rounded-md bg-amber px-4 py-2 text-[12px] font-bold text-white transition-colors hover:bg-amber-dk"
+          className="rounded-md bg-primary px-4 py-2 text-[12px] font-bold text-white transition-colors hover:bg-primary-dk"
         >
           登録する
         </Link>
@@ -58,7 +58,7 @@ export default function DraftRow({ draft, onDelete }: Props) {
           type="button"
           aria-label="この下書きを削除"
           onClick={() => onDelete(draft)}
-          className="rounded-md p-2 text-muted transition-colors hover:bg-red-50 hover:text-red-700"
+          className="rounded-md p-2 text-muted transition-colors hover:bg-red-lt hover:text-red"
         >
           <TrashIcon />
         </button>

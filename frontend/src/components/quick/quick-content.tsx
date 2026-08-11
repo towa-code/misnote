@@ -58,7 +58,7 @@ export default function QuickContent() {
         <button
           type="button"
           onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 rounded-md bg-amber px-5 py-2.5 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-amber-dk"
+          className="flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-primary-dk"
         >
           <PlusIcon />
           書き留める
@@ -69,7 +69,7 @@ export default function QuickContent() {
         {error && (
           <div
             role="alert"
-            className="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+            className="mb-5 rounded-md border border-red bg-red-lt px-4 py-3 text-[13px] text-red"
           >
             {error}
           </div>

@@ -15,7 +15,7 @@ Phase 4  クラウド移行      ─ AWS（RDS / ECS / Cognito）           ← 
 ```
 
 **現在地：** Phase 0〜3 が完了。ローカルJWTによるユーザー登録・ログイン・全API認証必須化・
-フロントエンドのログイン導線とアカウント画面まで実装済み。その後フェーズ計画の外で機能を3件追加した
+フロントエンドのログイン導線とアカウント画面まで実装済み。その後フェーズ計画の外で機能追加と配色刷新を行った
 （[Phase 3 完了後の追加実装](#phase-3-完了後の追加実装)）。次は Phase 4 のクラウド移行
 （RDS / ECS / Cognito への切り替え）。
 
@@ -204,14 +204,16 @@ npx @openapitools/openapi-generator-cli generate \
 
 ## Phase 3 完了後の追加実装
 
-Phase 4 に進む前に、`docs/newfunction/` の案から3件を実装した。いずれもフェーズ計画の外で、
-Phase 4 の前提にはなっていない。
+Phase 4 に進む前に、`docs/newfunction/` の案から4件と、画面全体の配色刷新を実装した。
+いずれもフェーズ計画の外で、Phase 4 の前提にはなっていない。
 
 | 実装日 | 機能 | 内容 | 設計ドキュメント |
 |--------|------|------|-----------------|
 | 2026-08-03 | 間違い原因タグ | `mistake_notes.reason_tag`（6種）と一覧の絞り込み | [spec](./superpowers/specs/2026-08-03-reason-tags-design.md) |
 | 2026-08-04 | 復習日の提案 | 連続正解数から次の復習日を提案（保存はユーザー操作のまま） | [spec](./superpowers/specs/2026-08-04-review-interval-suggestion-design.md) |
 | 2026-08-09 | クイック保存 | 独立した `drafts` リソースと `/quick` 画面・本登録への導線 | [spec](./superpowers/specs/2026-08-09-quick-save-design.md) |
+| 2026-08-09 | 克服率バー | `GET /stats/summary` とサイドバーの克服率表示（統計ダッシュボード案の一部） | [spec](./superpowers/specs/2026-08-09-mastery-progress-design.md) |
+| 2026-08-09 | 配色刷新 | 青基調のカラートークンへ統一（WCAG AA 準拠） | [spec](./superpowers/specs/2026-08-09-color-palette-design.md) |
 
 ---
 

@@ -62,6 +62,7 @@ frontend/
 ```
 
 - ナビゲーション項目は `src/components/layout/nav-items.tsx` の `NAV_ITEMS` が唯一の定義元で、サイドバー（デスクトップ）と下部ナビ（モバイル）が共有する
+- サイドバー下部の克服率バー（`layout/mastery-progress.tsx`）は `GET /stats/summary` を画面遷移のたびに取り直す
 - `src/components/auth/auth-gate.tsx` がトークンの有無を見て、未ログイン時は `/login` にリダイレクトする
 
 ## API クライアントの再生成

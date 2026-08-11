@@ -42,7 +42,7 @@ export default function LoginForm() {
         {error && (
           <p
             role="alert"
-            className="bg-amber-lt border border-amber text-amber text-[13px] rounded-md px-3 py-2.5"
+            className="bg-red-lt border border-red text-red text-[13px] rounded-md px-3 py-2.5"
           >
             {error}
           </p>
@@ -78,13 +78,13 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={submitting}
-          className="w-full rounded-md bg-amber py-2.5 text-[14px] font-bold text-white transition-colors duration-150 hover:bg-amber-dk disabled:opacity-50"
+          className="w-full rounded-md bg-primary py-2.5 text-[14px] font-bold text-white transition-colors duration-150 hover:bg-primary-dk disabled:opacity-50"
         >
           {submitting ? "ログイン中…" : "ログイン"}
         </button>
         <p className="text-center text-[13px] text-muted">
           アカウントをお持ちでない方は{" "}
-          <Link href="/signup" className="font-bold text-amber hover:underline">
+          <Link href="/signup" className="font-bold text-primary hover:underline">
             新規登録
           </Link>
         </p>

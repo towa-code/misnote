@@ -94,7 +94,7 @@ export default function MistakesContent() {
         {error && (
           <div
             role="alert"
-            className="mb-5 rounded-md border border-red-200 bg-red-50 px-4 py-3 text-[13px] text-red-700"
+            className="mb-5 rounded-md border border-red bg-red-lt px-4 py-3 text-[13px] text-red"
           >
             {error}
           </div>
@@ -107,7 +107,7 @@ export default function MistakesContent() {
             {[0, 1, 2].map((i) => (
               <div
                 key={i}
-                className="animate-pulse h-20 rounded-md bg-navy-lt/70"
+                className="animate-pulse h-20 rounded-md bg-ink-lt/70"
                 aria-hidden="true"
               />
             ))}

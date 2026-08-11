@@ -27,11 +27,11 @@ export default function QuestionCard({ note, revealed }: Props) {
           <div className="px-6 py-5 border-b border-border last:border-b-0">
             <div className={cardLabel}>正解</div>
             {correctAnswer ? (
-              <div className="font-serif text-[17px] sm:text-[18px] font-bold text-navy leading-relaxed whitespace-pre-wrap">
+              <div className="font-serif text-[17px] sm:text-[18px] font-bold text-ink leading-relaxed whitespace-pre-wrap">
                 {correctAnswer}
               </div>
             ) : (
-              <div className="text-[13px] text-[#CBD5E1]">
+              <div className="text-[13px] text-muted">
                 正解は登録されていません
               </div>
             )}
