@@ -19,19 +19,22 @@ This directory is the **design documentation subtree** of the misnote (間違い
 | `design/api/mistake-notes.md` | Mistake-notes API — today/mastered filters, status endpoint, nested response shape |
 | `design/api/drafts.md` | Drafts API — quick-save notes that aren't questions yet |
 | `design/api/stats.md` | Stats API — the counts behind the sidebar's mastery-rate bar |
-| `design/db/schema.md` | Full schema (6 tables) — all columns and FK relationships |
+| `design/db/schema.md` | Full schema (7 tables) — all columns and FK relationships |
 | `design/db/design.md` | ER diagram, indexes, design rationale, correct_streak/mastery rules |
 | `design/screens/transitions.md` | Screen transition diagram |
 | `design/screens/home.md` | Home screen — today's review + unscheduled section |
 | `design/screens/register.md` | Question registration form |
 | `design/screens/review.md` | Review flow — self-grading, mastery_suggested UI, memo update |
-| `design/screens/mistake-list.md` | Mistake list — active/mastered tabs |
+| `design/screens/mistake-list.md` | Mistake list — active/mastered tabs, reason-tag filter |
 | `design/screens/subjects.md` | Subject & unit management |
 | `design/screens/quick-save.md` | Quick save — draft list plus the save modal |
 | `design/screens/common-ui.md` | Color tokens, interactions, the sidebar mastery-rate bar, responsive breakpoints (applies to all screens) |
-| `design/mockups/` | Static HTML mockups (one per screen + `00_prototype.html` combining all screens) |
-| `ROADMAP.md` | Implementation roadmap (Phase 0–4: local Docker → backend → frontend → local JWT → AWS) |
-| `superpowers/specs/2026-07-31-auth-design.md` | Design doc for local JWT auth (Phase 3): token scheme, password-hashing library choice, `deps.py`/`units.py` changes, frontend auth routes |
+| `design/mockups/` | Static HTML mockups (one per screen + `00_prototype.html` combining all screens). Only `01_home_blue.html` uses the current palette — the rest are still the old colors |
+| `ROADMAP.md` | Implementation roadmap (Phase 0–4: local Docker → backend → frontend → local JWT → AWS) plus the features added after Phase 3 |
+| `newfunction/` | Backlog of feature proposals — nothing here is implemented unless the user asks (its `README.md` says so explicitly and marks the ones already shipped) |
+| `data/` | Raw data files backing a proposal (currently `preset_subjects_units.csv`) |
+| `superpowers/specs/` | Per-feature design docs: `2026-07-31-auth-design.md` (local JWT: token scheme, password-hashing library choice, `deps.py`/`units.py` changes, frontend auth routes), `2026-08-03-reason-tags-design.md`, `2026-08-04-review-interval-suggestion-design.md`, `2026-08-09-quick-save-design.md`, `2026-08-09-mastery-progress-design.md`, `2026-08-09-color-palette-design.md`, `2026-07-13-home-screen-api-design.md` |
+| `superpowers/plans/` | The task-by-task implementation plans executed from those specs (auth, home-screen API, color palette) |
 
 ## Architecture Summary
 
@@ -55,5 +58,6 @@ This directory is the **design documentation subtree** of the misnote (間違い
 - `correct_streak` on `mistake_notes` tracks consecutive correct answers; at 3 the API sets `mastery_suggested: true` and the UI *suggests* mastering — the transition to `mastered` is always a user action, never automatic
 - `next_review_at` is user-set (not auto-calculated) and nullable; `GET /mistake-notes/today` filters by this date and excludes `null` (the home screen shows unscheduled notes separately)
 - `attempts.user_answer` is optional — the review flow is self-graded
+- `mistake_notes.reason_tag` is a nullable "why did I get this wrong" tag (`misread` / `approach` / `knowledge` / `calculation` / `time` / `other`), validated in Pydantic rather than by a DB constraint. Japanese labels live only in `frontend/src/lib/reason-tags.ts`
 - All PKs are UUIDs; all tables are scoped to `user_id` for data isolation
 - `drafts` (quick save) hangs off `users` only — it is a note that isn't a question yet, so it holds just `body` and has no link to subjects, questions, or notes. Promoting one copies its text into the register form and then deletes the draft

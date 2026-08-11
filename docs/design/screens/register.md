@@ -20,6 +20,7 @@
 | 単元 | セレクトボックス（科目選択後に動的表示） | - |
 | 問題文 | テキストエリア | ✓ |
 | 正解 | テキストエリア | - |
+| 間違いの種類 | タグ選択チップ（6種から1つ・もう一度押すと解除） | - |
 | 間違えた理由 | テキストエリア | ✓ |
 | 今回学んだこと | テキストエリア | - |
 | 次の復習日 | 日付ピッカー ＋「+1日 / +3日 / +7日」クイックチップ（今日基準・フロントのみ） | - |
@@ -52,7 +53,7 @@
 
 - `GET /subjects`
 - `GET /subjects/{subject_id}/units`
-- `POST /questions`（`memo`・`learning`・`next_review_at` を同時送信）
+- `POST /questions`（`memo`・`learning`・`next_review_at`・`reason_tag` を同時送信）
 - `GET /drafts/{id}`・`DELETE /drafts/{id}`（`?draft={id}` 付きで来たときのみ）
 
 ---

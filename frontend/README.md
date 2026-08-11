@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# misnote-frontend
 
-## Getting Started
+misnote の Next.js フロントエンド。全画面が実装済みで、生成した TypeScript クライアント経由で実 API に接続している。
 
-First, run the development server:
+> ⚠️ この Next.js（16.2.9）は学習データと異なる破壊的変更を含みます。コードを書く前に `AGENTS.md` と `node_modules/next/dist/docs/` を確認してください。
+
+## 技術スタック
+
+- Next.js 16（App Router）/ React 19
+- TypeScript
+- Tailwind CSS v4（カラートークンは `src/app/globals.css` の `@theme`）
+
+## 起動方法
+
+バックエンドを `http://localhost:8000` で起動した状態で:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev     # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+その他のコマンド:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run lint
+npm run generate  # OpenAPI から API クライアントを再生成（下記参照）
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## 環境変数
 
-## Learn More
+| 変数名 | 説明 | デフォルト |
+|--------|------|-----------|
+| `NEXT_PUBLIC_API_BASE_URL` | バックエンドのベースURL | `http://localhost:8000` |
 
-To learn more about Next.js, take a look at the following resources:
+`.env.local` に記述する（git 管理外）。
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 画面
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| パス | 画面 |
+|------|------|
+| `/` | ホーム（今日の復習＋復習日未設定） |
+| `/register` | 問題登録（`?draft=<id>` で下書きから本登録） |
+| `/quick` | クイック保存（下書き一覧＋保存モーダル） |
+| `/mistakes` | 苦手問題一覧（苦手中 / 克服済みタブ・原因タグ絞り込み） |
+| `/subjects` | 科目・単元管理 |
+| `/review/[id]` | 復習フロー |
+| `/login` `/signup` `/account` | ログイン / 新規登録 / アカウント |
 
-## Deploy on Vercel
+## ディレクトリ構成
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+frontend/
+├── src/
+│   ├── app/          # ルーティング（page.tsx は薄く保つ）
+│   ├── components/   # 画面ごとの実装（home/ register/ review/ ...）
+│   ├── generated/    # openapi-generator の出力（手で編集しない）
+│   └── lib/
+│       ├── api.ts         # 生成クライアントのシングルトン（fetch は直書きしない）
+│       └── auth-token.ts  # localStorage のトークン読み書き
+└── scripts/          # 生成後の後処理
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- ナビゲーション項目は `src/components/layout/nav-items.tsx` の `NAV_ITEMS` が唯一の定義元で、サイドバー（デスクトップ）と下部ナビ（モバイル）が共有する
+- サイドバー下部の克服率バー（`layout/mastery-progress.tsx`）は `GET /stats/summary` を画面遷移のたびに取り直す
+- `src/components/auth/auth-gate.tsx` がトークンの有無を見て、未ログイン時は `/login` にリダイレクトする
+
+## API クライアントの再生成
+
+バックエンドのエンドポイントやスキーマを変えたときに実行する。
+
+```bash
+# バックエンドを起動した状態で OpenAPI を書き出しておく
+curl http://localhost:8000/openapi.json -o ../backend/openapi.json
+npm run generate
+```
+
+生成には Java 11+ が必要。システムの `java` が 1.8 だと弾かれるため、その場合は JDK を指定する。
+
+```bash
+JAVA_HOME=/opt/homebrew/opt/openjdk npm run generate
+```
