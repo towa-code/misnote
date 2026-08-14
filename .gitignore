@@ -1,1 +1,5 @@
 .DS_Store
+
+# skills CLI がインストールしたスキル本体 (skills-lock.json から再取得する)
+.agents/
+.claude/skills/
