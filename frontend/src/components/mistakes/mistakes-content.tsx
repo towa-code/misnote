@@ -13,6 +13,7 @@ import {
   MistakeNoteStatusUpdateStatusEnum,
 } from "@/generated";
 import { mistakeNotesApi } from "@/lib/api";
+import PageHeader from "@/components/layout/page-header";
 
 const STATUS_ENUM = {
   active: MistakeNoteStatusUpdateStatusEnum.Active,
@@ -76,19 +77,14 @@ export default function MistakesContent() {
 
   return (
     <>
-      <header className="bg-surface border-b border-border px-5 sm:px-9 pt-5">
-        <h1 className="font-serif text-[26px] font-bold tracking-[0.02em] text-text">
-          苦手問題
-        </h1>
-        <div className="mt-3.5">
-          <MistakeTabs
-            tab={tab}
-            onChange={handleChangeTab}
-            activeCount={activeNotes.length}
-            masteredCount={masteredNotes.length}
-          />
-        </div>
-      </header>
+      <PageHeader title="苦手問題">
+        <MistakeTabs
+          tab={tab}
+          onChange={handleChangeTab}
+          activeCount={activeNotes.length}
+          masteredCount={masteredNotes.length}
+        />
+      </PageHeader>
 
       <div className="p-5 sm:p-9 max-w-[1000px]">
         {error && (

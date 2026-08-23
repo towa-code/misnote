@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import type { SubjectResponse, UnitResponse } from "@/generated";
 import { ResponseError } from "@/generated";
 import { subjectsApi, unitsApi } from "@/lib/api";
+import PageHeader from "@/components/layout/page-header";
 
 const CONFLICT_MESSAGE = "先に問題を移動または削除してください";
 
@@ -220,22 +221,22 @@ export default function SubjectsManager() {
 
   return (
     <div>
-      <div className="bg-white border-b border-border px-5 sm:px-9 py-[18px] flex items-center justify-between gap-3">
-        <h1 className="font-serif text-[20px] font-bold tracking-[0.02em]">
-          科目・単元管理
-        </h1>
-        <button
-          type="button"
-          onClick={() => {
-            setAddingSubject(true);
-            setNewSubjectName("");
-          }}
-          className="flex items-center gap-2 bg-primary text-white rounded-md px-5 py-2.5 text-[13px] font-bold hover:bg-primary-dk transition-colors duration-150"
-        >
-          <PlusIcon />
-          科目を追加
-        </button>
-      </div>
+      <PageHeader
+        title="科目・単元管理"
+        action={
+          <button
+            type="button"
+            onClick={() => {
+              setAddingSubject(true);
+              setNewSubjectName("");
+            }}
+            className="flex items-center gap-2 bg-primary text-white rounded-md px-5 py-2.5 text-[13px] font-bold hover:bg-primary-dk transition-colors duration-150"
+          >
+            <PlusIcon />
+            科目を追加
+          </button>
+        }
+      />
 
       <div className="p-5 sm:p-9">
         {message && (

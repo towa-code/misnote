@@ -10,6 +10,7 @@ import { draftsApi, questionsApi, subjectsApi, unitsApi } from "@/lib/api";
 import { inputBase, labelBase } from "@/lib/form-styles";
 import type { ReasonTag } from "@/lib/reason-tags";
 import { addDays, toDateInput } from "@/lib/review-date";
+import PageHeader from "@/components/layout/page-header";
 
 // 復習日のクイック指定（今日から何日後か）
 const QUICK_DAYS = [1, 3, 7];
@@ -25,24 +26,6 @@ function RequiredBadge() {
 
 const sectionHeading =
   "font-serif text-[13px] font-bold tracking-[0.06em] uppercase pb-2.5 border-b-2 border-ink mb-5";
-
-function ChevronLeftIcon() {
-  return (
-    <svg
-      width="22"
-      height="22"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="2"
-      strokeLinecap="round"
-      strokeLinejoin="round"
-      aria-hidden="true"
-    >
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  );
-}
 
 function ChevronDownIcon() {
   return (
@@ -149,19 +132,7 @@ export default function RegisterForm({ draftId }: Props) {
 
   return (
     <div>
-      {/* Header */}
-      <div className="bg-white border-b border-border px-5 sm:px-9 py-[18px] flex items-center gap-2">
-        <Link
-          href="/"
-          className="flex items-center justify-center text-primary rounded-md p-2.5 -ml-2.5 transition-colors hover:bg-primary-lt"
-          aria-label="戻る"
-        >
-          <ChevronLeftIcon />
-        </Link>
-        <h1 className="font-serif text-[20px] font-bold tracking-[0.02em]">
-          問題を登録
-        </h1>
-      </div>
+      <PageHeader title="問題を登録" back="/" />
 
       {/* Form */}
       <form onSubmit={handleSubmit}>

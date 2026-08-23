@@ -11,14 +11,7 @@ import {
 } from "@/generated";
 import { attemptsApi, mistakeNotesApi } from "@/lib/api";
 import { inputBase, labelBase } from "@/lib/form-styles";
-
-function ChevronLeftIcon() {
-  return (
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="15 18 9 12 15 6" />
-    </svg>
-  );
-}
+import PageHeader from "@/components/layout/page-header";
 
 function XIcon() {
   return (
@@ -130,20 +123,7 @@ export default function ReviewFlow({ noteId }: { noteId: string }) {
     }
   }
 
-  const header = (
-    <div className="bg-surface border-b border-border px-5 sm:px-9 py-[18px] flex items-center gap-2">
-      <Link
-        href="/"
-        className="flex items-center justify-center text-primary rounded-md p-2.5 -ml-2.5 transition-colors hover:bg-primary-lt"
-        aria-label="戻る"
-      >
-        <ChevronLeftIcon />
-      </Link>
-      <h1 className="font-serif text-[20px] font-bold tracking-[0.02em]">
-        復習
-      </h1>
-    </div>
-  );
+  const header = <PageHeader title="復習" back="/" />;
 
   if (loading) {
     return (
