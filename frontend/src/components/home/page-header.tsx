@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PageHeader from "@/components/layout/page-header";
 
 function PlusIcon() {
   return (
@@ -31,21 +32,19 @@ export default function HomePageHeader() {
   const today = formatDate(new Date());
 
   return (
-    <header className="bg-surface border-b border-border px-5 sm:px-9 py-5 flex justify-between items-center gap-3">
-      <div>
-        <h1 className="font-serif text-[26px] font-bold tracking-[0.02em] text-text">
-          今日の復習
-        </h1>
-        <p className="text-[14px] text-muted mt-1 tracking-[0.02em]">{today}</p>
-      </div>
-
-      <Link
-        href="/register"
-        className="flex items-center gap-2 bg-primary text-white rounded-md px-6 py-3 text-[15px] font-bold hover:bg-primary-dk transition-colors duration-150"
-      >
-        <PlusIcon />
-        問題を登録
-      </Link>
-    </header>
+    <PageHeader
+      title="今日の復習"
+      action={
+        <Link
+          href="/register"
+          className="flex items-center gap-2 bg-primary text-white rounded-md px-5 py-2.5 text-[13px] font-bold hover:bg-primary-dk transition-colors duration-150"
+        >
+          <PlusIcon />
+          問題を登録
+        </Link>
+      }
+    >
+      <p className="text-[14px] text-muted tracking-[0.02em]">{today}</p>
+    </PageHeader>
   );
 }

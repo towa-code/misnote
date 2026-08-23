@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import type { UserResponse } from "@/generated";
 import { authApi } from "@/lib/api";
 import { clearToken } from "@/lib/auth-token";
+import PageHeader from "@/components/layout/page-header";
 
 export default function AccountPanel() {
   const router = useRouter();
@@ -25,11 +26,7 @@ export default function AccountPanel() {
 
   return (
     <div>
-      <header className="bg-surface border-b border-border px-5 sm:px-9 py-[18px]">
-        <h1 className="font-serif text-[20px] font-bold tracking-[0.02em] text-text">
-          アカウント
-        </h1>
-      </header>
+      <PageHeader title="アカウント" />
 
       <div className="p-5 sm:p-9 max-w-[520px]">
         {error && (

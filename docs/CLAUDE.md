@@ -10,6 +10,7 @@ This directory is the **design documentation subtree** of the misnote (間違い
 
 | File | Contents |
 |------|----------|
+| `DESIGN.md` | Design guide — the visual language: color tokens, the two-typeface rule, shape, spacing, accessibility. Points at `globals.css` `@theme` as the source of truth for values |
 | `design/overview.md` | App description, feature list, tech stack, system architecture diagram, screen list |
 | `design/api/conventions.md` | Auth, error codes, pagination, OpenAPI Generator workflow, full endpoint list |
 | `design/api/subjects.md` | Subjects API (GET/POST/PUT/DELETE) |

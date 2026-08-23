@@ -6,6 +6,7 @@ import DraftRow from "@/components/quick/draft-row";
 import QuickEmptyState from "@/components/quick/empty-state";
 import QuickSaveModal from "@/components/quick/quick-save-modal";
 import { draftsApi } from "@/lib/api";
+import PageHeader from "@/components/layout/page-header";
 
 function PlusIcon() {
   return (
@@ -51,19 +52,19 @@ export default function QuickContent() {
 
   return (
     <div>
-      <div className="flex items-center justify-between gap-3 border-b border-border bg-white px-5 py-[18px] sm:px-9">
-        <h1 className="font-serif text-[20px] font-bold tracking-[0.02em]">
-          クイック保存
-        </h1>
-        <button
-          type="button"
-          onClick={() => setModalOpen(true)}
-          className="flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-primary-dk"
-        >
-          <PlusIcon />
-          書き留める
-        </button>
-      </div>
+      <PageHeader
+        title="クイック保存"
+        action={
+          <button
+            type="button"
+            onClick={() => setModalOpen(true)}
+            className="flex items-center gap-2 rounded-md bg-primary px-5 py-2.5 text-[13px] font-bold text-white transition-colors duration-150 hover:bg-primary-dk"
+          >
+            <PlusIcon />
+            書き留める
+          </button>
+        }
+      />
 
       <div className="max-w-[800px] p-5 sm:p-9">
         {error && (
