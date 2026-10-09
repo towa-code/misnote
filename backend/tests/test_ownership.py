@@ -103,6 +103,33 @@ def test_questions_and_notes_are_not_visible_to_other_users(as_user, switch_to, 
     assert intruder.get("/v1/mistake-notes").json() == []
 
 
+def test_questions_cannot_be_created_under_another_users_subject(as_user, switch_to, other_user):
+    subject_id = as_user.post("/v1/subjects", json={"name": "数学"}).json()["id"]
+
+    response = switch_to(other_user).post(
+        "/v1/questions",
+        json={"subject_id": subject_id, "question_text": "侵入した問題", "memo": "侵入"},
+    )
+    assert response.status_code == 404
+
+
+def test_questions_cannot_be_moved_to_another_users_subject(as_user, switch_to, other_user):
+    victim_subject_id = as_user.post("/v1/subjects", json={"name": "数学"}).json()["id"]
+
+    intruder = switch_to(other_user)
+    own_subject_id = intruder.post("/v1/subjects", json={"name": "英語"}).json()["id"]
+    question_id = intruder.post(
+        "/v1/questions",
+        json={"subject_id": own_subject_id, "question_text": "自分の問題", "memo": "メモ"},
+    ).json()["id"]
+
+    response = intruder.put(
+        f"/v1/questions/{question_id}",
+        json={"subject_id": victim_subject_id, "question_text": "自分の問題"},
+    )
+    assert response.status_code == 404
+
+
 def test_stats_do_not_count_another_users_notes(as_user, switch_to, other_user):
     subject_id = as_user.post("/v1/subjects", json={"name": "数学"}).json()["id"]
     as_user.post(

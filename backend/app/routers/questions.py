@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 from app.deps import get_db, get_current_user_id
 from app.models.mistake_note import MistakeNote
 from app.models.question import Question
+from app.models.subject import Subject
 from app.models.unit import Unit
 from app.schemas.question import QuestionCreate, QuestionResponse, QuestionUpdate
 from app.schemas.refs import QuestionRef, SubjectRef, UnitRef
@@ -23,6 +24,12 @@ def _build_response(q: Question) -> QuestionResponse:
         created_at=q.created_at,
         mistake_note_id=q.mistake_note.id if q.mistake_note else None,
     )
+
+
+def _validate_subject(subject_id: UUID, user_id: UUID, db: Session) -> None:
+    subject = db.query(Subject).filter(Subject.id == subject_id, Subject.user_id == user_id).first()
+    if not subject:
+        raise HTTPException(status_code=404, detail="Subject not found")
 
 
 def _validate_unit(subject_id: UUID, unit_id: UUID | None, db: Session) -> None:
@@ -69,6 +76,7 @@ def create_question(
     user_id: UUID = Depends(get_current_user_id),
     db: Session = Depends(get_db),
 ) -> QuestionResponse:
+    _validate_subject(body.subject_id, user_id, db)
     _validate_unit(body.subject_id, body.unit_id, db)
 
     question = Question(
@@ -107,6 +115,7 @@ def update_question(
     question = db.query(Question).filter(Question.id == question_id, Question.user_id == user_id).first()
     if not question:
         raise HTTPException(status_code=404, detail="Question not found")
+    _validate_subject(body.subject_id, user_id, db)
     _validate_unit(body.subject_id, body.unit_id, db)
 
     question.subject_id = body.subject_id
