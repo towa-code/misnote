@@ -5,3 +5,6 @@ export const inputBase =
 
 export const labelBase =
   "flex items-center text-[12px] font-bold text-ink-md tracking-[0.05em] mb-1.5";
+
+export const sectionHeading =
+  "font-serif text-[13px] font-bold tracking-[0.06em] uppercase pb-2.5 border-b-2 border-ink mb-5";
