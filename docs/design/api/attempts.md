@@ -48,7 +48,7 @@
 | 正解・ノート有り | `correct_streak` +1 |
 | 正解・ノート無し | 何もしない（`mistake_note_id`・`correct_streak`・`mastery_suggested`・`suggested_next_review_at` は `null`） |
 
-> `mastery_suggested` は更新後の `correct_streak` が **3 以上**のとき `true`。フロントエンドはこれを見て「克服済みにしますか？」と提案する（mastered への変更は別途 `PUT /mistake-notes/{id}/status` で行う。自動では遷移しない）
+> `mastery_suggested` は更新後の `correct_streak` が **3 以上**のとき `true`。フロントエンドはこれを見て「もう完璧かも？」と提案する（mastered への変更は別途 `PUT /mistake-notes/{id}/status` で行う。自動では遷移しない）
 
 ### 復習日の提案（suggested_next_review_at）
 

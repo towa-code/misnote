@@ -204,7 +204,7 @@ npx @openapitools/openapi-generator-cli generate \
 
 ## Phase 3 完了後の追加実装
 
-Phase 4 に進む前に、`docs/newfunction/` の案から4件と、画面全体の配色刷新を実装した。
+Phase 4 に進む前に、`docs/newfunction/` の案から5件と、画面全体の配色刷新を実装した。
 いずれもフェーズ計画の外で、Phase 4 の前提にはなっていない。
 
 | 実装日 | 機能 | 内容 | 設計ドキュメント |
@@ -214,6 +214,7 @@ Phase 4 に進む前に、`docs/newfunction/` の案から4件と、画面全体
 | 2026-08-09 | クイック保存 | 独立した `drafts` リソースと `/quick` 画面・本登録への導線 | [spec](./superpowers/specs/2026-08-09-quick-save-design.md) |
 | 2026-08-09 | 克服率バー | `GET /stats/summary` とサイドバーの克服率表示（統計ダッシュボード案の一部） | [spec](./superpowers/specs/2026-08-09-mastery-progress-design.md) |
 | 2026-08-09 | 配色刷新 | 青基調のカラートークンへ統一（WCAG AA 準拠） | [spec](./superpowers/specs/2026-08-09-color-palette-design.md) |
+| 2026-10-10 | 問題の編集 | `/questions/[id]/edit`（移動・削除・状態切り替え）、一覧の科目絞り込み、科目・単元削除の 409 の出し分け | [spec](./superpowers/specs/2026-10-10-question-edit-design.md) |
 
 ---
 

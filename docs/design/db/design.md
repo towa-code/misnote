@@ -55,7 +55,7 @@ users
 | `PUT /status` で mastered 化 | 変化なし | 変化なし | `active` → `mastered` |
 | `PUT /status` で active 復帰 | 0 にリセット | 変化なし | `mastered` → `active` |
 
-- `correct_streak` が閾値（**3回連続正解**）に達すると、APIが `mastery_suggested: true` を返し、UIが「克服済みにしますか？」と**提案**する
+- `correct_streak` が閾値（**3回連続正解**）に達すると、APIが `mastery_suggested: true` を返し、UIが「もう完璧かも？」と**提案**する
 - `mastered` への遷移は常にユーザー操作（自動では遷移しない）。提案の有無にかかわらず手動で克服済みにできる
 - `status` が `mastered` の問題は `GET /mistake-notes/today` と `GET /mistake-notes` の結果から外れる
 
