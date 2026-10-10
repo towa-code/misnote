@@ -6,51 +6,15 @@ import Link from "next/link";
 import type { SubjectResponse, UnitResponse } from "@/generated";
 import TagPicker from "@/components/reason-tag/tag-picker";
 import DateChip from "@/components/review-date/date-chip";
+import { RequiredBadge, SelectWrapper } from "@/components/form/field-parts";
 import { draftsApi, questionsApi, subjectsApi, unitsApi } from "@/lib/api";
-import { inputBase, labelBase } from "@/lib/form-styles";
+import { inputBase, labelBase, sectionHeading } from "@/lib/form-styles";
 import type { ReasonTag } from "@/lib/reason-tags";
 import { addDays, toDateInput } from "@/lib/review-date";
 import PageHeader from "@/components/layout/page-header";
 
 // 復習日のクイック指定（今日から何日後か）
 const QUICK_DAYS = [1, 3, 7];
-
-// Explicit "必須" badge: clearer for students than a bare asterisk
-function RequiredBadge() {
-  return (
-    <span className="ml-1.5 rounded bg-primary px-1.5 py-px text-[10px] font-bold tracking-normal text-white">
-      必須
-    </span>
-  );
-}
-
-const sectionHeading =
-  "font-serif text-[13px] font-bold tracking-[0.06em] uppercase pb-2.5 border-b-2 border-ink mb-5";
-
-function ChevronDownIcon() {
-  return (
-    <svg
-      width="12"
-      height="12"
-      viewBox="0 0 12 12"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M6 8L1 3h10z" />
-    </svg>
-  );
-}
-
-function SelectWrapper({ children }: { children: React.ReactNode }) {
-  return (
-    <div className="relative">
-      {children}
-      <span className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-muted">
-        <ChevronDownIcon />
-      </span>
-    </div>
-  );
-}
 
 type Props = {
   // クイック保存の下書きから来たときだけ渡る

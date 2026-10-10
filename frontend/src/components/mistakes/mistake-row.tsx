@@ -36,16 +36,10 @@ function CheckIcon() {
 type Props = {
   note: MistakeNoteResponse;
   variant: "active" | "mastered";
-  onChangeStatus: (noteId: string, next: "active" | "mastered") => void;
-  busy: boolean;
+  editHref: string;
 };
 
-export default function MistakeRow({
-  note,
-  variant,
-  onChangeStatus,
-  busy,
-}: Props) {
+export default function MistakeRow({ note, variant, editHref }: Props) {
   const overdueDays = note.nextReviewAt ? overdueDaysFrom(note.nextReviewAt) : 0;
   const isOverdue = variant === "active" && overdueDays > 0;
 
@@ -139,32 +133,19 @@ export default function MistakeRow({
 
       {/* Actions: above the row-wide link so they stay clickable */}
       <div className="relative z-10 flex gap-2 sm:justify-end">
-        {variant === "active" ? (
-          <>
-            <button
-              type="button"
-              disabled={busy}
-              onClick={() => onChangeStatus(note.id, "mastered")}
-              className="px-3 py-1.5 rounded-[5px] border border-border bg-surface text-[12px] text-muted whitespace-nowrap hover:bg-ink-lt hover:border-line hover:text-ink disabled:opacity-50 transition-colors duration-150"
-            >
-              克服済みにする
-            </button>
-            <Link
-              href={`/review/${note.id}`}
-              className="px-3.5 py-1.5 rounded-[5px] bg-primary text-white text-[12px] font-bold whitespace-nowrap hover:bg-primary-dk transition-colors duration-150"
-            >
-              復習する
-            </Link>
-          </>
-        ) : (
-          <button
-            type="button"
-            disabled={busy}
-            onClick={() => onChangeStatus(note.id, "active")}
-            className="px-3 py-1.5 rounded-[5px] border border-border bg-surface text-[12px] text-muted whitespace-nowrap hover:bg-ink-lt hover:border-line hover:text-ink disabled:opacity-50 transition-colors duration-150"
+        <Link
+          href={editHref}
+          className="px-3 py-1.5 rounded-[5px] border border-border bg-surface text-[12px] text-muted whitespace-nowrap hover:bg-ink-lt hover:border-line hover:text-ink transition-colors duration-150"
+        >
+          編集
+        </Link>
+        {variant === "active" && (
+          <Link
+            href={`/review/${note.id}`}
+            className="px-3.5 py-1.5 rounded-[5px] bg-primary text-white text-[12px] font-bold whitespace-nowrap hover:bg-primary-dk transition-colors duration-150"
           >
-            苦手に戻す
-          </button>
+            復習する
+          </Link>
         )}
       </div>
     </div>

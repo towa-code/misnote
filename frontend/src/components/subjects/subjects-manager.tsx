@@ -1,12 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import Link from "next/link";
 import type { SubjectResponse, UnitResponse } from "@/generated";
 import { ResponseError } from "@/generated";
 import { subjectsApi, unitsApi } from "@/lib/api";
 import PageHeader from "@/components/layout/page-header";
-
-const CONFLICT_MESSAGE = "先に問題を移動または削除してください";
 
 const inputBase =
   "border border-border rounded-md px-3 py-2 text-[13px] bg-white text-text focus:outline-none focus:border-primary focus:shadow-[0_0_0_3px_var(--color-primary-lt)]";
@@ -82,6 +81,8 @@ export default function SubjectsManager() {
   const [message, setMessage] = useState<{
     type: "error" | "notice";
     text: string;
+    // 409 のとき、残っている問題を見に行けるようにする
+    link?: { href: string; label: string };
   } | null>(null);
 
   const [addingSubject, setAddingSubject] = useState(false);
@@ -168,10 +169,22 @@ export default function SubjectsManager() {
       });
       await loadAll();
     } catch (err) {
-      setMessage({
-        type: "error",
-        text: isConflict(err) ? CONFLICT_MESSAGE : "科目の削除に失敗しました。",
-      });
+      if (!isConflict(err)) {
+        setMessage({ type: "error", text: "科目の削除に失敗しました。" });
+      } else if ((unitsBySubject[subject.id] ?? []).length > 0) {
+        // 単元と問題の両方が残っていても、まず単元を伝える。
+        // 単元を消したあとにもう一度削除すれば、次は問題のほうが出る
+        setMessage({ type: "error", text: "先に単元を削除してください。" });
+      } else {
+        setMessage({
+          type: "error",
+          text: "この科目には問題が登録されているため削除できません。",
+          link: {
+            href: `/mistakes?subject=${encodeURIComponent(subject.id)}`,
+            label: "この科目の問題を見る",
+          },
+        });
+      }
     }
   }
 
@@ -212,10 +225,19 @@ export default function SubjectsManager() {
       await unitsApi.deleteUnitV1UnitsUnitIdDelete({ unitId: unit.id });
       await refreshUnits(subjectId);
     } catch (err) {
-      setMessage({
-        type: "error",
-        text: isConflict(err) ? CONFLICT_MESSAGE : "単元の削除に失敗しました。",
-      });
+      setMessage(
+        isConflict(err)
+          ? {
+              type: "error",
+              text: "この単元には問題が登録されているため削除できません。",
+              // 単元での絞り込みは無いので、親の科目で絞った一覧へ
+              link: {
+                href: `/mistakes?subject=${encodeURIComponent(subjectId)}`,
+                label: "この科目の問題を見る",
+              },
+            }
+          : { type: "error", text: "単元の削除に失敗しました。" }
+      );
     }
   }
 
@@ -250,6 +272,11 @@ export default function SubjectsManager() {
             }
           >
             {message.text}
+            {message.link && (
+              <Link href={message.link.href} className="ml-2 underline">
+                {message.link.label}
+              </Link>
+            )}
           </div>
         )}
 

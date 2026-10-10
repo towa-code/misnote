@@ -24,7 +24,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 | [preset-subjects-units.md](./preset-subjects-units.md) | 科目・単元プリセットマスタ | 標準的な科目/単元を選ぶだけで登録 | ○ | 中 | なし |
 | [review-interval-suggestion.md](./review-interval-suggestion.md) | 復習日の自動提案 ✅**実装済み** | 忘却曲線ベースで次の復習日を提案（設定は手動のまま） | ◎ | 小 | なし |
 | [mistake-reason-tags.md](./mistake-reason-tags.md) | 間違い原因タグ ✅**実装済み** | 計算ミス/知識不足などをタグ化し弱点を可視化 | ◎ | 中 | なし |
-| [question-edit.md](./question-edit.md) | 問題の編集画面 | 登録済みの問題文・正解をあとから直す（APIは実装済み、画面がない） | △ | 小 | なし |
+| [question-edit.md](./question-edit.md) | 問題の編集画面 ✅**実装済み** | 登録済みの問題文・正解をあとから直す（APIは実装済み、画面がない） | △ | 小 | なし |
 | [cram-mode.md](./cram-mode.md) | テスト前総復習モード | 範囲指定で復習日に関係なく一括復習 | ○ | 小 | なし |
 | [folder-browse.md](./folder-browse.md) | 科目フォルダ・ブラウズ | 科目→単元→問題とたどって過去問題を振り返る | ○ | 小〜中 | なし |
 | [stats-dashboard.md](./stats-dashboard.md) | 統計ダッシュボード ⚠️**一部実装済み** | 克服率・単元別間違い数・継続日数 | ○ | 中 | 原因タグがあると効果大 |
@@ -43,7 +43,7 @@ misnote は単なる暗記カードアプリ（Anki 等）ではなく、**「�
 2. **preset-subjects-units** — ユーザー起案。初期設定の負担をなくす
 3. ~~**review-interval-suggestion**~~ — 実装済み（2026-08-04）
 4. ~~**mistake-reason-tags**~~ — 実装済み（2026-08-03）
-5. **question-edit** — API は実装済みで画面だけ。穴を塞ぐ意味で優先度は高め
+5. ~~**question-edit**~~ — 実装済み（2026-10-10）。削除・状態の切り替え・一覧の科目絞り込みも合わせて実装した
 6. **cram-mode** — 既存APIの小さな拡張で実現できる
 7. **folder-browse** — ほぼ既存APIで科目・単元起点の振り返り導線が作れる
 8. **stats-dashboard** — タグ導入後にやると価値が跳ね上がる。克服率だけは `GET /v1/stats/summary` として実装済み（2026-08-09、サイドバーのバー用）

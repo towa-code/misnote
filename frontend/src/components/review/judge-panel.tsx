@@ -135,7 +135,7 @@ export default function JudgePanel({
           {masterySuggested && (
             <div className="flex items-center gap-2 bg-surface border border-green rounded-md px-3.5 py-2.5 text-[13px] font-bold text-green">
               <AwardIcon />
-              3回連続で正解しています。克服済みにしますか？
+              3回連続で正解しています。もう完璧かも？
             </div>
           )}
 
@@ -175,7 +175,7 @@ export default function JudgePanel({
               ].join(" ")}
             >
               <AwardIcon />
-              克服済みにする
+              もう完璧！
             </button>
           </div>
         </div>
