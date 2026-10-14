@@ -14,6 +14,24 @@ import type { MistakeNoteResponse, SubjectResponse } from "@/generated";
 import { mistakeNotesApi, subjectsApi } from "@/lib/api";
 import PageHeader from "@/components/layout/page-header";
 
+function PlusIcon() {
+  return (
+    <svg
+      width="14"
+      height="14"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      aria-hidden="true"
+    >
+      <line x1="12" y1="5" x2="12" y2="19" />
+      <line x1="5" y1="12" x2="19" y2="12" />
+    </svg>
+  );
+}
+
 type Props = {
   // URL の ?subject=。科目・単元管理や編集画面から戻ったときに付く
   initialSubjectFilter?: string;
@@ -82,7 +100,18 @@ export default function MistakesContent({ initialSubjectFilter }: Props) {
 
   return (
     <>
-      <PageHeader title="苦手問題">
+      <PageHeader
+        title="苦手問題"
+        action={
+          <Link
+            href="/register"
+            className="flex items-center gap-2 bg-primary text-white rounded-md px-5 py-2.5 text-[13px] font-bold hover:bg-primary-dk transition-colors duration-150"
+          >
+            <PlusIcon />
+            問題を登録
+          </Link>
+        }
+      >
         <MistakeTabs
           tab={tab}
           onChange={handleChangeTab}
