@@ -8,7 +8,7 @@ misnote (間違いノートアプリ) is a spaced-repetition "mistake notebook" 
 
 The repo has three parts:
 - `backend/` — FastAPI + PostgreSQL API. Functionally implemented for all core resources (subjects, units, questions, attempts, mistake notes, drafts).
-- `frontend/` — Next.js app, tracked in this repo (no nested `.git`). All 5 designed screens are built and wired to the real API through the generated client: home (`/`), question registration (`/register`), subject/unit management (`/subjects`), mistake list (`/mistakes`), review (`/review/[id]`). Auth added three more: `/login`, `/signup`, `/account`, quick save added `/quick`, and question editing added `/questions/[id]/edit` (reached from the mistake list's 編集 button; it also holds the mastered/active toggle that used to sit on the list rows — see `docs/superpowers/specs/2026-10-10-question-edit-design.md`).
+- `frontend/` — Next.js app, tracked in this repo (no nested `.git`). All 5 designed screens are built and wired to the real API through the generated client: home (`/`), question registration (`/register`), subject/unit management (`/subjects`), mistake list (`/mistakes`), review (`/review/[id]`). Auth added three more: `/login`, `/signup`, `/account`, quick save added `/quick`, reason-tag analysis added `/stats`, and question editing added `/questions/[id]/edit` (reached from the mistake list's 編集 button; it also holds the mastered/active toggle that used to sit on the list rows — see `docs/superpowers/specs/2026-10-10-question-edit-design.md`).
 - `docs/` — design docs (schema, API contracts, screen specs) written before implementation. Treat these as the source of truth for intended behavior, but verify against actual code since implementation can drift (see below).
 
 Local JWT authentication is implemented: `backend/app/deps.py::get_current_user_id()` validates the `Authorization: Bearer` header (HS256, 7-day expiry) and returns the signed-in user's id — every endpoint depends on it except `/v1/auth/register` and `/v1/auth/login`. Hashing (`bcrypt`) and JWT (`python-jose`) utilities live in `app/auth.py`; registration/login/`me` are in `app/routers/auth.py`. There is no seed user anymore — `app/seed.py` was removed when auth landed, and users start with an empty account after registering. AWS Cognito (Phase 4) will replace this, swapping only how `deps.py` verifies the token.
@@ -36,6 +36,8 @@ alembic downgrade -1
 ```
 
 Or via Docker (from repo root): `cp backend/.env.example backend/.env && docker compose up`.
+
+Demo data: with the backend running, `python3 backend/scripts/seed_demo.py` creates a local test account (credentials at the top of the script) and fills it through the API with ~50 questions across 4 subjects, tuned so `/stats` shows all five insight kinds. Re-running wipes that account's data and re-seeds it. Stdlib only, no venv needed.
 
 Every endpoint requires a token; get one with:
 ```bash
@@ -105,13 +107,21 @@ This is the core domain logic, spread across `routers/attempts.py` and `routers/
 
 ### Mastery-rate bar (stats)
 
-`GET /v1/stats/summary` returns `{mastered_count, total_count}` — the only endpoint on `app/routers/stats.py`. It exists solely to feed the sidebar's mastery-rate bar (`frontend/src/components/layout/mastery-progress.tsx`).
+`GET /v1/stats/summary` returns `{mastered_count, total_count}`. It exists solely to feed the sidebar's mastery-rate bar (`frontend/src/components/layout/mastery-progress.tsx`).
 
 - **克服率 = mastered notes ÷ all mistake notes (active + mastered).** The denominator is "questions you've gotten wrong at least once", so a question with no note isn't counted. Percentages are computed client-side; the endpoint returns raw counts only.
 - One COUNT query using PostgreSQL's `FILTER` clause. No new table, no migration.
 - The sidebar mounts once in `AppShell`, so the component refetches on every `usePathname()` change — without that, mastering a question wouldn't move the bar until a reload.
 - It renders `null` while loading and on failure (a 0% bar would read as "克服率0"), and the sidebar is `hidden lg:flex`, so on mobile the bar is invisible but the request still fires.
-- This is a slice of the `stats-dashboard` backlog item; the other three proposed `/v1/stats` endpoints don't exist. See `docs/superpowers/specs/2026-08-09-mastery-progress-design.md`.
+- This is a slice of the `stats-dashboard` backlog item; of the other three proposed `/v1/stats` endpoints only `reason-tags` exists (below). See `docs/superpowers/specs/2026-08-09-mastery-progress-design.md`.
+
+### Reason-tag analysis (`/stats`)
+
+`GET /v1/stats/reason-tags` returns one row per subject × unit × `reason_tag` (nulls included) with `note_count` / `mastered_count` / `wrong_count_sum`, counting active **and** mastered notes. Like `summary`, it returns raw counts only.
+
+- Everything else is client-side in `frontend/src/lib/reason-tag-insights.ts`: `aggregate()` folds the rows, `buildInsights()` turns them into up to 5 rule-based comments, each a fact plus an advice line. No LLM. Thresholds and advice copy sit at the top of that file. Untagged notes are left out of the analysis and only shown as a count.
+- Bars are 100%-stacked per subject (`components/stats/tag-share-bars.tsx`) with a fixed color per tag. Some colors are under 3:1 on white, so values are also exposed via hover/focus text and the 「表で見る」 table.
+- See `docs/superpowers/specs/2026-10-14-reason-tag-analysis-design.md`.
 
 ### Conventions
 

@@ -14,6 +14,8 @@ export * from './QuestionCreate';
 export * from './QuestionRef';
 export * from './QuestionResponse';
 export * from './QuestionUpdate';
+export * from './ReasonTagStats';
+export * from './ReasonTagStatsRow';
 export * from './StatsSummary';
 export * from './SubjectCreate';
 export * from './SubjectRef';

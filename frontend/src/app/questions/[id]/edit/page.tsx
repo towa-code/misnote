@@ -9,9 +9,12 @@ export default async function QuestionEditPage({
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 }) {
   const { id } = await params;
-  // 苦手問題一覧を科目で絞り込んでいたら、保存後もその絞り込みに戻す
-  const subject = (await searchParams).subject;
+  // 苦手問題一覧を科目・タグで絞り込んでいたら、保存後もその絞り込みに戻す
+  const { subject, tag } = await searchParams;
   const subjectFilter = typeof subject === "string" ? subject : undefined;
+  const tagFilter = typeof tag === "string" ? tag : undefined;
 
-  return <QuestionEditForm questionId={id} subjectFilter={subjectFilter} />;
+  return (
+    <QuestionEditForm questionId={id} subjectFilter={subjectFilter} tagFilter={tagFilter} />
+  );
 }
