@@ -28,6 +28,8 @@ docs/QuestionRef.md
 docs/QuestionResponse.md
 docs/QuestionUpdate.md
 docs/QuestionsApi.md
+docs/ReasonTagStats.md
+docs/ReasonTagStatsRow.md
 docs/StatsApi.md
 docs/StatsSummary.md
 docs/SubjectCreate.md
@@ -60,6 +62,8 @@ models/QuestionCreate.ts
 models/QuestionRef.ts
 models/QuestionResponse.ts
 models/QuestionUpdate.ts
+models/ReasonTagStats.ts
+models/ReasonTagStatsRow.ts
 models/StatsSummary.ts
 models/SubjectCreate.ts
 models/SubjectRef.ts

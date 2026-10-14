@@ -14,6 +14,11 @@
 
 import * as runtime from '../runtime';
 import {
+    type ReasonTagStats,
+    ReasonTagStatsFromJSON,
+    ReasonTagStatsToJSON,
+} from '../models/ReasonTagStats';
+import {
     type StatsSummary,
     StatsSummaryFromJSON,
     StatsSummaryToJSON,
@@ -23,6 +28,53 @@ import {
  * 
  */
 export class StatsApi extends runtime.BaseAPI {
+
+    /**
+     * Creates request options for getReasonTagStatsV1StatsReasonTagsGet without sending the request
+     */
+    async getReasonTagStatsV1StatsReasonTagsGetRequestOpts(): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.accessToken) {
+            const token = this.configuration.accessToken;
+            const tokenString = await token("HTTPBearer", []);
+
+            if (tokenString) {
+                headerParameters["Authorization"] = `Bearer ${tokenString}`;
+            }
+        }
+
+        let urlPath = `/v1/stats/reason-tags`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * 分析画面用に、教科 × 単元 × 原因タグごとの件数を返す。  克服済みのノートも含める（間違い方の傾向を見るため）。割合や分析文はフロントで作る。
+     * Get Reason Tag Stats
+     */
+    async getReasonTagStatsV1StatsReasonTagsGetRaw(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<ReasonTagStats>> {
+        const requestOptions = await this.getReasonTagStatsV1StatsReasonTagsGetRequestOpts();
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => ReasonTagStatsFromJSON(jsonValue));
+    }
+
+    /**
+     * 分析画面用に、教科 × 単元 × 原因タグごとの件数を返す。  克服済みのノートも含める（間違い方の傾向を見るため）。割合や分析文はフロントで作る。
+     * Get Reason Tag Stats
+     */
+    async getReasonTagStatsV1StatsReasonTagsGet(initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<ReasonTagStats> {
+        const response = await this.getReasonTagStatsV1StatsReasonTagsGetRaw(initOverrides);
+        return await response.value();
+    }
 
     /**
      * Creates request options for getSummaryV1StatsSummaryGet without sending the request

@@ -47,7 +47,7 @@ export default function MistakeRow({ note, variant, editHref }: Props) {
     <div
       className={[
         // Mobile: stacked. Desktop: one grid row aligned with the column header.
-        "relative flex flex-col gap-3 px-3 py-4 border-b border-border last:border-b-0",
+        "relative isolate flex flex-col gap-3 px-3 py-4 border-b border-border last:border-b-0",
         ROW_GRID,
         "sm:items-center rounded-md transition-colors duration-150",
         isOverdue ? "bg-late-lt shadow-[inset_3px_0_0_var(--color-late)]" : "",

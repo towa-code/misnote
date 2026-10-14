@@ -143,3 +143,19 @@ def test_stats_do_not_count_another_users_notes(as_user, switch_to, other_user):
 
     summary = switch_to(other_user).get("/v1/stats/summary").json()
     assert summary == {"mastered_count": 0, "total_count": 0}
+
+
+def test_reason_tag_stats_do_not_include_another_users_notes(as_user, switch_to, other_user):
+    subject_id = as_user.post("/v1/subjects", json={"name": "数学"}).json()["id"]
+    as_user.post(
+        "/v1/questions",
+        json={
+            "subject_id": subject_id,
+            "question_text": "x^2-5x+6=0 を解け",
+            "memo": "因数分解の形を見落とした",
+            "reason_tag": "approach",
+        },
+    )
+
+    stats = switch_to(other_user).get("/v1/stats/reason-tags").json()
+    assert stats == {"rows": []}

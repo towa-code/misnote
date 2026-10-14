@@ -8,6 +8,12 @@ export const UNTAGGED = "untagged";
 
 export type TagFilter = ReasonTag | typeof UNTAGGED | null;
 
+/** URL の ?tag= を絞り込みの値にする。知らない値は無視して「すべて」にする。 */
+export function parseTagFilter(value: string | undefined): TagFilter {
+  if (value === UNTAGGED) return UNTAGGED;
+  return REASON_TAGS.find((tag) => tag.value === value)?.value ?? null;
+}
+
 export function matchesTagFilter(
   note: MistakeNoteResponse,
   filter: TagFilter

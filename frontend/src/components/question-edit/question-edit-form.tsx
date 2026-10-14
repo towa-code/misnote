@@ -11,8 +11,10 @@ import {
   type UnitResponse,
 } from "@/generated";
 import { RequiredBadge, SelectWrapper } from "@/components/form/field-parts";
+import TagPicker from "@/components/reason-tag/tag-picker";
 import { mistakeNotesApi, questionsApi, subjectsApi, unitsApi } from "@/lib/api";
 import { inputBase, labelBase, sectionHeading } from "@/lib/form-styles";
+import type { ReasonTag } from "@/lib/reason-tags";
 import PageHeader from "@/components/layout/page-header";
 
 // 編集前の値。これと比べて未保存の変更があるかを判定する
@@ -25,15 +27,18 @@ type Snapshot = {
 
 type Props = {
   questionId: string;
-  // 苦手問題一覧を科目で絞り込んだ状態から来たときだけ渡る
+  // 苦手問題一覧を科目・タグで絞り込んだ状態から来たときだけ渡る
   subjectFilter?: string;
+  tagFilter?: string;
 };
 
-export default function QuestionEditForm({ questionId, subjectFilter }: Props) {
+export default function QuestionEditForm({ questionId, subjectFilter, tagFilter }: Props) {
   const router = useRouter();
-  const returnHref = subjectFilter
-    ? `/mistakes?subject=${encodeURIComponent(subjectFilter)}`
-    : "/mistakes";
+  const returnParams = new URLSearchParams();
+  if (subjectFilter) returnParams.set("subject", subjectFilter);
+  if (tagFilter) returnParams.set("tag", tagFilter);
+  const returnQuery = returnParams.toString();
+  const returnHref = "/mistakes" + (returnQuery ? `?${returnQuery}` : "");
 
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
@@ -45,6 +50,7 @@ export default function QuestionEditForm({ questionId, subjectFilter }: Props) {
   const [questionText, setQuestionText] = useState("");
   const [answer, setAnswer] = useState("");
   const [note, setNote] = useState<MistakeNoteResponse | null>(null);
+  const [reasonTag, setReasonTag] = useState<ReasonTag | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -67,11 +73,12 @@ export default function QuestionEditForm({ questionId, subjectFilter }: Props) {
         setQuestionText(snapshot.questionText);
         setAnswer(snapshot.answer);
         if (question.mistakeNoteId) {
-          // 状態の欄が出せないだけなので、取れなくても編集は続けられる
+          // 状態とタグの欄が出せないだけなので、取れなくても編集は続けられる
           const fetched = await mistakeNotesApi
             .getNoteV1MistakeNotesNoteIdGet({ noteId: question.mistakeNoteId })
             .catch(() => null);
           setNote(fetched);
+          setReasonTag(fetched?.reasonTag ?? null);
         }
       })
       .catch((err) => {
@@ -93,12 +100,15 @@ export default function QuestionEditForm({ questionId, subjectFilter }: Props) {
 
   const visibleUnits = subjectId ? units : [];
 
-  const dirty =
+  const questionDirty =
     initial !== null &&
     (subjectId !== initial.subjectId ||
       unitId !== initial.unitId ||
       questionText !== initial.questionText ||
       answer !== initial.answer);
+  // タグは問題ではなく間違いノートの項目なので、別の API で保存する
+  const tagDirty = note !== null && reasonTag !== note.reasonTag;
+  const dirty = questionDirty || tagDirty;
 
   function handleSubjectChange(id: string) {
     setSubjectId(id);
@@ -110,16 +120,25 @@ export default function QuestionEditForm({ questionId, subjectFilter }: Props) {
     setError("");
     setSubmitting(true);
     try {
-      // PUT は全置換なので、空にした単元・正解は null で送って消す
-      await questionsApi.updateQuestionV1QuestionsQuestionIdPut({
-        questionId,
-        questionUpdate: {
-          subjectId,
-          unitId: unitId || null,
-          questionText,
-          correctAnswer: answer || null,
-        },
-      });
+      if (questionDirty) {
+        // PUT は全置換なので、空にした単元・正解は null で送って消す
+        await questionsApi.updateQuestionV1QuestionsQuestionIdPut({
+          questionId,
+          questionUpdate: {
+            subjectId,
+            unitId: unitId || null,
+            questionText,
+            correctAnswer: answer || null,
+          },
+        });
+      }
+      if (note && tagDirty) {
+        // タグだけを送る。ほかの項目は送らなければそのまま残り、null ならタグが外れる
+        await mistakeNotesApi.updateNoteV1MistakeNotesNoteIdPut({
+          noteId: note.id,
+          mistakeNoteUpdate: { reasonTag },
+        });
+      }
       router.push(returnHref);
     } catch {
       setError("保存に失敗しました。時間をおいて再度お試しください。");
@@ -284,6 +303,14 @@ export default function QuestionEditForm({ questionId, subjectFilter }: Props) {
                 onChange={(e) => setAnswer(e.target.value)}
               />
             </div>
+
+            {/* 間違いの種類。間違いノートが取れたときだけ出す */}
+            {note && (
+              <div>
+                <span className={labelBase + " block"}>間違いの種類（任意）</span>
+                <TagPicker value={reasonTag} onChange={setReasonTag} disabled={submitting} />
+              </div>
+            )}
           </div>
 
           {/* Actions */}

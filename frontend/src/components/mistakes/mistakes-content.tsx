@@ -7,6 +7,7 @@ import MistakeRow, { ROW_GRID } from "@/components/mistakes/mistake-row";
 import MistakesEmptyState from "@/components/mistakes/empty-state";
 import TagFilterChips, {
   matchesTagFilter,
+  parseTagFilter,
   type TagFilter,
 } from "@/components/mistakes/tag-filter";
 import SubjectFilterSelect from "@/components/mistakes/subject-filter";
@@ -35,9 +36,11 @@ function PlusIcon() {
 type Props = {
   // URL の ?subject=。科目・単元管理や編集画面から戻ったときに付く
   initialSubjectFilter?: string;
+  // URL の ?tag=。分析画面の「タグを付ける」や編集画面から戻ったときに付く
+  initialTagFilter?: string;
 };
 
-export default function MistakesContent({ initialSubjectFilter }: Props) {
+export default function MistakesContent({ initialSubjectFilter, initialTagFilter }: Props) {
   const [activeNotes, setActiveNotes] = useState<MistakeNoteResponse[]>([]);
   const [masteredNotes, setMasteredNotes] = useState<MistakeNoteResponse[]>([]);
   const [subjects, setSubjects] = useState<SubjectResponse[]>([]);
@@ -45,7 +48,7 @@ export default function MistakesContent({ initialSubjectFilter }: Props) {
   const [subjectFilter, setSubjectFilter] = useState<string | null>(
     initialSubjectFilter ?? null
   );
-  const [tagFilter, setTagFilter] = useState<TagFilter>(null);
+  const [tagFilter, setTagFilter] = useState<TagFilter>(parseTagFilter(initialTagFilter));
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
@@ -93,9 +96,12 @@ export default function MistakesContent({ initialSubjectFilter }: Props) {
   const subjectMastered = masteredNotes.filter(inSubject);
   const tabNotes = tab === "active" ? subjectActive : subjectMastered;
   const hasAnyNote = activeNotes.length + masteredNotes.length > 0;
+  const editParams = new URLSearchParams();
+  if (subjectFilter) editParams.set("subject", subjectFilter);
+  if (tagFilter) editParams.set("tag", tagFilter);
+  const editQuery = editParams.toString();
   const editHref = (note: MistakeNoteResponse) =>
-    `/questions/${note.question.id}/edit` +
-    (subjectFilter ? `?subject=${encodeURIComponent(subjectFilter)}` : "");
+    `/questions/${note.question.id}/edit` + (editQuery ? `?${editQuery}` : "");
   const notes = tabNotes.filter((note) => matchesTagFilter(note, tagFilter));
 
   return (
